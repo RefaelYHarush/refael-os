@@ -1,0 +1,121 @@
+import React, { useState } from 'react';
+import { Plus, Calendar, ChevronRight } from 'lucide-react';
+import { Card } from '../components/ui/Card';
+import { Badge } from '../components/ui/Badge';
+import { AddTradeModal } from '../components/modals/AddTradeModal';
+import { useApp } from '../context/AppContext';
+
+export function TradingView() {
+  const { trades, addTrade } = useApp();
+  const [showAddTrade, setShowAddTrade] = useState(false);
+
+  const monthPnL = trades.reduce((sum, t) => sum + t.pnl, 0);
+  const wins = trades.filter((t) => t.pnl > 0).length;
+  const winRate = trades.length ? Math.round((wins / trades.length) * 100) : 0;
+  const avgWin = wins ? Math.round(trades.filter((t) => t.pnl > 0).reduce((s, t) => s + t.pnl, 0) / wins) : 0;
+  const losses = trades.filter((t) => t.pnl < 0);
+  const avgLoss = losses.length ? Math.round(losses.reduce((s, t) => s + t.pnl, 0) / losses.length) : 0;
+
+  return (
+    <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-500">
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl font-bold">יומן מסחר</h2>
+        <button
+          onClick={() => setShowAddTrade(true)}
+          className="bg-brand-dark hover:bg-brand-dark/90 dark:bg-brand dark:hover:bg-brand/90 dark:text-brand-dark text-white px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 shadow-lg shadow-brand-dark/20"
+        >
+          <Plus size={16} /> עסקה חדשה
+        </button>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <Card className="lg:col-span-2 p-6">
+          <div className="flex items-center gap-2 mb-6">
+            <Calendar className="text-brand" size={20} />
+            <h3 className="font-bold">פברואר 2025</h3>
+          </div>
+          <div className="grid grid-cols-7 gap-2">
+            {['א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ש'].map((d) => (
+              <div key={d} className="text-center text-xs text-slate-400 py-2">{d}</div>
+            ))}
+            {Array.from({ length: 31 }).map((_, i) => {
+              const day = i + 1;
+              const trade = trades.find((t) => parseInt(t.date.split('-')[2], 10) === day);
+              return (
+                <div key={i} className="aspect-square border border-slate-100 dark:border-slate-800 rounded-lg p-1 relative hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group cursor-pointer">
+                  <span className="text-xs text-slate-400 absolute top-1 right-2">{day}</span>
+                  {trade && (
+                    <div className={`absolute inset-x-1 bottom-1 top-6 rounded flex items-center justify-center text-xs font-bold ${
+                      trade.pnl > 0 ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-400' : 'bg-rose-100 text-rose-700 dark:bg-rose-900/40 dark:text-rose-400'
+                    }`}>
+                      {trade.pnl > 0 ? '+' : ''}{trade.pnl}$
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </Card>
+
+        <div className="space-y-6">
+          <Card className="p-6">
+            <h3 className="font-bold mb-4">סטטיסטיקה חודשית</h3>
+            <div className="space-y-4">
+              <div className="flex justify-between items-center">
+                <span className="text-slate-500 text-sm">סה"כ P&L</span>
+                <span className="font-bold text-brand-dark">+${monthPnL.toLocaleString()}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-slate-500 text-sm">Win Rate</span>
+                <span className="font-bold">{winRate}%</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-slate-500 text-sm">Avg Win</span>
+                <span className="font-bold text-brand-dark">+${avgWin}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-slate-500 text-sm">Avg Loss</span>
+                <span className="font-bold text-rose-500">{avgLoss}$</span>
+              </div>
+            </div>
+          </Card>
+        </div>
+      </div>
+
+      <Card className="overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full text-right text-sm">
+            <thead className="bg-slate-50 dark:bg-slate-800/50 text-slate-500">
+              <tr>
+                <th className="p-4 font-medium">תאריך</th>
+                <th className="p-4 font-medium">נכס</th>
+                <th className="p-4 font-medium">אסטרטגיה</th>
+                <th className="p-4 font-medium">מצב רוח</th>
+                <th className="p-4 font-medium">P&L</th>
+                <th className="p-4 font-medium"></th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+              {trades.map((trade) => (
+                <tr key={trade.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                  <td className="p-4">{trade.date}</td>
+                  <td className="p-4 font-bold">{trade.symbol}</td>
+                  <td className="p-4"><Badge color="blue">{trade.setup}</Badge></td>
+                  <td className="p-4 text-slate-500">{trade.mood}</td>
+                  <td className={`p-4 font-bold ${trade.pnl > 0 ? 'text-brand-dark' : 'text-rose-500'}`}>
+                    {trade.pnl > 0 ? '+' : ''}{trade.pnl}$
+                  </td>
+                  <td className="p-4 text-left">
+                    <button type="button" className="text-slate-400 hover:text-brand"><ChevronRight size={18} /></button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </Card>
+
+      {showAddTrade && <AddTradeModal onClose={() => setShowAddTrade(false)} onSave={addTrade} />}
+    </div>
+  );
+}
