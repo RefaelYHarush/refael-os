@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Brand colors - use in CSS when needed */
+/* צבעי מותג מ-Logo: ירוק בהיר | ירוק כהה | שחור | לבן */
 :root {
   --brand-light: #a0df50;
   --brand-dark: #013024;

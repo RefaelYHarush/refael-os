@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+/** צבעי מותג מ-Logo: ירוק בהיר #a0df50 | ירוק כהה #013024 | שחור #000000 | לבן #ffffff */
 export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   darkMode: 'class',
@@ -12,6 +13,9 @@ export default {
           black: '#000000',
           white: '#ffffff',
         },
+      },
+      backgroundColor: {
+        'brand-page': 'rgba(1, 48, 36, 0.04)',
       },
       keyframes: {
         'fade-in': {

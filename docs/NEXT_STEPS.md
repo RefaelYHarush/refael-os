@@ -12,35 +12,50 @@ npm run dev
 
 ---
 
-## 2. Supabase – פרויקט חדש
+## 2. Supabase – מחובר + Auth
 
-- **סטטוס:** הפרויקט נוצר ועדיין מתאתחל (COMING_UP). בדרך כלל 1–2 דקות.
+- **סטטוס:** ACTIVE_HEALTHY. טבלאות + RLS לפי משתמש.
 - **Dashboard:** https://supabase.com/dashboard/project/ubfebxeqetfxlqkxqwtb
-- **API:** `https://ubfebxeqetfxlqkxqwtb.supabase.co`
+- **התחברות:** הרשמה/התחברות באימייל וסיסמה. כל משתמש רואה רק את הנתונים שלו.
+- אם Supabase דורש אימות אימייל: Authentication → Providers → Email → כבה "Confirm email" להרשמה מיידית.
 
-**כשהפרויקט יהיה ACTIVE_HEALTHY:**
-- להיכנס ל-Dashboard → Table Editor → ליצור טבלאות (למשל `trades`, `daily_tasks`, `saas_projects`, `vision_milestones`).
-- להעתיק `.env.example` ל-`.env` ולהריץ שוב את האפליקציה.
-- (אופציונלי) לעדכן את הקוד ב-`AppContext` / hooks כדי לקרוא/לכתוב מ-Supabase במקום רק מ-localStorage.
+בהרצה מקומית: להעתיק `.env.example` ל-`.env`. ב-Vercel הוגדרו כבר `VITE_SUPABASE_URL` ו-`VITE_SUPABASE_ANON_KEY`.
 
 ---
 
-## 3. פריסה ל-Vercel (אופציונלי)
+## 3. Vercel – פרוס ועובד
 
-1. לדחוף את הקוד ל-GitHub.
-2. ב־https://vercel.com/dashboard → New Project → לחבר את הריפו.
-3. Root Directory: `refael-os` (אם הריפו הוא האבא של refael-os).
-4. Build: `npm run build`, Output: `dist`.
-5. להוסיף Environment Variables אם יש: `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY` (מהערכים ב-.env.example).
-
-אחרי הדפלוי תקבל קישור כמו: `https://refael-os-xxx.vercel.app`.
+- **אתר:** https://refael-os.vercel.app  
+- **ריפו:** https://github.com/RefaelYHarush/refael-os  
+- כל push ל-`main` מעלה דפלוי אוטומטי.
 
 ---
 
-## סיכום
+## דפים ציבוריים
 
-| צעד              | סטטוס / פעולה |
-|------------------|----------------|
-| הרצה מקומית      | `npm run dev`  |
-| Supabase         | לחכות ל-ACTIVE, אז ליצור טבלאות ולחבר |
-| Vercel           | לחבר ריפו ב-Dashboard ולפרוס |
+- **דף נחיתה:** /  
+- **אודות:** /about  
+- **תנאי שימוש:** /terms  
+- **פרטיות:** /privacy  
+
+---
+
+## מה עכשיו (אפשרויות)
+
+| אם אתה רוצה… | מה לעשות |
+|---------------|----------|
+| **להשתמש באפליקציה** | גלוש ל־https://refael-os.vercel.app, הרשם/התחבר, מלא דשבורד, מסחר, משימות, חזון. |
+| **לשתף עם אחרים** | שלח את הקישור – כל אחד יכול להירשם ולקבל דשבורד משלו. |
+| **לפתח מקומית** | `cd refael-os` → העתק `.env.example` ל־`.env` → `npm run dev` → http://localhost:5173 |
+| **לעדכן את האתר** | `git add .` → `git commit -m "..."` → `git push` (Vercel יעלה גרסה אוטומטית). |
+| **לשנות אימות אימייל** | Supabase Dashboard → Authentication → Providers → Email → Confirm email. |
+| **להוסיף פיצ'רים** | דומיין מותאם, תשלומים, ועוד. |
+
+---
+
+## פיצ'רים שקיימים עכשיו
+
+- **שכחתי סיסמה** – בדף ההתחברות: "שכחתי סיסמה" → הזנת אימייל → קישור באימייל → דף `/reset-password` להגדרת סיסמה חדשה.  
+  ב-Supabase: Authentication → URL Configuration → Redirect URLs → להוסיף `https://refael-os.vercel.app/reset-password` (ולוקל: `http://localhost:5173/reset-password`).
+- **פרופיל** – כפתור ההגדרות (גלגל שיניים) ב-Header → "שם לתצוגה" → האות מופיעה בעיגול הפרופיל.
+- **ייצוא נתונים** – כפתור הורדה (Download) ב-Header → "ייצוא מסחר (CSV)" או "ייצוא משימות (CSV)" → קובץ CSV להורדה.
