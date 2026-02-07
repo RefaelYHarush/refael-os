@@ -43,3 +43,29 @@ export function exportDailyTasksToCsv(dailyTasks) {
   const date = new Date().toISOString().slice(0, 10);
   downloadCsv(`refael-os-tasks-${date}.csv`, csv);
 }
+
+function downloadJson(filename, data) {
+  const json = JSON.stringify(data, null, 2);
+  const blob = new Blob([json], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+/** גיבוי מלא של כל הנתונים לקובץ JSON */
+export function exportFullBackup({ trades, dailyTasks, visionMilestones, saasProjects, userXP, userLevel, displayName }) {
+  const data = {
+    exportedAt: new Date().toISOString(),
+    displayName: displayName || '',
+    profile: { userXP, userLevel },
+    trades,
+    dailyTasks,
+    visionMilestones,
+    saasProjects,
+  };
+  const date = new Date().toISOString().slice(0, 10);
+  downloadJson(`refael-os-backup-${date}.json`, data);
+}

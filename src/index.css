@@ -55,3 +55,8 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* Safe area for notched devices (mobile) */
+.pb-safe {
+  padding-bottom: max(env(safe-area-inset-bottom, 0), 0.25rem);
+}

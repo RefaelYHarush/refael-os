@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   TrendingUp, Rocket, BookOpen, CheckCircle2, Plus, DollarSign,
-  Zap, BrainCircuit, Play, Trophy
+  Zap, BrainCircuit, Play, Trophy, BarChart3
 } from 'lucide-react';
 import { Card } from '../components/ui/Card';
 import { Badge } from '../components/ui/Badge';
@@ -9,14 +9,33 @@ import { PnlChart } from '../components/charts/PnlChart';
 import { AddTradeModal } from '../components/modals/AddTradeModal';
 import { AddTaskModal } from '../components/modals/AddTaskModal';
 import { useApp } from '../context/AppContext';
+import { XP_PER_LEVEL } from '../data/constants';
+
+function getLast7Days() {
+  const d = new Date();
+  const set = new Set();
+  for (let i = 0; i < 7; i++) {
+    set.add(d.toISOString().slice(0, 10));
+    d.setDate(d.getDate() - 1);
+  }
+  return set;
+}
 
 export function DashboardView({ onNavigate }) {
   const { trades, dailyTasks, userXP, userLevel, toggleTask, addTrade, addTask } = useApp();
   const [showAddTrade, setShowAddTrade] = useState(false);
   const [showAddTask, setShowAddTask] = useState(false);
 
-  const levelProgress = 65;
-  const xpToNext = 550;
+  const weekStats = useMemo(() => {
+    const last7 = getLast7Days();
+    const weekTrades = trades.filter((t) => last7.has(t.date));
+    const pnlWeek = weekTrades.reduce((s, t) => s + t.pnl, 0);
+    const tasksDone = dailyTasks.filter((t) => t.completed).length;
+    return { pnlWeek, tasksDone, total: dailyTasks.length };
+  }, [trades, dailyTasks]);
+
+  const levelProgress = Math.min(100, (userXP % XP_PER_LEVEL) / XP_PER_LEVEL * 100);
+  const xpToNext = XP_PER_LEVEL - (userXP % XP_PER_LEVEL);
 
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -40,13 +59,29 @@ export function DashboardView({ onNavigate }) {
         <Card className="p-5 flex flex-col justify-between h-32 hover:border-brand/50 transition-colors">
           <div className="flex justify-between items-start">
             <div className="p-2 bg-brand/10 dark:bg-brand/20 rounded-lg">
-              <DollarSign size={20} className="text-brand-dark" />
+              <BarChart3 size={20} className="text-brand-dark dark:text-brand" />
             </div>
-            <Badge color="emerald">+12.5%</Badge>
+            <Badge color="emerald">7 ימים</Badge>
           </div>
           <div>
-            <div className="text-2xl font-bold text-slate-900 dark:text-white">$142,500</div>
-            <div className="text-xs text-slate-500">הון עצמי (מסחר)</div>
+            <div className="text-2xl font-bold text-slate-900 dark:text-white">
+              {weekStats.pnlWeek >= 0 ? '+' : ''}${weekStats.pnlWeek.toLocaleString()}
+            </div>
+            <div className="text-xs text-slate-500">PnL השבוע · {weekStats.tasksDone}/{weekStats.total} משימות הושלמו</div>
+          </div>
+        </Card>
+
+        <Card className="p-5 flex flex-col justify-between h-32 hover:border-brand/50 transition-colors">
+          <div className="flex justify-between items-start">
+            <div className="p-2 bg-brand/10 dark:bg-brand/20 rounded-lg">
+              <DollarSign size={20} className="text-brand-dark" />
+            </div>
+          </div>
+          <div>
+            <div className="text-2xl font-bold text-slate-900 dark:text-white">
+              ${trades.reduce((s, t) => s + t.pnl, 0).toLocaleString()}
+            </div>
+            <div className="text-xs text-slate-500">סה״כ PnL (מסחר)</div>
           </div>
         </Card>
 

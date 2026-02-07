@@ -36,6 +36,15 @@ export function AuthProvider({ children }) {
     await supabase.auth.signOut();
   };
 
+  const signInWithGoogle = async () => {
+    const redirectTo = typeof window !== 'undefined' ? window.location.origin : '';
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: { redirectTo },
+    });
+    if (error) throw error;
+  };
+
   const resetPassword = async (email) => {
     const redirectTo = typeof window !== 'undefined' ? `${window.location.origin}/reset-password` : '';
     const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo });
@@ -53,6 +62,7 @@ export function AuthProvider({ children }) {
     authLoading,
     signIn,
     signUp,
+    signInWithGoogle,
     signOut,
     resetPassword,
     updatePassword,
