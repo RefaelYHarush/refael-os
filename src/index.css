@@ -9,26 +9,27 @@
   }
 }
 
-/* צבעי מותג מ-Logo – נגישות WCAG AA; פלטה מאוזנת וברורה */
+/* צבעי מותג מ-Logo.png – פלטה רשמית */
+/* ירוק ליים #a0df50 | שחור #000000 | לבן #ffffff | ירוק כהה #013024 */
 :root {
-  --brand-light: #90c93e;
+  --brand-light: #a0df50;
   --brand-dark: #013024;
   --brand-dark-hover: #012a20;
-  --brand-black: #0f1419;
+  --brand-black: #000000;
   --brand-white: #ffffff;
   --brand-page: #fafafa;
   --brand-accent-secondary: #d45d4a;
-  /* משטחים בכהה – היררכיה ויזואלית (רקע עמוק → כרטיסים → אלמנטים מורמים) */
-  --surface-dark: #0a2e26;
-  --surface-dark-elevated: #0f3d34;
-  --surface-dark-card: #0d362d;
-  /* טקסט נגיש על רקע כהה – גוון חם־ירקרק לקריאות */
+  /* משטחים בכהה – גוונים מ-#013024 להיררכיה */
+  --surface-dark: #011f1a;
+  --surface-dark-elevated: #013024;
+  --surface-dark-card: #012a20;
+  /* טקסט נגיש על רקע כהה */
   --text-on-dark: #f0f7f4;
   --text-on-dark-muted: #9ebdb4;
-  --accent-on-dark: #90c93e;
-  /* גלואים מהמותג – לשימוש בבר־התקדמות, פוקוס, הדגשות */
-  --brand-glow: rgba(144, 201, 62, 0.4);
-  --brand-glow-soft: rgba(144, 201, 62, 0.15);
+  --accent-on-dark: #a0df50;
+  /* גלואים – תואם ל-#a0df50 */
+  --brand-glow: rgba(160, 223, 80, 0.4);
+  --brand-glow-soft: rgba(160, 223, 80, 0.15);
 }
 
 /* Respect user preference for reduced motion (WCAG 2.3.3) */

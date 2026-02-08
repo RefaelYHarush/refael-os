@@ -45,11 +45,11 @@ export function Layout({ activeTab, onTabChange, children, enabledCategories = [
   const closeMobile = () => setMobileMenuOpen(false);
   const navButtonClass = (tab) =>
     `flex items-center gap-3 w-full px-4 py-3 rounded-xl text-right text-sm font-bold min-h-[44px] touch-manipulation ${
-      activeTab === tab.id ? 'bg-brand-dark text-on-brand' : 'text-slate-600 dark:text-on-brand'
+      activeTab === tab.id ? 'bg-brand-dark text-on-brand' : 'text-brand-black/70 dark:text-on-brand'
     }`;
 
   return (
-    <div className="min-h-screen bg-brand-page dark:bg-brand-dark text-slate-900 dark:text-on-brand font-sans p-3 sm:p-4 md:p-6 transition-colors duration-300 safe-area-pb" dir="rtl">
+    <div className="min-h-screen bg-brand-page dark:bg-brand-dark text-brand-black dark:text-on-brand font-sans p-3 sm:p-4 md:p-6 transition-colors duration-300 safe-area-pb" dir="rtl">
       <a
         href="#main-content"
         className="absolute right-4 -top-[200%] z-[100] px-4 py-2 bg-brand-dark text-on-brand rounded-lg outline-none focus:top-4 focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-brand-page dark:focus:ring-offset-brand-surface transition-[top]"
@@ -63,8 +63,8 @@ export function Layout({ activeTab, onTabChange, children, enabledCategories = [
               <Zap className="text-brand" fill="currentColor" size={20} />
             </div>
             <div className="min-w-0">
-              <h1 className="text-lg md:text-xl font-black tracking-tight leading-none truncate">REFAEL OS</h1>
-              <span className="text-[10px] text-slate-400 dark:text-on-brand-muted font-medium tracking-widest uppercase hidden sm:inline">Life Management System</span>
+              <h1 className="text-lg md:text-xl font-black tracking-tight leading-none truncate text-brand-black dark:text-on-brand">REFAEL OS</h1>
+              <span className="text-[10px] text-brand-black/50 dark:text-on-brand-muted font-medium tracking-widest uppercase hidden sm:inline">Life Management System</span>
             </div>
           </div>
 
@@ -79,7 +79,7 @@ export function Layout({ activeTab, onTabChange, children, enabledCategories = [
                   className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all whitespace-nowrap min-h-[44px] ${
                     activeTab === tab.id
                       ? 'bg-brand-dark text-on-brand shadow-lg shadow-brand-dark/20 scale-100'
-                      : 'text-slate-500 hover:text-slate-700 dark:text-on-brand-muted dark:hover:text-on-brand scale-95 hover:scale-100'
+                      : 'text-brand-black/60 hover:text-brand-black dark:text-on-brand-muted dark:hover:text-on-brand scale-95 hover:scale-100'
                   }`}
                 >
                   <tab.icon size={16} className={activeTab === tab.id ? 'text-brand' : ''} aria-hidden />
@@ -90,11 +90,11 @@ export function Layout({ activeTab, onTabChange, children, enabledCategories = [
           </nav>
 
           <div className="flex md:hidden items-center gap-1">
-            <AccessibilityButton className="w-11 h-11 flex items-center justify-center rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors touch-manipulation" />
+            <AccessibilityButton className="w-11 h-11 flex items-center justify-center rounded-xl text-brand-black/70 dark:text-on-brand-muted hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors touch-manipulation" />
             <button
               type="button"
               onClick={() => setMobileMenuOpen(true)}
-              className="w-11 h-11 flex items-center justify-center rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors touch-manipulation"
+              className="w-11 h-11 flex items-center justify-center rounded-xl text-brand-black/70 dark:text-on-brand-muted hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors touch-manipulation"
               aria-label="תפריט"
             >
               <Menu size={22} />
@@ -102,11 +102,11 @@ export function Layout({ activeTab, onTabChange, children, enabledCategories = [
           </div>
 
           <div className="hidden md:flex items-center gap-2">
-            <AccessibilityButton className="w-9 h-9 flex items-center justify-center rounded-full text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" />
+            <AccessibilityButton className="w-9 h-9 flex items-center justify-center rounded-full text-brand-black/50 dark:text-on-brand-muted hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" />
             <button
               type="button"
               onClick={toggleTheme}
-              className="w-9 h-9 flex items-center justify-center rounded-full text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+              className="w-9 h-9 flex items-center justify-center rounded-full text-brand-black/50 dark:text-on-brand-muted hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
               title={isDark ? 'מצב בהיר' : 'מצב כהה'}
               aria-label={isDark ? 'מצב בהיר' : 'מצב כהה'}
             >
@@ -116,7 +116,7 @@ export function Layout({ activeTab, onTabChange, children, enabledCategories = [
               <button
                 type="button"
                 onClick={() => setShowExport((v) => !v)}
-                className="w-9 h-9 flex items-center justify-center rounded-full text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                className="w-9 h-9 flex items-center justify-center rounded-full text-brand-black/50 dark:text-on-brand-muted hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
                 title="ייצוא נתונים"
                 aria-label="ייצוא נתונים"
                 aria-expanded={showExport}
@@ -124,38 +124,38 @@ export function Layout({ activeTab, onTabChange, children, enabledCategories = [
                 <Download size={18} aria-hidden />
               </button>
               {showExport && (
-                <div className="absolute right-0 top-full mt-1 py-1 w-48 bg-brand-white dark:bg-brand-surface rounded-lg border border-slate-200 dark:border-brand-dark/50 shadow-lg z-50">
+                <div className="absolute right-0 top-full mt-1 py-1 w-48 bg-brand-white dark:bg-brand-surface rounded-lg border border-brand-black/10 dark:border-brand-dark/50 shadow-lg z-50">
                   <button
                     type="button"
                     onClick={() => { exportTradesToCsv(trades); setShowExport(false); }}
-                    className="block w-full text-right px-3 py-2 text-sm text-slate-700 dark:text-on-brand hover:bg-slate-100 dark:hover:bg-brand-dark/50"
+                    className="block w-full text-right px-3 py-2 text-sm text-brand-black dark:text-on-brand hover:bg-brand-dark/5 dark:hover:bg-brand-dark/50"
                   >
                     ייצוא מסחר (CSV)
                   </button>
                   <button
                     type="button"
                     onClick={() => { exportDailyTasksToCsv(dailyTasks); setShowExport(false); }}
-                    className="block w-full text-right px-3 py-2 text-sm text-slate-700 dark:text-on-brand hover:bg-slate-100 dark:hover:bg-brand-dark/50"
+                    className="block w-full text-right px-3 py-2 text-sm text-brand-black dark:text-on-brand hover:bg-brand-dark/5 dark:hover:bg-brand-dark/50"
                   >
                     ייצוא משימות (CSV)
                   </button>
                   <button
                     type="button"
                     onClick={() => { exportFullBackup({ trades, dailyTasks, visionMilestones, saasProjects, userXP, userLevel, displayName, healthEntries, learningItems, financeGoals, relationshipItems }); setShowExport(false); }}
-                    className="block w-full text-right px-3 py-2 text-sm text-slate-700 dark:text-on-brand hover:bg-slate-100 dark:hover:bg-brand-dark/50 border-t border-slate-100 dark:border-brand-dark/50"
+                    className="block w-full text-right px-3 py-2 text-sm text-brand-black dark:text-on-brand hover:bg-brand-dark/5 dark:hover:bg-brand-dark/50 border-t border-brand-black/10 dark:border-brand-dark/50"
                   >
                     גיבוי מלא (JSON)
                   </button>
                 </div>
               )}
             </div>
-            <button type="button" className="w-9 h-9 flex items-center justify-center rounded-full text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" aria-label="התראות">
+            <button type="button" className="w-9 h-9 flex items-center justify-center rounded-full text-brand-black/50 dark:text-on-brand-muted hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" aria-label="התראות">
               <Bell size={18} aria-hidden />
             </button>
             <button
               type="button"
               onClick={() => setShowProfile(true)}
-              className="w-9 h-9 flex items-center justify-center rounded-full text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+              className="w-9 h-9 flex items-center justify-center rounded-full text-brand-black/50 dark:text-on-brand-muted hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
               title="פרופיל"
               aria-label="פרופיל"
             >
@@ -165,14 +165,14 @@ export function Layout({ activeTab, onTabChange, children, enabledCategories = [
               <button
                 type="button"
                 onClick={() => signOut()}
-                className="w-9 h-9 flex items-center justify-center rounded-full text-slate-400 hover:text-red-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                className="w-9 h-9 flex items-center justify-center rounded-full text-brand-black/50 dark:text-on-brand-muted hover:text-red-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
                 title="התנתק"
                 aria-label="התנתק"
               >
                 <LogOut size={18} aria-hidden />
               </button>
             )}
-            <div className="w-9 h-9 rounded-full bg-brand-dark border-2 border-white dark:border-brand shadow-sm flex items-center justify-center" title={displayName || 'פרופיל'} aria-hidden>
+            <div className="w-9 h-9 rounded-full bg-brand-dark border-2 border-brand-white dark:border-brand shadow-sm flex items-center justify-center" title={displayName || 'פרופיל'} aria-hidden>
               <span className="text-xs font-bold text-brand">{avatarLetter}</span>
             </div>
           </div>
@@ -199,7 +199,7 @@ export function Layout({ activeTab, onTabChange, children, enabledCategories = [
             <button
               type="button"
               onClick={closeMobile}
-              className="w-11 h-11 flex items-center justify-center rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 touch-manipulation"
+              className="w-11 h-11 flex items-center justify-center rounded-xl text-brand-black/70 dark:text-on-brand-muted hover:bg-slate-100 dark:hover:bg-slate-800 touch-manipulation"
               aria-label="סגור תפריט"
             >
               <X size={22} />
@@ -254,11 +254,11 @@ export function Layout({ activeTab, onTabChange, children, enabledCategories = [
         {showExport && (
           <div className="md:hidden fixed inset-0 z-[60] flex items-end sm:items-center justify-center p-4 bg-black/50" onClick={() => setShowExport(false)}>
             <div className="w-full max-w-sm bg-brand-white dark:bg-brand-surface rounded-2xl shadow-xl p-4 space-y-1" onClick={(e) => e.stopPropagation()} dir="rtl">
-              <p className="text-sm font-bold text-slate-600 dark:text-on-brand-muted pb-2">ייצוא / גיבוי</p>
-              <button type="button" onClick={() => { exportTradesToCsv(trades); setShowExport(false); }} className="block w-full text-right px-4 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-brand-dark/50 min-h-[44px] font-medium text-slate-700 dark:text-on-brand">ייצוא מסחר (CSV)</button>
-              <button type="button" onClick={() => { exportDailyTasksToCsv(dailyTasks); setShowExport(false); }} className="block w-full text-right px-4 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-brand-dark/50 min-h-[44px] font-medium text-slate-700 dark:text-on-brand">ייצוא משימות (CSV)</button>
-              <button type="button" onClick={() => { exportFullBackup({ trades, dailyTasks, visionMilestones, saasProjects, userXP, userLevel, displayName, healthEntries, learningItems, financeGoals, relationshipItems }); setShowExport(false); }} className="block w-full text-right px-4 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-brand-dark/50 min-h-[44px] font-medium text-slate-700 dark:text-on-brand">גיבוי מלא (JSON)</button>
-              <button type="button" onClick={() => setShowExport(false)} className="block w-full text-right px-4 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-brand-dark/50 min-h-[44px] text-slate-500 dark:text-on-brand-muted">ביטול</button>
+              <p className="text-sm font-bold text-brand-black dark:text-on-brand-muted pb-2">ייצוא / גיבוי</p>
+              <button type="button" onClick={() => { exportTradesToCsv(trades); setShowExport(false); }} className="block w-full text-right px-4 py-3 rounded-xl hover:bg-brand-dark/5 dark:hover:bg-brand-dark/50 min-h-[44px] font-medium text-brand-black dark:text-on-brand">ייצוא מסחר (CSV)</button>
+              <button type="button" onClick={() => { exportDailyTasksToCsv(dailyTasks); setShowExport(false); }} className="block w-full text-right px-4 py-3 rounded-xl hover:bg-brand-dark/5 dark:hover:bg-brand-dark/50 min-h-[44px] font-medium text-brand-black dark:text-on-brand">ייצוא משימות (CSV)</button>
+              <button type="button" onClick={() => { exportFullBackup({ trades, dailyTasks, visionMilestones, saasProjects, userXP, userLevel, displayName, healthEntries, learningItems, financeGoals, relationshipItems }); setShowExport(false); }} className="block w-full text-right px-4 py-3 rounded-xl hover:bg-brand-dark/5 dark:hover:bg-brand-dark/50 min-h-[44px] font-medium text-brand-black dark:text-on-brand">גיבוי מלא (JSON)</button>
+              <button type="button" onClick={() => setShowExport(false)} className="block w-full text-right px-4 py-3 rounded-xl hover:bg-brand-dark/5 dark:hover:bg-brand-dark/50 min-h-[44px] text-brand-black/60 dark:text-on-brand-muted">ביטול</button>
             </div>
           </div>
         )}

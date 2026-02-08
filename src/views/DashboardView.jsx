@@ -112,10 +112,10 @@ export function DashboardView({ onNavigate }) {
             <Badge color="emerald">7 ימים</Badge>
           </div>
           <div>
-            <div className="text-2xl font-bold text-slate-900 dark:text-on-brand">
+            <div className="text-2xl font-bold text-brand-black dark:text-on-brand">
               {weekStats.pnlWeek >= 0 ? '+' : ''}${weekStats.pnlWeek.toLocaleString()}
             </div>
-            <div className="text-xs text-slate-500 dark:text-on-brand-muted">PnL השבוע · {weekStats.tasksDone}/{weekStats.total} משימות הושלמו</div>
+            <div className="text-xs text-brand-black/60 dark:text-on-brand-muted">PnL השבוע · {weekStats.tasksDone}/{weekStats.total} משימות הושלמו</div>
           </div>
         </Card>
 
@@ -126,10 +126,10 @@ export function DashboardView({ onNavigate }) {
             </div>
           </div>
           <div>
-            <div className="text-2xl font-bold text-slate-900 dark:text-on-brand">
+            <div className="text-2xl font-bold text-brand-black dark:text-on-brand">
               ${trades.reduce((s, t) => s + t.pnl, 0).toLocaleString()}
             </div>
-            <div className="text-xs text-slate-500 dark:text-on-brand-muted">סה״כ PnL (מסחר)</div>
+            <div className="text-xs text-brand-black/60 dark:text-on-brand-muted">סה״כ PnL (מסחר)</div>
           </div>
         </Card>
 
@@ -141,8 +141,8 @@ export function DashboardView({ onNavigate }) {
             <Badge color="blue">{saasStats.activeCount} פעילים</Badge>
           </div>
           <div>
-            <div className="text-2xl font-bold text-slate-900 dark:text-on-brand">${saasStats.mrr.toLocaleString()} <span className="text-sm font-normal text-slate-400 dark:text-on-brand-muted">/MRR</span></div>
-            <div className="text-xs text-slate-500 dark:text-on-brand-muted">הכנסות SaaS</div>
+            <div className="text-2xl font-bold text-brand-black dark:text-on-brand">${saasStats.mrr.toLocaleString()} <span className="text-sm font-normal text-brand-black/50 dark:text-on-brand-muted">/MRR</span></div>
+            <div className="text-xs text-brand-black/60 dark:text-on-brand-muted">הכנסות SaaS</div>
           </div>
         </Card>
 
@@ -154,8 +154,8 @@ export function DashboardView({ onNavigate }) {
             <Badge color="purple">דף ל׳</Badge>
           </div>
           <div>
-            <div className="text-2xl font-bold text-slate-900 dark:text-on-brand">{dafYomiTask ? (dafYomiTask.label.match(/\(([^)]+)\)/)?.[1] || dafYomiTask.label) : 'דף יומי'}</div>
-            <div className="text-xs text-slate-500 dark:text-on-brand-muted">התקדמות יומית</div>
+            <div className="text-2xl font-bold text-brand-black dark:text-on-brand">{dafYomiTask ? (dafYomiTask.label.match(/\(([^)]+)\)/)?.[1] || dafYomiTask.label) : 'דף יומי'}</div>
+            <div className="text-xs text-brand-black/60 dark:text-on-brand-muted">התקדמות יומית</div>
           </div>
         </Card>
       </div>
@@ -164,13 +164,13 @@ export function DashboardView({ onNavigate }) {
         <div className="lg:col-span-2 space-y-6">
           <Card className="p-6">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="font-bold text-lg flex items-center gap-2 text-slate-900 dark:text-on-brand">
+              <h3 className="font-bold text-lg flex items-center gap-2 text-brand-black dark:text-on-brand">
                 <TrendingUp size={20} className="text-brand-dark dark:text-brand" /> ביצועי מסחר (7 ימים)
               </h3>
-              <button type="button" className="text-sm text-slate-500 dark:text-on-brand-muted hover:text-brand transition-colors hover:underline" onClick={() => onNavigate('trading')}>לכל הנתונים</button>
+              <button type="button" className="text-sm text-brand-black/60 dark:text-on-brand-muted hover:text-brand-dark dark:hover:text-brand transition-colors hover:underline" onClick={() => onNavigate('trading')}>לכל הנתונים</button>
             </div>
             {last7DaysChartData.length === 0 ? (
-              <div className="h-48 flex flex-col items-center justify-center gap-2 text-slate-500 dark:text-slate-400 text-sm">
+              <div className="h-48 flex flex-col items-center justify-center gap-2 text-brand-black/60 dark:text-on-brand-muted text-sm">
                 <p>אין נתונים ל־7 הימים האחרונים</p>
                 <button type="button" onClick={() => onNavigate('trading')} className="text-brand-dark dark:text-brand font-medium hover:underline">הוסף עסקה ביומן המסחר</button>
               </div>
@@ -181,7 +181,7 @@ export function DashboardView({ onNavigate }) {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Card
-              className="p-5 hover:border-brand transition-colors cursor-pointer group bg-gradient-to-br from-white to-slate-50 dark:from-brand-dark dark:to-slate-800"
+              className="p-5 hover:border-brand transition-colors cursor-pointer group bg-gradient-to-br from-brand-white to-brand-page dark:from-brand-dark dark:to-brand-surface"
               onClick={() => setShowTimer(true)}
               role="button"
               tabIndex={0}
@@ -193,8 +193,8 @@ export function DashboardView({ onNavigate }) {
                   <Play size={20} className="text-brand" fill="currentColor" />
                 </div>
                 <div>
-                  <div className="font-bold text-slate-900 dark:text-on-brand">Deep Work Timer</div>
-                  <div className="text-xs text-slate-500 dark:text-on-brand-muted">התחל סשן עבודה (25 דקות)</div>
+                  <div className="font-bold text-brand-black dark:text-on-brand">Deep Work Timer</div>
+                  <div className="text-xs text-brand-black/60 dark:text-on-brand-muted">התחל סשן עבודה (25 דקות)</div>
                 </div>
               </div>
             </Card>
@@ -207,12 +207,12 @@ export function DashboardView({ onNavigate }) {
               aria-label="הוסף עסקה – תיעוד מהיר ליומן"
             >
               <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 rounded-full bg-slate-100 dark:bg-brand/10 flex items-center justify-center group-hover:bg-brand/10 dark:group-hover:bg-brand/20 transition-colors" aria-hidden>
-                  <Plus size={20} className="text-slate-600 dark:text-on-brand-muted group-hover:text-brand-dark dark:group-hover:text-brand" />
+                <div className="w-10 h-10 rounded-full bg-brand-dark/10 dark:bg-brand/10 flex items-center justify-center group-hover:bg-brand/20 dark:group-hover:bg-brand/20 transition-colors" aria-hidden>
+                  <Plus size={20} className="text-brand-dark dark:text-on-brand-muted group-hover:text-brand-dark dark:group-hover:text-brand" />
                 </div>
                 <div>
-                  <div className="font-bold text-slate-900 dark:text-on-brand">הוסף עסקה</div>
-                  <div className="text-xs text-slate-500 dark:text-on-brand-muted">תיעוד מהיר ליומן</div>
+                  <div className="font-bold text-brand-black dark:text-on-brand">הוסף עסקה</div>
+                  <div className="text-xs text-brand-black/60 dark:text-on-brand-muted">תיעוד מהיר ליומן</div>
                 </div>
               </div>
             </Card>
@@ -222,12 +222,12 @@ export function DashboardView({ onNavigate }) {
         <div className="space-y-6">
           <Card className="p-6 border-t-4 border-t-brand">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="font-bold flex items-center gap-2 text-slate-900 dark:text-on-brand">
+              <h3 className="font-bold flex items-center gap-2 text-brand-black dark:text-on-brand">
                 <Zap size={18} className="text-brand" fill="currentColor" /> צ'ק ליסט יומי
               </h3>
               <div className="flex items-center gap-2">
                 <button type="button" onClick={() => setShowAddTask(true)} className="text-xs text-brand hover:underline font-medium py-2 px-3 -my-1 -mx-1 rounded-lg touch-target-min inline-flex items-center">+ משימה</button>
-                <span className="text-xs text-slate-400 dark:text-on-brand-muted">{new Date().toLocaleDateString('he-IL')}</span>
+                <span className="text-xs text-brand-black/50 dark:text-on-brand-muted">{new Date().toLocaleDateString('he-IL')}</span>
               </div>
             </div>
             <div className="space-y-3" role="list">
@@ -248,15 +248,15 @@ export function DashboardView({ onNavigate }) {
                 >
                   <div className="flex items-center gap-3">
                     <div className={`w-5 h-5 rounded-md border flex items-center justify-center transition-colors ${
-                      task.completed ? 'bg-brand-dark border-brand-dark' : 'border-slate-300 dark:border-on-brand-muted'
+                      task.completed ? 'bg-brand-dark border-brand-dark' : 'border-brand-black/30 dark:border-on-brand-muted'
                     }`} aria-hidden>
                       {task.completed && <CheckCircle2 size={14} className="text-brand" />}
                     </div>
-                    <span className={`text-sm ${task.completed ? 'text-slate-400 line-through dark:text-on-brand-muted' : 'text-slate-700 dark:text-on-brand'}`}>
+                    <span className={`text-sm ${task.completed ? 'text-brand-black/50 line-through dark:text-on-brand-muted' : 'text-brand-black dark:text-on-brand'}`}>
                       {task.label}
                     </span>
                   </div>
-                  <span className="text-[10px] font-bold text-slate-600 dark:text-on-brand-muted bg-slate-100 dark:bg-brand-dark/60 px-1.5 py-0.5 rounded">
+                  <span className="text-[10px] font-bold text-brand-black/60 dark:text-on-brand-muted bg-brand-dark/10 dark:bg-brand-dark/60 px-1.5 py-0.5 rounded">
                     +{task.xp} XP
                   </span>
                 </div>
@@ -267,8 +267,8 @@ export function DashboardView({ onNavigate }) {
                 <div className="flex items-start gap-3">
                   <BrainCircuit className="text-brand-dark dark:text-brand w-5 h-5 mt-0.5 shrink-0" />
                   <div>
-                    <div className="text-xs font-bold text-slate-800 dark:text-brand mb-1">Rethink יומי</div>
-                    <p className="text-xs text-slate-600 dark:text-on-brand-muted leading-relaxed">
+                    <div className="text-xs font-bold text-brand-black dark:text-brand mb-1">Rethink יומי</div>
+                    <p className="text-xs text-brand-black/70 dark:text-on-brand-muted leading-relaxed">
                       {rethinkMessage}
                     </p>
                   </div>

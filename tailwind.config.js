@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-/** צבעי נגישות מ-Logo – גרסאות מעודכנות (שחור/לבן רכים, ירוק מעודן, hover) */
+/** צבעי מותג מ-Logo.png: #a0df50 | #000000 | #ffffff | #013024 */
 export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   darkMode: 'class',
@@ -10,11 +10,11 @@ export default {
       },
       colors: {
         brand: {
-          DEFAULT: '#90c93e',
-          light: '#90c93e',
+          DEFAULT: '#a0df50',
+          light: '#a0df50',
           dark: '#013024',
           'dark-hover': '#012a20',
-          black: '#0f1419',
+          black: '#000000',
           white: '#ffffff',
           'bg-light': '#fafafa',
           'accent-secondary': '#d45d4a',
