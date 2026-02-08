@@ -1,8 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Zap, LayoutDashboard, TrendingUp, CheckSquare, Target } from 'lucide-react';
+import { Zap, LayoutDashboard, TrendingUp, CheckSquare, Target, Sun, Moon, LogIn } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
 
 export function LandingView({ onSignUp, onSignIn }) {
+  const { isDark, toggleTheme } = useTheme();
   const features = [
     { icon: LayoutDashboard, title: 'דשבורד אישי', desc: 'סיכום יומי, XP ורמות, הכל במקום אחד' },
     { icon: TrendingUp, title: 'יומן מסחר', desc: 'מעקב PnL, סימבולים, מצב רוח וסט־אפים' },
@@ -20,7 +22,16 @@ export function LandingView({ onSignUp, onSignIn }) {
             </div>
             <span className="font-black text-lg">REFAEL OS</span>
           </div>
-          <nav className="flex gap-2">
+          <nav className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={toggleTheme}
+              className="w-9 h-9 flex items-center justify-center rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-brand-dark/50 transition-colors"
+              title={isDark ? 'מצב בהיר' : 'מצב כהה'}
+              aria-label={isDark ? 'מצב בהיר' : 'מצב כהה'}
+            >
+              {isDark ? <Sun size={18} aria-hidden /> : <Moon size={18} aria-hidden />}
+            </button>
             <button
               type="button"
               onClick={onSignIn}
@@ -31,7 +42,7 @@ export function LandingView({ onSignUp, onSignIn }) {
             <button
               type="button"
               onClick={onSignUp}
-              className="px-4 py-2 text-sm font-bold rounded-lg bg-brand-dark text-on-brand hover:opacity-90 transition-opacity"
+              className="px-4 py-2 text-sm font-bold rounded-xl bg-brand-dark text-on-brand hover:opacity-90 transition-opacity"
             >
               הרשמה בחינם
             </button>
@@ -40,8 +51,8 @@ export function LandingView({ onSignUp, onSignIn }) {
       </header>
 
       <main>
-        <section className="max-w-5xl mx-auto px-4 py-16 md:py-24 text-center">
-          <h1 className="text-4xl md:text-5xl font-black tracking-tight leading-tight mb-4">
+        <section className="max-w-5xl mx-auto px-4 py-16 md:py-24 text-center bg-gradient-to-b from-slate-50/80 to-transparent dark:from-brand-surface/30 dark:to-transparent">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-tight mb-4">
             הדשבורד האישי שלך
             <br />
             <span className="text-brand-dark dark:text-brand">מסחר, משימות וחזון</span> במקום אחד
@@ -53,27 +64,30 @@ export function LandingView({ onSignUp, onSignIn }) {
             <button
               type="button"
               onClick={onSignUp}
-              className="px-8 py-3.5 rounded-xl bg-brand-dark text-on-brand font-bold text-lg shadow-lg hover:opacity-90 transition-opacity"
+              className="px-8 py-3.5 rounded-xl bg-brand-dark text-on-brand font-bold text-lg shadow-lg hover:opacity-90 hover:shadow-xl hover:shadow-brand-dark/25 active:scale-[0.98] transition-all"
             >
               צור דשבורד בחינם
             </button>
             <button
               type="button"
               onClick={onSignIn}
-              className="px-8 py-3.5 rounded-xl border-2 border-slate-300 dark:border-brand/30 font-bold text-lg hover:bg-slate-100 dark:hover:bg-brand-surface transition-colors text-slate-700 dark:text-on-brand"
+              className="px-8 py-3.5 rounded-xl border-2 border-slate-300 dark:border-brand/30 font-bold text-lg hover:bg-slate-100 dark:hover:bg-brand-surface hover:text-brand-dark dark:hover:text-brand hover:border-brand-dark/50 dark:hover:border-brand/50 transition-all flex items-center justify-center gap-2"
             >
+              <LogIn size={20} aria-hidden />
               כבר יש לך חשבון? התחבר
             </button>
           </div>
         </section>
 
         <section className="max-w-5xl mx-auto px-4 py-16 border-t border-slate-200 dark:border-brand/20">
-          <h2 className="text-2xl font-bold text-center mb-10 text-slate-900 dark:text-on-brand">מה תקבל</h2>
+          <h2 className="text-2xl md:text-3xl font-bold text-center mb-10 text-slate-900 dark:text-on-brand pb-2 border-b-2 border-brand-dark/30 dark:border-brand/50 w-fit mx-auto">
+            מה תקבל
+          </h2>
           <div className="grid sm:grid-cols-2 gap-6">
             {features.map(({ icon: Icon, title, desc }) => (
               <div
                 key={title}
-                className="flex gap-4 p-5 rounded-2xl bg-brand-white dark:bg-brand-surface border border-slate-200 dark:border-brand/20"
+                className="flex gap-4 p-5 rounded-2xl bg-brand-white dark:bg-brand-surface border border-slate-200 dark:border-brand/20 hover:shadow-md hover:border-brand/30 dark:hover:border-brand/40 transition-all hover:-translate-y-0.5"
               >
                 <div className="w-12 h-12 rounded-xl bg-brand-dark/10 dark:bg-brand/10 flex items-center justify-center shrink-0">
                   <Icon className="text-brand-dark dark:text-brand" size={24} />
@@ -92,14 +106,14 @@ export function LandingView({ onSignUp, onSignIn }) {
           <button
             type="button"
             onClick={onSignUp}
-            className="px-8 py-3.5 rounded-xl bg-brand-dark text-on-brand font-bold text-lg shadow-lg hover:opacity-90 transition-opacity"
+            className="px-8 py-3.5 rounded-xl bg-brand-dark text-on-brand font-bold text-lg shadow-lg hover:opacity-90 hover:shadow-xl hover:shadow-brand-dark/25 active:scale-[0.98] transition-all"
           >
             הרשמה בחינם
           </button>
         </section>
       </main>
 
-      <footer className="border-t border-slate-200 dark:border-brand/20 py-6 mt-8">
+      <footer className="border-t border-slate-200 dark:border-brand/20 bg-slate-50 dark:bg-brand-dark/80 py-6 mt-8">
         <div className="max-w-5xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-slate-500 dark:text-on-brand-muted">
           <span>© {new Date().getFullYear()} REFAEL OS</span>
           <div className="flex gap-6">
