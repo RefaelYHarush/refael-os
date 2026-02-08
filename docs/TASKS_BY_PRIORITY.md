@@ -57,6 +57,7 @@
 - Deep Work Timer – כרטיס פותח DeepWorkTimerModal.
 - גרף 7 ימים ריק – הודעה + CTA.
 - Open Graph / Twitter בסיסי – קיים ב־index.html.
+- **יומן גוגל – שיפורים:** הטמעה אוטומטית (בחירת יומן מהרשימה), תצוגה (שבוע/חודש/רשימה), גובה (קטן/בינוני/גדול), טעינה עצלה, קישור "פתח ביומן גוגל", פרמטרים (שפה עברית, timezone). ראה `CalendarView.jsx` ו־`GOOGLE_CALENDAR_INTEGRATION.md`.
 
 ---
 
@@ -77,7 +78,7 @@
 | שיפור | תיאור |
 |--------|--------|
 | **Error Boundary** | ☑ נוסף – תופס שגיאות רינדור ומציג "משהו השתבש" + רענן דף. |
-| **בדיקות יחידה** | הוספת Vitest או React Testing Library לטסטים על לוגיקה ו־components. |
-| **אימות Google** | השלמת אימות האפליקציה ב־Google (סרטון, טופס) – ראה VERIFICATION_STEP_BY_STEP.md. |
-| **פיצ'ר התראות** | חיבור כפתור ההתראות (כרגע "בקרוב") – Web Push או אינטגרציה עם יומן. |
-| **דומיין מותאם** | חיבור דומיין מותאם ב־Vercel ו־Supabase Redirect URLs. |
+| **בדיקות יחידה** | ☑ Vitest + React Testing Library – הגדרה, `LandingView.test.jsx`, `ErrorBoundary.test.jsx`. הרץ `npm install` then `npm run test:run`. |
+| **אימות Google** | תסריט סרטון וצ'קליסט – [GOOGLE_VERIFICATION_VIDEO_SCRIPT.md](GOOGLE_VERIFICATION_VIDEO_SCRIPT.md). טופס – VERIFICATION_STEP_BY_STEP.md. |
+| **פיצ'ר התראות** | ☑ כפתור פעיל – לחיצה פותחת מודל "התראות – בפיתוח. יגיע בקרוב." |
+| **דומיין מותאם** | ☑ תיעוד – [CUSTOM_DOMAIN.md](CUSTOM_DOMAIN.md) (Vercel, Supabase, Google OAuth). |

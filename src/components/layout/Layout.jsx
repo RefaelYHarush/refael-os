@@ -26,6 +26,7 @@ export function Layout({ activeTab, onTabChange, children, enabledCategories = [
   const { isDark, toggleTheme } = useTheme();
   const [showProfile, setShowProfile] = useState(false);
   const [showExport, setShowExport] = useState(false);
+  const [showNotificationsComingSoon, setShowNotificationsComingSoon] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const exportRef = useRef(null);
   const avatarLetter = displayName?.trim() ? displayName.trim().charAt(0).toUpperCase() : 'R';
@@ -135,7 +136,7 @@ export function Layout({ activeTab, onTabChange, children, enabledCategories = [
                 </div>
               )}
             </div>
-            <button type="button" disabled className="w-10 h-10 flex items-center justify-center rounded-button text-brand-black/40 dark:text-on-brand-muted cursor-not-allowed opacity-70 hidden md:flex" title="התראות – בקרוב" aria-label="התראות – בקרוב">
+            <button type="button" onClick={() => setShowNotificationsComingSoon(true)} className="w-10 h-10 flex items-center justify-center rounded-button text-brand-black/60 dark:text-on-brand-muted hover:bg-brand-black/5 dark:hover:bg-brand/10 transition-colors hidden md:flex" title="התראות" aria-label="התראות">
               <Bell size={18} aria-hidden />
             </button>
             <button type="button" onClick={() => setShowProfile(true)} className="w-10 h-10 flex items-center justify-center rounded-button text-brand-black/60 dark:text-on-brand-muted hover:bg-brand-black/5 dark:hover:bg-brand/10 transition-colors" title="פרופיל" aria-label="פרופיל">
@@ -229,6 +230,21 @@ export function Layout({ activeTab, onTabChange, children, enabledCategories = [
         )}
 
         <ProfileModal isOpen={showProfile} onClose={() => setShowProfile(false)} />
+
+        {showNotificationsComingSoon && (
+          <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-brand-black/40" onClick={() => setShowNotificationsComingSoon(false)} role="dialog" aria-modal="true" aria-labelledby="notifications-coming-title">
+            <div className="w-full max-w-sm bg-brand-white dark:bg-brand-surface-card rounded-card-lg shadow-card-dark p-6 text-center" onClick={(e) => e.stopPropagation()} dir="rtl">
+              <div className="w-12 h-12 rounded-full bg-brand/20 dark:bg-brand/30 flex items-center justify-center mx-auto mb-4">
+                <Bell className="text-brand-dark dark:text-brand" size={24} aria-hidden />
+              </div>
+              <h2 id="notifications-coming-title" className="text-lg font-bold text-brand-black dark:text-on-brand mb-2">התראות</h2>
+              <p className="text-brand-black/70 dark:text-on-brand-muted text-sm mb-6">הפיצ'ר בפיתוח ויגיע בקרוב. תוכל לקבל התראות על משימות ויעדים מהדשבורד.</p>
+              <button type="button" onClick={() => setShowNotificationsComingSoon(false)} className="w-full py-2.5 rounded-button bg-brand-dark text-[var(--text-on-dark)] font-semibold hover:opacity-95">
+                הבנתי
+              </button>
+            </div>
+          </div>
+        )}
 
         {syncError && !syncBannerDismissed && (
           <div className="my-4 px-4 py-3 rounded-card bg-brand-accent-secondary/10 border border-brand-accent-secondary/30 text-brand-accent-secondary dark:text-brand-accent-secondary text-sm flex items-center justify-between gap-3" role="alert">

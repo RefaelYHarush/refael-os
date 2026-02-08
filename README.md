@@ -2,6 +2,8 @@
 
 Life Management System – דשבורד אישי לניהול מסחר, SaaS, משימות יומיות וחזון ארוך טווח.
 
+**עשה לפי סדר חשיבות:** [docs/DO_PRIORITY_ORDER.md](docs/DO_PRIORITY_ORDER.md)
+
 ## הרצה
 
 ```bash
@@ -23,3 +25,13 @@ npm run dev
 
 להרצה בלי Supabase: פתח `http://localhost:5173/?dev=1` (רק ב־localhost – לא בפרודקשן).  
 פרטים נוספים: [docs/DEVELOPER_NOTES.md](docs/DEVELOPER_NOTES.md).
+
+## בדיקות
+
+לפני הרצת בדיקות יש להריץ `npm install` (כולל vitest ו־testing-library).
+
+```bash
+npm install     # חובה פעם אחת – אחרת vitest לא יימצא
+npm run test    # מצב צפייה (watch)
+npm run test:run  # הרצה חד־פעמית
+```

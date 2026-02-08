@@ -1,4 +1,4 @@
-/** Default data shapes and initial values for RAFAEL OS */
+/** Default data shapes and initial values for Refael OS. Storage keys use rafael_os_* (legacy) for backward compatibility – see DEVELOPER_NOTES. */
 
 export const DEFAULT_TRADES = [
   { id: 1, date: '2025-02-01', pnl: 450, symbol: 'NQ', setup: 'Opening Range Breakout', mood: 'Calm' },
