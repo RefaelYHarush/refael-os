@@ -14,7 +14,6 @@ export function ResetPasswordPage() {
   const [message, setMessage] = useState('');
   const [isRecovery, setIsRecovery] = useState(false);
 
-  // Supabase recovery links use hash (#type=recovery&...). We also support type=recovery in query for compatibility.
   useEffect(() => {
     if (!hasSupabase) return;
     const hash = window.location.hash || '';
@@ -55,24 +54,22 @@ export function ResetPasswordPage() {
   }
 
   return (
-    <div className="min-h-screen bg-brand-page dark:bg-brand-dark/95 flex items-center justify-center p-4" dir="rtl">
-      <div className="w-full max-w-sm bg-brand-white dark:bg-brand-dark rounded-2xl border border-slate-200 dark:border-brand-dark/80 shadow-xl p-6">
-        <div className="flex flex-col items-center gap-2 mb-6">
-          <div className="w-12 h-12 bg-brand-dark rounded-xl flex items-center justify-center shadow-lg">
+    <div className="min-h-screen bg-brand-page dark:bg-brand-dark flex items-center justify-center p-4" dir="rtl">
+      <div className="w-full max-w-sm bg-brand-white dark:bg-brand-surface-card rounded-card-lg border border-brand-black/8 dark:border-brand/15 shadow-card-dark p-6">
+        <div className="flex flex-col items-center gap-3 mb-6">
+          <div className="w-12 h-12 bg-brand-dark rounded-card flex items-center justify-center shadow-card">
             <Zap className="text-brand" fill="currentColor" size={24} />
           </div>
-          <h1 className="text-xl font-black tracking-tight">הגדר סיסמה חדשה</h1>
+          <h1 className="text-xl font-extrabold tracking-tight text-brand-black dark:text-on-brand">הגדר סיסמה חדשה</h1>
         </div>
         {!isRecovery ? (
-          <p className="text-slate-600 dark:text-slate-400 text-sm">
+          <p className="text-brand-black/65 dark:text-on-brand-muted text-sm">
             הקישור לא תקף או שפג תוקפו. בקש קישור חדש מדף ההתחברות (&quot;שכחתי סיסמה&quot;).
           </p>
         ) : (
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <div>
-              <label htmlFor="new-password" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-                סיסמה חדשה
-              </label>
+              <label htmlFor="new-password" className="label-brand">סיסמה חדשה</label>
               <input
                 id="new-password"
                 type="password"
@@ -81,14 +78,12 @@ export function ResetPasswordPage() {
                 required
                 minLength={6}
                 autoComplete="new-password"
-                className="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-brand focus:border-transparent"
+                className="input-brand"
                 placeholder="••••••••"
               />
             </div>
             <div>
-              <label htmlFor="confirm-password" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-                אימות סיסמה
-              </label>
+              <label htmlFor="confirm-password" className="label-brand">אימות סיסמה</label>
               <input
                 id="confirm-password"
                 type="password"
@@ -97,16 +92,16 @@ export function ResetPasswordPage() {
                 required
                 minLength={6}
                 autoComplete="new-password"
-                className="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-brand focus:border-transparent"
+                className="input-brand"
                 placeholder="••••••••"
               />
             </div>
-            {error && <p className="text-sm text-red-600 dark:text-red-400">{error}</p>}
-            {message && <p className="text-sm text-green-600 dark:text-green-400">{message}</p>}
+            {error && <p className="text-sm text-brand-accent-secondary">{error}</p>}
+            {message && <p className="text-sm text-brand-dark dark:text-brand font-medium">{message}</p>}
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-2.5 rounded-xl bg-brand-dark text-white font-bold shadow-lg hover:opacity-90 disabled:opacity-50 transition-opacity"
+              className="w-full py-3 rounded-button bg-brand-dark text-[var(--text-on-dark)] font-bold shadow-card hover:opacity-95 disabled:opacity-50 transition-opacity"
             >
               {loading ? '...' : 'שמור סיסמה'}
             </button>

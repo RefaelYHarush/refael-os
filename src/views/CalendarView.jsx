@@ -156,7 +156,7 @@ export function CalendarView() {
         <button
           type="button"
           onClick={() => setShowHelp((v) => !v)}
-          className="flex items-center gap-2 text-sm text-slate-600 dark:text-on-brand-muted hover:text-brand font-medium"
+          className="flex items-center gap-2 text-sm text-brand-black/600 dark:text-on-brand-muted hover:text-brand font-medium"
         >
           <Info size={16} />
           איך לחבר?
@@ -164,9 +164,9 @@ export function CalendarView() {
       </div>
 
       {showHelp && (
-        <Card className="p-4 bg-slate-50 dark:bg-brand-surface border border-slate-200 dark:border-brand/20">
-          <p className="text-sm text-slate-700 dark:text-on-brand mb-2">להצגת יומן גוגל כאן:</p>
-          <ol className="list-decimal list-inside text-sm text-slate-600 dark:text-on-brand-muted space-y-1 mb-3">
+        <Card className="p-4 bg-brand-black/5 dark:bg-brand-surface border border-brand-black/10 dark:border-brand/20">
+          <p className="text-sm text-brand-black dark:text-on-brand mb-2">להצגת יומן גוגל כאן:</p>
+          <ol className="list-decimal list-inside text-sm text-brand-black/600 dark:text-on-brand-muted space-y-1 mb-3">
             <li>היכנס ל־<a href="https://calendar.google.com" target="_blank" rel="noopener noreferrer" className="text-brand hover:underline">Google Calendar</a>.</li>
             <li>הגדרות → בחר יומן → גלול ל־&quot;אינטגרציה של היומן&quot;.</li>
             <li>העתק את קוד ההטמעה (iframe) או רק את כתובת ה־src.</li>
@@ -187,9 +187,9 @@ export function CalendarView() {
       {canUseApi && (
         <Card className="p-4">
           <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
-            <h3 className="font-bold text-slate-800 dark:text-on-brand">אירועים מהיומן</h3>
+            <h3 className="font-bold text-brand-black dark:text-on-brand">אירועים מהיומן</h3>
             <div className="flex items-center gap-2 flex-wrap">
-              <label className="flex items-center gap-2 text-sm text-slate-600 dark:text-on-brand-muted">
+              <label className="flex items-center gap-2 text-sm text-brand-black/600 dark:text-on-brand-muted">
                 <CalendarDays size={14} aria-hidden />
                 יומן:
               </label>
@@ -197,7 +197,7 @@ export function CalendarView() {
                 value={selectedCalendarId}
                 onChange={(e) => setSelectedCalendarId(e.target.value)}
                 disabled={calendarsLoading}
-                className="px-3 py-1.5 rounded-lg border border-slate-300 dark:border-brand/30 bg-white dark:bg-brand-surface text-slate-900 dark:text-on-brand text-sm min-w-[140px]"
+                className="px-3 py-1.5 rounded-lg border border-brand-black/15 dark:border-brand/30 bg-brand-white dark:bg-brand-surface text-brand-black dark:text-on-brand text-sm min-w-[140px]"
                 aria-label="בחירת יומן"
               >
                 {calendarsLoading ? (
@@ -225,21 +225,21 @@ export function CalendarView() {
             </div>
           </div>
           {calendarsError && (
-            <div className="flex items-center gap-2 p-3 rounded-xl bg-amber-50 dark:bg-amber-900/20 text-amber-800 dark:text-amber-200 text-sm mb-3" role="alert">
+            <div className="flex items-center gap-2 p-3 rounded-xl bg-brand-accent-secondary/10 text-brand-accent-secondary text-sm mb-3" role="alert">
               <AlertCircle size={18} className="shrink-0" />
               <span>{calendarsError}</span>
             </div>
           )}
           {eventsError && (
-            <div className="flex items-center gap-2 p-3 rounded-xl bg-amber-50 dark:bg-amber-900/20 text-amber-800 dark:text-amber-200 text-sm mb-3" role="alert">
+            <div className="flex items-center gap-2 p-3 rounded-xl bg-brand-accent-secondary/10 text-brand-accent-secondary text-sm mb-3" role="alert">
               <AlertCircle size={18} className="shrink-0" />
               <span>{eventsError}</span>
             </div>
           )}
           {eventsLoading && events.length === 0 ? (
-            <p className="text-slate-500 dark:text-on-brand-muted text-sm py-4">טוען אירועים...</p>
+            <p className="text-brand-black/500 dark:text-on-brand-muted text-sm py-4">טוען אירועים...</p>
           ) : events.length === 0 && !eventsError ? (
-            <p className="text-slate-500 dark:text-on-brand-muted text-sm py-4">אין אירועים ב־14 הימים הקרובים.</p>
+            <p className="text-brand-black/500 dark:text-on-brand-muted text-sm py-4">אין אירועים ב־14 הימים הקרובים.</p>
           ) : (
             <ul className="space-y-2 max-h-[320px] overflow-y-auto" aria-label="אירועים מהיומן">
               {events.map((ev) => (
@@ -248,16 +248,16 @@ export function CalendarView() {
                     href={ev.htmlLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block p-3 rounded-xl border border-slate-200 dark:border-brand/20 hover:bg-slate-50 dark:hover:bg-brand-dark/30 transition-colors"
+                    className="block p-3 rounded-xl border border-brand-black/10 dark:border-brand/20 hover:bg-brand-black/5 dark:hover:bg-brand-dark/30 transition-colors"
                   >
-                    <span className="font-medium text-slate-900 dark:text-on-brand block">{ev.summary}</span>
-                    <span className="flex items-center gap-2 text-sm text-slate-500 dark:text-on-brand-muted mt-1">
+                    <span className="font-medium text-brand-black dark:text-on-brand block">{ev.summary}</span>
+                    <span className="flex items-center gap-2 text-sm text-brand-black/500 dark:text-on-brand-muted mt-1">
                       <Clock size={14} aria-hidden />
                       {formatEventDate(ev.start)} · {formatEventTime(ev.start, ev.isAllDay)}
                       {ev.isAllDay && ' (כל היום)'}
                     </span>
                     {ev.location && (
-                      <span className="flex items-center gap-2 text-sm text-slate-500 dark:text-on-brand-muted mt-0.5">
+                      <span className="flex items-center gap-2 text-sm text-brand-black/500 dark:text-on-brand-muted mt-0.5">
                         <MapPin size={14} aria-hidden />
                         {ev.location}
                       </span>
@@ -269,7 +269,7 @@ export function CalendarView() {
           )}
 
           {dailyTasks?.length > 0 && (
-            <div className="mt-4 pt-4 border-t border-slate-200 dark:border-brand/20">
+            <div className="mt-4 pt-4 border-t border-brand-black/10 dark:border-brand/20">
               <button
                 type="button"
                 onClick={handleSyncTasks}
@@ -280,7 +280,7 @@ export function CalendarView() {
                 סנכרן משימות יומיות ליומן
               </button>
               {syncResult && (
-                <p className={`mt-2 text-sm ${syncResult.error ? 'text-amber-600 dark:text-amber-400' : 'text-slate-600 dark:text-on-brand-muted'}`}>
+                <p className={`mt-2 text-sm ${syncResult.error ? 'text-brand-accent-secondary' : 'text-brand-black/600 dark:text-on-brand-muted'}`}>
                   {syncResult.error || `נוצרו ${syncResult.count} אירועים להיום.`}
                 </p>
               )}
@@ -291,7 +291,7 @@ export function CalendarView() {
 
       {!savedUrl ? (
         <Card className="p-4">
-          <label htmlFor="calendar-embed-url" className="block text-sm font-medium text-slate-700 dark:text-on-brand mb-2">
+          <label htmlFor="calendar-embed-url" className="block text-sm font-medium text-brand-black dark:text-on-brand mb-2">
             קישור להטמעת יומן (מגוגל קלנדר)
           </label>
           <div className="flex gap-2 flex-wrap">
@@ -301,7 +301,7 @@ export function CalendarView() {
               value={embedUrl}
               onChange={(e) => setEmbedUrl(e.target.value)}
               placeholder="https://calendar.google.com/calendar/embed?..."
-              className="flex-1 min-w-[200px] px-3 py-2 rounded-xl border border-slate-300 dark:border-brand/30 bg-white dark:bg-brand-surface text-slate-900 dark:text-on-brand placeholder:text-slate-400 focus:ring-2 focus:ring-brand focus:border-transparent"
+              className="flex-1 min-w-[200px] px-3 py-2 rounded-xl border border-brand-black/15 dark:border-brand/30 bg-brand-white dark:bg-brand-surface text-brand-black dark:text-on-brand placeholder:text-brand-black/40 dark:placeholder-brand/50 focus:ring-2 focus:ring-brand focus:border-transparent"
             />
             <button
               type="button"
@@ -320,12 +320,12 @@ export function CalendarView() {
             <button
               type="button"
               onClick={clearSaved}
-              className="text-sm text-slate-500 dark:text-on-brand-muted hover:text-red-600 dark:hover:text-red-400"
+              className="text-sm text-brand-black/500 dark:text-on-brand-muted hover:text-brand-accent-secondary"
             >
               נתק יומן
             </button>
           </div>
-          <div className="rounded-2xl border border-slate-200 dark:border-brand/20 overflow-hidden bg-white dark:bg-brand-surface shadow-sm">
+          <div className="rounded-2xl border border-brand-black/10 dark:border-brand/20 overflow-hidden bg-brand-white dark:bg-brand-surface shadow-sm">
             <iframe
               title="יומן גוגל"
               src={savedUrl}

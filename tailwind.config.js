@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-/** צבעי מותג מ-Logo.png: #a0df50 | #000000 | #ffffff | #013024 */
+/** צבעי מותג מ-Logo.png: #a0df50 | #000000 | #ffffff | #013024 – רק הצבעים, עיצוב מתחדש */
 export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   darkMode: 'class',
@@ -7,6 +7,16 @@ export default {
     extend: {
       fontFamily: {
         sans: ['Heebo', 'sans-serif'],
+      },
+      fontSize: {
+        'display': ['2.75rem', { lineHeight: '1.15', letterSpacing: '-0.02em' }],
+        'display-md': ['3.5rem', { lineHeight: '1.1', letterSpacing: '-0.02em' }],
+        'display-lg': ['4rem', { lineHeight: '1.05', letterSpacing: '-0.025em' }],
+      },
+      borderRadius: {
+        'card': '1rem',
+        'card-lg': '1.25rem',
+        'button': '0.75rem',
       },
       colors: {
         brand: {
@@ -34,6 +44,9 @@ export default {
         'brand-glow': '0 0 12px var(--brand-glow)',
         'brand-glow-soft': '0 0 20px var(--brand-glow-soft)',
         'ring-brand': '0 0 0 4px var(--brand-glow-soft)',
+        'card': '0 1px 3px rgba(0,0,0,0.06)',
+        'card-hover': '0 4px 12px rgba(0,0,0,0.08)',
+        'card-dark': '0 2px 8px rgba(0,0,0,0.2)',
       },
       keyframes: {
         'fade-in': {
@@ -50,7 +63,7 @@ export default {
         },
       },
       animation: {
-        'in': 'fade-in 0.5s ease-out, slide-in-from-bottom-4 0.5s ease-out',
+        'in': 'fade-in 0.5s ease-out, slide-in-from-bottom 0.5s ease-out',
         'fade-in': 'fade-in 0.5s ease-out',
         'slide-in-from-bottom-4': 'slide-in-from-bottom 0.5s ease-out',
         'slide-in-from-right-4': 'slide-in-from-right 0.5s ease-out',

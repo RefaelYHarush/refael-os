@@ -53,12 +53,12 @@ export function SaasView() {
 
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-500">
-      <h2 className="text-2xl font-bold">SaaS Builder</h2>
-      <p className="text-sm text-slate-500 dark:text-on-brand-muted">גרור כרטיסים בין עמודות כדי לעדכן סטטוס</p>
+      <h2 className="text-2xl font-bold text-brand-black dark:text-on-brand">SaaS Builder</h2>
+      <p className="text-sm text-brand-black/55 dark:text-on-brand-muted">גרור כרטיסים בין עמודות כדי לעדכן סטטוס</p>
       {dropError && (
-        <div className="flex items-center justify-between gap-3 px-4 py-3 rounded-xl bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 text-amber-800 dark:text-amber-200 text-sm" role="alert">
+        <div className="flex items-center justify-between gap-3 px-4 py-3 rounded-card bg-brand-accent-secondary/10 border border-brand-accent-secondary/30 text-brand-accent-secondary text-sm" role="alert">
           <span>{dropError}</span>
-          <button type="button" onClick={() => setDropError(null)} className="shrink-0 px-2 py-1 rounded hover:bg-amber-200 dark:hover:bg-amber-800 font-medium" aria-label="סגור">✕</button>
+          <button type="button" onClick={() => setDropError(null)} className="shrink-0 px-2 py-1 rounded-button hover:bg-brand-accent-secondary/20 font-medium" aria-label="סגור">✕</button>
         </div>
       )}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -71,8 +71,8 @@ export function SaasView() {
             onDrop={(e) => handleDrop(e, col)}
           >
             <div className="flex items-center justify-between px-2">
-              <h3 className="font-bold text-slate-500 text-sm uppercase tracking-wider">{col.label}</h3>
-              <span className="bg-slate-100 dark:bg-slate-800 text-xs px-2 py-1 rounded-full text-slate-500">
+              <h3 className="font-bold text-brand-black/55 dark:text-on-brand-muted text-sm uppercase tracking-wider">{col.label}</h3>
+              <span className="bg-brand-black/10 dark:bg-brand/15 text-xs px-2 py-1 rounded-button font-semibold text-brand-black/65 dark:text-on-brand-muted">
                 {getProjectsForColumn(col).length}
               </span>
             </div>
@@ -91,11 +91,11 @@ export function SaasView() {
                   aria-label={`ערוך פרויקט ${project.name}. גרור לעדכן סטטוס`}
                 >
                   <div className="flex justify-between items-start mb-2">
-                    <h4 className="font-bold">{project.name}</h4>
-                    <MoreHorizontal size={16} className="text-slate-400 shrink-0" aria-hidden />
+                    <h4 className="font-bold text-brand-black dark:text-on-brand">{project.name}</h4>
+                    <MoreHorizontal size={16} className="text-brand-black/45 dark:text-on-brand-muted shrink-0" aria-hidden />
                   </div>
                   <div className="space-y-3">
-                    <div className="flex justify-between text-xs text-slate-500">
+                    <div className="flex justify-between text-xs text-brand-black/55 dark:text-on-brand-muted">
                       <span>התקדמות</span>
                       <span>{project.tasks ? Math.round((project.completed / project.tasks) * 100) : 0}%</span>
                     </div>
@@ -104,11 +104,11 @@ export function SaasView() {
                       colorClass="bg-brand-dark dark:bg-brand"
                       heightClass="h-1.5"
                     />
-                    <div className="flex items-center justify-between pt-2 border-t border-slate-50 dark:border-slate-800">
-                      <div className="flex items-center gap-1 text-xs font-medium text-brand-dark">
+                    <div className="flex items-center justify-between pt-2 border-t border-brand-black/8 dark:border-brand/15">
+                      <div className="flex items-center gap-1 text-xs font-medium text-brand-dark dark:text-brand">
                         <DollarSign size={12} /> {project.mrr} MRR
                       </div>
-                      <div className="flex items-center gap-1 text-xs text-slate-400">
+                      <div className="flex items-center gap-1 text-xs text-brand-black/45 dark:text-on-brand-muted">
                         <ListChecks size={12} /> {project.completed}/{project.tasks}
                       </div>
                     </div>
@@ -119,7 +119,7 @@ export function SaasView() {
               <button
                 type="button"
                 onClick={() => { setEditingProject(null); setShowAddProject(true); }}
-                className="w-full py-3 border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-xl text-slate-400 text-sm hover:border-brand hover:text-brand transition-colors flex items-center justify-center gap-2"
+                className="w-full py-3 border-2 border-dashed border-brand-black/15 dark:border-brand/25 rounded-card text-brand-black/45 dark:text-on-brand-muted text-sm hover:border-brand hover:text-brand-dark dark:hover:text-brand transition-colors flex items-center justify-center gap-2"
               >
                 <Plus size={16} /> פרויקט חדש
               </button>

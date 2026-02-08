@@ -85,28 +85,29 @@ export function DashboardView({ onNavigate }) {
   const xpToNext = XP_PER_LEVEL - (userXP % XP_PER_LEVEL);
 
   return (
-    <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
       <h2 className="sr-only">דשבורד – סיכום יומי</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="p-5 flex flex-col justify-between h-32 bg-brand-dark text-on-brand border-brand-dark shadow-xl shadow-brand-dark/20">
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <Card className="p-5 flex flex-col justify-between min-h-[140px] bg-brand-dark text-[var(--text-on-dark)] border-brand-dark">
           <div className="flex justify-between items-start">
-            <div className="p-2 bg-brand-black/30 rounded-lg backdrop-blur-sm border border-brand/20">
+            <div className="p-2.5 rounded-card bg-brand-black/20 border border-brand/20">
               <Trophy size={20} className="text-brand" aria-hidden />
             </div>
-            <span className="text-xs font-bold bg-brand/20 text-brand border border-brand/40 px-2 py-1 rounded">LVL {userLevel}</span>
+            <span className="text-[10px] font-bold bg-brand/20 text-brand border border-brand/30 px-2 py-1 rounded-button">LVL {userLevel}</span>
           </div>
           <div>
-            <div className="text-2xl font-bold mb-1 text-on-brand">{userXP.toLocaleString()} XP</div>
-            <div className="w-full bg-brand-black/30 h-1.5 rounded-full overflow-hidden">
-              <div className="bg-brand h-full shadow-brand-glow rounded-full" style={{ width: `${levelProgress}%` }} />
+            <div className="text-2xl font-bold mb-1.5 text-[var(--text-on-dark)]">{userXP.toLocaleString()} XP</div>
+            <div className="w-full bg-brand-black/25 h-2 rounded-full overflow-hidden">
+              <div className="bg-brand h-full rounded-full transition-[width]" style={{ width: `${levelProgress}%` }} />
             </div>
-            <div className="text-[10px] mt-1 text-on-brand-muted">עוד {xpToNext} XP לרמה {userLevel + 1}</div>
+            <div className="text-[10px] mt-1.5 text-[var(--text-on-dark-muted)]">עוד {xpToNext} XP לרמה {userLevel + 1}</div>
           </div>
         </Card>
 
-        <Card className="p-5 flex flex-col justify-between h-32 hover:border-brand/50 transition-colors">
+        <Card className="p-5 flex flex-col justify-between min-h-[140px] hover:border-brand/30 transition-colors">
           <div className="flex justify-between items-start">
-            <div className="p-2 bg-brand/10 dark:bg-brand/20 rounded-lg">
+            <div className="p-2.5 rounded-card bg-brand/15 dark:bg-brand/20">
               <BarChart3 size={20} className="text-brand-dark dark:text-brand" />
             </div>
             <Badge color="emerald">7 ימים</Badge>
@@ -115,13 +116,13 @@ export function DashboardView({ onNavigate }) {
             <div className="text-2xl font-bold text-brand-black dark:text-on-brand">
               {weekStats.pnlWeek >= 0 ? '+' : ''}${weekStats.pnlWeek.toLocaleString()}
             </div>
-            <div className="text-xs text-brand-black/60 dark:text-on-brand-muted">PnL השבוע · {weekStats.tasksDone}/{weekStats.total} משימות הושלמו</div>
+            <div className="text-xs text-brand-black/55 dark:text-on-brand-muted mt-0.5">PnL השבוע · {weekStats.tasksDone}/{weekStats.total} משימות הושלמו</div>
           </div>
         </Card>
 
-        <Card className="p-5 flex flex-col justify-between h-32 hover:border-brand/50 transition-colors">
+        <Card className="p-5 flex flex-col justify-between min-h-[140px] hover:border-brand/30 transition-colors">
           <div className="flex justify-between items-start">
-            <div className="p-2 bg-brand/10 dark:bg-brand/20 rounded-lg">
+            <div className="p-2.5 rounded-card bg-brand/15 dark:bg-brand/20">
               <DollarSign size={20} className="text-brand-dark dark:text-brand" />
             </div>
           </div>
@@ -129,90 +130,90 @@ export function DashboardView({ onNavigate }) {
             <div className="text-2xl font-bold text-brand-black dark:text-on-brand">
               ${trades.reduce((s, t) => s + t.pnl, 0).toLocaleString()}
             </div>
-            <div className="text-xs text-brand-black/60 dark:text-on-brand-muted">סה״כ PnL (מסחר)</div>
+            <div className="text-xs text-brand-black/55 dark:text-on-brand-muted mt-0.5">סה״כ PnL (מסחר)</div>
           </div>
         </Card>
 
-        <Card className="p-5 flex flex-col justify-between h-32 hover:border-brand/50 transition-colors">
+        <Card className="p-5 flex flex-col justify-between min-h-[140px] hover:border-brand/30 transition-colors">
           <div className="flex justify-between items-start">
-            <div className="p-2 bg-brand/10 dark:bg-brand/20 rounded-lg">
+            <div className="p-2.5 rounded-card bg-brand/15 dark:bg-brand/20">
               <Rocket size={20} className="text-brand-dark dark:text-brand" />
             </div>
             <Badge color="blue">{saasStats.activeCount} פעילים</Badge>
           </div>
           <div>
             <div className="text-2xl font-bold text-brand-black dark:text-on-brand">${saasStats.mrr.toLocaleString()} <span className="text-sm font-normal text-brand-black/50 dark:text-on-brand-muted">/MRR</span></div>
-            <div className="text-xs text-brand-black/60 dark:text-on-brand-muted">הכנסות SaaS</div>
+            <div className="text-xs text-brand-black/55 dark:text-on-brand-muted mt-0.5">הכנסות SaaS</div>
           </div>
         </Card>
 
-        <Card className="p-5 flex flex-col justify-between h-32 hover:border-brand/50 transition-colors">
+        <Card className="p-5 flex flex-col justify-between min-h-[140px] hover:border-brand/30 transition-colors sm:col-span-2 lg:col-span-1">
           <div className="flex justify-between items-start">
-            <div className="p-2 bg-brand/10 dark:bg-brand/20 rounded-lg">
+            <div className="p-2.5 rounded-card bg-brand/15 dark:bg-brand/20">
               <BookOpen size={20} className="text-brand-dark dark:text-brand" />
             </div>
             <Badge color="purple">דף ל׳</Badge>
           </div>
           <div>
             <div className="text-2xl font-bold text-brand-black dark:text-on-brand">{dafYomiTask ? (dafYomiTask.label.match(/\(([^)]+)\)/)?.[1] || dafYomiTask.label) : 'דף יומי'}</div>
-            <div className="text-xs text-brand-black/60 dark:text-on-brand-muted">התקדמות יומית</div>
+            <div className="text-xs text-brand-black/55 dark:text-on-brand-muted mt-0.5">התקדמות יומית</div>
           </div>
         </Card>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 space-y-6">
           <Card className="p-6">
             <div className="flex items-center justify-between mb-6">
               <h3 className="font-bold text-lg flex items-center gap-2 text-brand-black dark:text-on-brand">
                 <TrendingUp size={20} className="text-brand-dark dark:text-brand" /> ביצועי מסחר (7 ימים)
               </h3>
-              <button type="button" className="text-sm text-brand-black/60 dark:text-on-brand-muted hover:text-brand-dark dark:hover:text-brand transition-colors hover:underline" onClick={() => onNavigate('trading')}>לכל הנתונים</button>
+              <button type="button" className="text-sm text-brand-black/55 dark:text-on-brand-muted hover:text-brand-dark dark:hover:text-brand font-semibold transition-colors" onClick={() => onNavigate('trading')}>לכל הנתונים</button>
             </div>
             {last7DaysChartData.length === 0 ? (
-              <div className="h-48 flex flex-col items-center justify-center gap-2 text-brand-black/60 dark:text-on-brand-muted text-sm">
+              <div className="h-48 flex flex-col items-center justify-center gap-3 text-brand-black/55 dark:text-on-brand-muted text-sm">
                 <p>אין נתונים ל־7 הימים האחרונים</p>
-                <button type="button" onClick={() => onNavigate('trading')} className="text-brand-dark dark:text-brand font-medium hover:underline">הוסף עסקה ביומן המסחר</button>
+                <button type="button" onClick={() => onNavigate('trading')} className="text-brand-dark dark:text-brand font-semibold hover:underline">הוסף עסקה ביומן המסחר</button>
               </div>
             ) : (
               <PnlChart data={last7DaysChartData} />
             )}
           </Card>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Card
-              className="p-5 hover:border-brand transition-colors cursor-pointer group bg-gradient-to-br from-brand-white to-brand-page dark:from-brand-dark dark:to-brand-surface"
+              className="p-5 hover:border-brand/40 transition-colors cursor-pointer group bg-brand-black/[0.02] dark:bg-brand/5"
               onClick={() => setShowTimer(true)}
               role="button"
               tabIndex={0}
               onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setShowTimer(true); } }}
               aria-label="התחל טיימר Deep Work – סשן עבודה 25 דקות"
             >
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 rounded-full bg-brand-dark flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg shadow-brand-dark/20" aria-hidden>
-                  <Play size={20} className="text-brand" fill="currentColor" />
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-card bg-brand-dark flex items-center justify-center group-hover:scale-105 transition-transform shadow-card" aria-hidden>
+                  <Play size={22} className="text-brand" fill="currentColor" />
                 </div>
                 <div>
                   <div className="font-bold text-brand-black dark:text-on-brand">Deep Work Timer</div>
-                  <div className="text-xs text-brand-black/60 dark:text-on-brand-muted">התחל סשן עבודה (25 דקות)</div>
+                  <div className="text-xs text-brand-black/55 dark:text-on-brand-muted mt-0.5">התחל סשן עבודה (25 דקות)</div>
                 </div>
               </div>
             </Card>
             <Card
-              className="p-5 hover:border-brand transition-colors cursor-pointer group"
+              className="p-5 hover:border-brand/40 transition-colors cursor-pointer group"
               onClick={() => setShowAddTrade(true)}
               role="button"
               tabIndex={0}
               onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setShowAddTrade(true); } }}
               aria-label="הוסף עסקה – תיעוד מהיר ליומן"
             >
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 rounded-full bg-brand-dark/10 dark:bg-brand/10 flex items-center justify-center group-hover:bg-brand/20 dark:group-hover:bg-brand/20 transition-colors" aria-hidden>
-                  <Plus size={20} className="text-brand-dark dark:text-on-brand-muted group-hover:text-brand-dark dark:group-hover:text-brand" />
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-card bg-brand/15 dark:bg-brand/20 flex items-center justify-center group-hover:bg-brand/25 dark:group-hover:bg-brand/25 transition-colors" aria-hidden>
+                  <Plus size={22} className="text-brand-dark dark:text-on-brand-muted group-hover:text-brand-dark dark:group-hover:text-brand" />
                 </div>
                 <div>
                   <div className="font-bold text-brand-black dark:text-on-brand">הוסף עסקה</div>
-                  <div className="text-xs text-brand-black/60 dark:text-on-brand-muted">תיעוד מהיר ליומן</div>
+                  <div className="text-xs text-brand-black/55 dark:text-on-brand-muted mt-0.5">תיעוד מהיר ליומן</div>
                 </div>
               </div>
             </Card>
@@ -226,11 +227,11 @@ export function DashboardView({ onNavigate }) {
                 <Zap size={18} className="text-brand" fill="currentColor" /> צ'ק ליסט יומי
               </h3>
               <div className="flex items-center gap-2">
-                <button type="button" onClick={() => setShowAddTask(true)} className="text-xs text-brand hover:underline font-medium py-2 px-3 -my-1 -mx-1 rounded-lg touch-target-min inline-flex items-center">+ משימה</button>
+                <button type="button" onClick={() => setShowAddTask(true)} className="text-xs text-brand-dark dark:text-brand font-semibold hover:underline py-2 px-3 -my-1 -mx-1 rounded-button touch-target-min inline-flex items-center">+ משימה</button>
                 <span className="text-xs text-brand-black/50 dark:text-on-brand-muted">{new Date().toLocaleDateString('he-IL')}</span>
               </div>
             </div>
-            <div className="space-y-3" role="list">
+            <div className="space-y-2.5" role="list">
               {sortedDailyTasks.map((task) => (
                 <div
                   key={task.id}
@@ -238,32 +239,32 @@ export function DashboardView({ onNavigate }) {
                   tabIndex={0}
                   onClick={() => toggleTask(task.id)}
                   onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleTask(task.id); } }}
-                  className={`flex items-center justify-between p-3 min-h-[44px] rounded-xl border transition-all cursor-pointer touch-manipulation ${
+                  className={`flex items-center justify-between p-3 min-h-[44px] rounded-button border transition-all cursor-pointer touch-manipulation ${
                     task.completed
-                      ? 'bg-slate-50 border-slate-200 dark:bg-brand-dark/40 dark:border-brand-dark/50'
-                      : 'bg-white border-slate-100 hover:border-brand dark:bg-brand-surface dark:border-brand-dark/50 dark:hover:border-brand/50'
+                      ? 'bg-brand-black/5 border-brand-black/8 dark:bg-brand-dark/30 dark:border-brand/15'
+                      : 'bg-brand-white dark:bg-brand-surface border-brand-black/8 dark:border-brand/15 hover:border-brand/30 dark:hover:border-brand/25'
                   }`}
                   aria-pressed={task.completed}
                   aria-label={`${task.label}, ${task.xp} XP, ${task.completed ? 'הושלמה' : 'לא הושלמה'}. לחץ לסימון`}
                 >
                   <div className="flex items-center gap-3">
-                    <div className={`w-5 h-5 rounded-md border flex items-center justify-center transition-colors ${
+                    <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center transition-colors shrink-0 ${
                       task.completed ? 'bg-brand-dark border-brand-dark' : 'border-brand-black/30 dark:border-on-brand-muted'
                     }`} aria-hidden>
-                      {task.completed && <CheckCircle2 size={14} className="text-brand" />}
+                      {task.completed && <CheckCircle2 size={12} className="text-brand" />}
                     </div>
-                    <span className={`text-sm ${task.completed ? 'text-brand-black/50 line-through dark:text-on-brand-muted' : 'text-brand-black dark:text-on-brand'}`}>
+                    <span className={`text-sm font-medium ${task.completed ? 'text-brand-black/50 line-through dark:text-on-brand-muted' : 'text-brand-black dark:text-on-brand'}`}>
                       {task.label}
                     </span>
                   </div>
-                  <span className="text-[10px] font-bold text-brand-black/60 dark:text-on-brand-muted bg-brand-dark/10 dark:bg-brand-dark/60 px-1.5 py-0.5 rounded">
+                  <span className="text-[10px] font-bold text-brand-black/60 dark:text-on-brand-muted bg-brand-dark/10 dark:bg-brand/20 px-2 py-0.5 rounded-button">
                     +{task.xp} XP
                   </span>
                 </div>
               ))}
             </div>
-            <div className="mt-6 pt-4 border-t border-slate-100 dark:border-brand-dark/50">
-              <div className="bg-brand/10 dark:bg-brand/10 p-4 rounded-xl border border-brand/20 dark:border-brand/20">
+            <div className="mt-6 pt-4 border-t border-brand-black/8 dark:border-brand/15">
+              <div className="bg-brand/10 dark:bg-brand/10 p-4 rounded-card border border-brand/20">
                 <div className="flex items-start gap-3">
                   <BrainCircuit className="text-brand-dark dark:text-brand w-5 h-5 mt-0.5 shrink-0" />
                   <div>

@@ -46,8 +46,8 @@ export function LearningView() {
     <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-500">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-on-brand">למידה</h2>
-          <p className="text-sm text-slate-500 dark:text-on-brand-muted">קורסים, ספרים ומיומנויות</p>
+          <h2 className="text-2xl font-bold text-brand-black dark:text-on-brand">למידה</h2>
+          <p className="text-sm text-brand-black/500 dark:text-on-brand-muted">קורסים, ספרים ומיומנויות</p>
         </div>
         <button
           type="button"
@@ -62,23 +62,23 @@ export function LearningView() {
         <Card className="p-5 border-t-4 border-t-brand">
           <form onSubmit={handleSubmit} className="space-y-4">
             <label className="block">
-              <span className="text-xs font-medium text-slate-500 dark:text-on-brand-muted block mb-1">כותרת</span>
+              <span className="text-xs font-medium text-brand-black/500 dark:text-on-brand-muted block mb-1">כותרת</span>
               <input
                 type="text"
                 value={form.title}
                 onChange={(e) => setForm((f) => ({ ...f, title: e.target.value }))}
                 placeholder="שם הקורס / הספר / המיומנות"
-                className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-brand-dark/50 bg-white dark:bg-brand-surface text-slate-900 dark:text-on-brand"
+                className="w-full px-3 py-2 rounded-lg border border-brand-black/10 dark:border-brand/20 bg-brand-white dark:bg-brand-surface text-brand-black dark:text-on-brand"
                 required
               />
             </label>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <label className="block">
-                <span className="text-xs font-medium text-slate-500 dark:text-on-brand-muted block mb-1">סוג</span>
+                <span className="text-xs font-medium text-brand-black/500 dark:text-on-brand-muted block mb-1">סוג</span>
                 <select
                   value={form.type}
                   onChange={(e) => setForm((f) => ({ ...f, type: e.target.value }))}
-                  className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-brand-dark/50 bg-white dark:bg-brand-surface text-slate-900 dark:text-on-brand"
+                  className="w-full px-3 py-2 rounded-lg border border-brand-black/10 dark:border-brand/20 bg-brand-white dark:bg-brand-surface text-brand-black dark:text-on-brand"
                 >
                   <option value="course">קורס</option>
                   <option value="book">ספר</option>
@@ -86,11 +86,11 @@ export function LearningView() {
                 </select>
               </label>
               <label className="block">
-                <span className="text-xs font-medium text-slate-500 dark:text-on-brand-muted block mb-1">סטטוס</span>
+                <span className="text-xs font-medium text-brand-black/500 dark:text-on-brand-muted block mb-1">סטטוס</span>
                 <select
                   value={form.status}
                   onChange={(e) => setForm((f) => ({ ...f, status: e.target.value }))}
-                  className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-brand-dark/50 bg-white dark:bg-brand-surface text-slate-900 dark:text-on-brand"
+                  className="w-full px-3 py-2 rounded-lg border border-brand-black/10 dark:border-brand/20 bg-brand-white dark:bg-brand-surface text-brand-black dark:text-on-brand"
                 >
                   <option value="planned">מתוכנן</option>
                   <option value="in_progress">בתהליך</option>
@@ -99,30 +99,30 @@ export function LearningView() {
               </label>
             </div>
             <label className="block">
-              <span className="text-xs font-medium text-slate-500 dark:text-on-brand-muted block mb-1">התקדמות %</span>
+              <span className="text-xs font-medium text-brand-black/500 dark:text-on-brand-muted block mb-1">התקדמות %</span>
               <input
                 type="number"
                 min="0"
                 max="100"
                 value={form.progress}
                 onChange={(e) => setForm((f) => ({ ...f, progress: e.target.value }))}
-                className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-brand-dark/50 bg-white dark:bg-brand-surface text-slate-900 dark:text-on-brand"
+                className="w-full px-3 py-2 rounded-lg border border-brand-black/10 dark:border-brand/20 bg-brand-white dark:bg-brand-surface text-brand-black dark:text-on-brand"
               />
             </label>
             <label className="block">
-              <span className="text-xs font-medium text-slate-500 dark:text-on-brand-muted block mb-1">הערה (אופציונלי)</span>
+              <span className="text-xs font-medium text-brand-black/500 dark:text-on-brand-muted block mb-1">הערה (אופציונלי)</span>
               <input
                 type="text"
                 value={form.note}
                 onChange={(e) => setForm((f) => ({ ...f, note: e.target.value }))}
-                className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-brand-dark/50 bg-white dark:bg-brand-surface text-slate-900 dark:text-on-brand"
+                className="w-full px-3 py-2 rounded-lg border border-brand-black/10 dark:border-brand/20 bg-brand-white dark:bg-brand-surface text-brand-black dark:text-on-brand"
               />
             </label>
             <div className="flex gap-2">
               <button type="submit" className="px-4 py-2 rounded-lg bg-brand-dark text-on-brand font-medium text-sm">
                 {editing ? 'עדכון' : 'הוספה'}
               </button>
-              <button type="button" onClick={() => { setShowForm(false); setEditing(null); }} className="px-4 py-2 rounded-lg border border-slate-200 dark:border-brand-dark/50 text-slate-600 dark:text-on-brand-muted text-sm">
+              <button type="button" onClick={() => { setShowForm(false); setEditing(null); }} className="px-4 py-2 rounded-lg border border-brand-black/10 dark:border-brand/20 text-brand-black/600 dark:text-on-brand-muted text-sm">
                 ביטול
               </button>
             </div>
@@ -131,7 +131,7 @@ export function LearningView() {
       )}
 
       {learningItems.length === 0 ? (
-        <Card className="p-8 text-center text-slate-500 dark:text-on-brand-muted">
+        <Card className="p-8 text-center text-brand-black/500 dark:text-on-brand-muted">
           <BookOpen size={40} className="mx-auto mb-3 opacity-50" />
           <p>אין עדיין פריטי למידה. הוסף קורס, ספר או מיומנות.</p>
         </Card>
@@ -148,8 +148,8 @@ export function LearningView() {
                       <Icon size={18} className="text-brand-dark dark:text-brand" />
                     </div>
                     <div className="min-w-0">
-                      <h3 className="font-bold text-slate-900 dark:text-on-brand truncate">{item.title}</h3>
-                      <p className="text-xs text-slate-500 dark:text-on-brand-muted">
+                      <h3 className="font-bold text-brand-black dark:text-on-brand truncate">{item.title}</h3>
+                      <p className="text-xs text-brand-black/500 dark:text-on-brand-muted">
                         {TYPE_LABELS[item.type]} · {STATUS_LABELS[item.status] || item.status}
                       </p>
                     </div>
@@ -158,24 +158,24 @@ export function LearningView() {
                     <button
                       type="button"
                       onClick={() => setProgress(item, -10)}
-                      className="w-8 h-8 rounded-lg border border-slate-200 dark:border-brand-dark/50 text-slate-500 hover:bg-slate-100 dark:hover:bg-brand-dark/30 text-sm font-bold"
+                      className="w-8 h-8 rounded-lg border border-brand-black/10 dark:border-brand/20 text-brand-black/500 hover:bg-brand-black/5 dark:hover:bg-brand/10 text-sm font-bold"
                       aria-label="הפחת 10%"
                     >
                       −
                     </button>
-                    <span className="w-10 text-center text-sm font-bold text-slate-700 dark:text-on-brand">{pct}%</span>
+                    <span className="w-10 text-center text-sm font-bold text-brand-black dark:text-on-brand">{pct}%</span>
                     <button
                       type="button"
                       onClick={() => setProgress(item, 10)}
-                      className="w-8 h-8 rounded-lg border border-slate-200 dark:border-brand-dark/50 text-slate-500 hover:bg-slate-100 dark:hover:bg-brand-dark/30 text-sm font-bold"
+                      className="w-8 h-8 rounded-lg border border-brand-black/10 dark:border-brand/20 text-brand-black/500 hover:bg-brand-black/5 dark:hover:bg-brand/10 text-sm font-bold"
                       aria-label="הוסף 10%"
                     >
                       +
                     </button>
-                    <button type="button" onClick={() => openEdit(item)} className="p-2 rounded-lg text-slate-400 hover:text-brand-dark dark:hover:text-brand" aria-label="ערוך">
+                    <button type="button" onClick={() => openEdit(item)} className="p-2 rounded-lg text-brand-black/400 hover:text-brand-dark dark:hover:text-brand" aria-label="ערוך">
                       <Edit2 size={16} />
                     </button>
-                    <button type="button" onClick={() => deleteLearningItem(item.id)} className="p-2 rounded-lg text-slate-400 hover:text-red-500" aria-label="מחק">
+                    <button type="button" onClick={() => deleteLearningItem(item.id)} className="p-2 rounded-lg text-brand-black/400 hover:text-brand-accent-secondary" aria-label="מחק">
                       <Trash2 size={16} />
                     </button>
                   </div>

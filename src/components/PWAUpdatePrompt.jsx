@@ -15,7 +15,7 @@ export function PWAUpdatePrompt() {
         });
         setReload(() => updateSW);
       })
-      .catch(() => {});
+      .catch((err) => { console.warn('PWA registration failed', err); });
     return () => { mounted = false; };
   }, []);
 
@@ -35,14 +35,14 @@ export function PWAUpdatePrompt() {
         <button
           type="button"
           onClick={handleReload}
-          className="px-4 py-2 rounded-xl bg-brand text-brand-dark font-bold text-sm hover:opacity-90 transition-opacity min-h-[44px] touch-manipulation"
+          className="px-4 py-2 rounded-button bg-brand text-brand-dark font-bold text-sm hover:opacity-90 transition-opacity min-h-[44px] touch-manipulation"
         >
           רענן
         </button>
         <button
           type="button"
           onClick={() => setNeedRefresh(false)}
-          className="px-3 py-2 rounded-xl border border-brand/50 text-on-brand-muted text-sm hover:bg-brand/10 min-h-[44px] touch-manipulation"
+          className="px-3 py-2 rounded-button border border-brand/50 text-on-brand-muted text-sm hover:bg-brand/10 min-h-[44px] touch-manipulation"
         >
           אחר כך
         </button>

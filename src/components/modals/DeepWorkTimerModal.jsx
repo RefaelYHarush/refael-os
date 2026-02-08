@@ -28,11 +28,11 @@ export function DeepWorkTimerModal({ onClose }) {
   const display = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm" onClick={onClose} role="dialog" aria-modal="true" aria-labelledby="timer-title">
-      <Card className="w-full max-w-sm p-6 shadow-xl text-center" onClick={(e) => e.stopPropagation()} dir="rtl">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-brand-black/40 backdrop-blur-sm" onClick={onClose} role="dialog" aria-modal="true" aria-labelledby="timer-title">
+      <Card className="w-full max-w-sm p-6 shadow-card-dark text-center" onClick={(e) => e.stopPropagation()} dir="rtl">
         <div className="flex justify-between items-center mb-6">
-          <h3 id="timer-title" className="text-lg font-bold">Deep Work Timer</h3>
-          <button type="button" onClick={onClose} className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500" aria-label="סגור">
+          <h3 id="timer-title" className="text-lg font-bold text-brand-black dark:text-on-brand">Deep Work Timer</h3>
+          <button type="button" onClick={onClose} className="p-2 rounded-button hover:bg-brand-black/5 dark:hover:bg-brand/10 text-brand-black/60 dark:text-on-brand-muted transition-colors" aria-label="סגור">
             <X size={20} aria-hidden />
           </button>
         </div>
@@ -43,7 +43,7 @@ export function DeepWorkTimerModal({ onClose }) {
           <button
             type="button"
             onClick={() => setRunning((r) => !r)}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-brand-dark text-white font-bold shadow-lg hover:opacity-90"
+            className="flex items-center gap-2 px-5 py-2.5 rounded-button bg-brand-dark text-[var(--text-on-dark)] font-bold shadow-card hover:opacity-95 transition-opacity"
             aria-label={running ? 'השהה' : 'התחל'}
           >
             {running ? <Pause size={20} /> : <Play size={20} />}
@@ -52,13 +52,13 @@ export function DeepWorkTimerModal({ onClose }) {
           <button
             type="button"
             onClick={() => { setRunning(false); setSecondsLeft(DEFAULT_MINUTES * 60); }}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 font-medium hover:bg-slate-50 dark:hover:bg-slate-800"
+            className="flex items-center gap-2 px-5 py-2.5 rounded-button border border-brand-black/15 dark:border-brand/25 text-brand-black/70 dark:text-on-brand-muted font-semibold hover:bg-brand-black/5 dark:hover:bg-brand/10 transition-colors"
             aria-label="איפוס"
           >
             <RotateCcw size={18} /> איפוס
           </button>
         </div>
-        <p className="text-xs text-slate-500 dark:text-slate-400 mt-4">סשן עבודה מרוכזת ({DEFAULT_MINUTES} דקות)</p>
+        <p className="text-xs text-brand-black/55 dark:text-on-brand-muted mt-4">סשן עבודה מרוכזת ({DEFAULT_MINUTES} דקות)</p>
       </Card>
     </div>
   );

@@ -6,6 +6,12 @@
 @layer base {
   html {
     font-family: 'Heebo', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  body {
+    @apply text-brand-black dark:text-on-brand;
+    letter-spacing: 0.01em;
   }
 }
 
@@ -99,6 +105,14 @@
     min-height: 44px;
     min-width: 44px;
   }
+}
+
+/* טופס – שדות ואכפתיות עקביות */
+.input-brand {
+  @apply w-full px-4 py-3 rounded-button border border-brand-black/15 dark:border-brand/25 bg-brand-white dark:bg-brand-surface text-brand-black dark:text-on-brand placeholder-brand-black/40 dark:placeholder-brand/50 focus:ring-2 focus:ring-brand focus:border-transparent transition-colors;
+}
+.label-brand {
+  @apply block text-sm font-semibold text-brand-black dark:text-on-brand mb-1.5;
 }
 
 /* נגישות: טבעת פוקוס גלויה וניגודית (WCAG 2.4.7) */

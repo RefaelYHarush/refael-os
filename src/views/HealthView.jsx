@@ -33,8 +33,8 @@ export function HealthView() {
     <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-500">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-on-brand">בריאות</h2>
-          <p className="text-sm text-slate-500 dark:text-on-brand-muted">מעקב אימונים, שינה ומים</p>
+          <h2 className="text-2xl font-bold text-brand-black dark:text-on-brand">בריאות</h2>
+          <p className="text-sm text-brand-black/500 dark:text-on-brand-muted">מעקב אימונים, שינה ומים</p>
         </div>
         <button
           type="button"
@@ -50,20 +50,20 @@ export function HealthView() {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <label className="block">
-                <span className="text-xs font-medium text-slate-500 dark:text-on-brand-muted block mb-1">תאריך</span>
+                <span className="text-xs font-medium text-brand-black/500 dark:text-on-brand-muted block mb-1">תאריך</span>
                 <input
                   type="date"
                   value={form.date}
                   onChange={(e) => setForm((f) => ({ ...f, date: e.target.value }))}
-                  className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-brand-dark/50 bg-white dark:bg-brand-surface text-slate-900 dark:text-on-brand"
+                  className="w-full px-3 py-2 rounded-lg border border-brand-black/10 dark:border-brand/20 bg-brand-white dark:bg-brand-surface text-brand-black dark:text-on-brand"
                 />
               </label>
               <label className="block">
-                <span className="text-xs font-medium text-slate-500 dark:text-on-brand-muted block mb-1">סוג</span>
+                <span className="text-xs font-medium text-brand-black/500 dark:text-on-brand-muted block mb-1">סוג</span>
                 <select
                   value={form.type}
                   onChange={(e) => setForm((f) => ({ ...f, type: e.target.value }))}
-                  className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-brand-dark/50 bg-white dark:bg-brand-surface text-slate-900 dark:text-on-brand"
+                  className="w-full px-3 py-2 rounded-lg border border-brand-black/10 dark:border-brand/20 bg-brand-white dark:bg-brand-surface text-brand-black dark:text-on-brand"
                 >
                   <option value="workout">אימון</option>
                   <option value="sleep">שינה</option>
@@ -73,7 +73,7 @@ export function HealthView() {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <label className="block">
-                <span className="text-xs font-medium text-slate-500 dark:text-on-brand-muted block mb-1">
+                <span className="text-xs font-medium text-brand-black/500 dark:text-on-brand-muted block mb-1">
                   ערך ({TYPE_UNITS[form.type]})
                 </span>
                 <input
@@ -82,17 +82,17 @@ export function HealthView() {
                   step={form.type === 'sleep' ? 0.5 : 1}
                   value={form.value}
                   onChange={(e) => setForm((f) => ({ ...f, value: e.target.value }))}
-                  className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-brand-dark/50 bg-white dark:bg-brand-surface text-slate-900 dark:text-on-brand"
+                  className="w-full px-3 py-2 rounded-lg border border-brand-black/10 dark:border-brand/20 bg-brand-white dark:bg-brand-surface text-brand-black dark:text-on-brand"
                 />
               </label>
               <label className="block sm:col-span-2">
-                <span className="text-xs font-medium text-slate-500 dark:text-on-brand-muted block mb-1">הערה (אופציונלי)</span>
+                <span className="text-xs font-medium text-brand-black/500 dark:text-on-brand-muted block mb-1">הערה (אופציונלי)</span>
                 <input
                   type="text"
                   value={form.note}
                   onChange={(e) => setForm((f) => ({ ...f, note: e.target.value }))}
                   placeholder="למשל: אימון כוח, ריצה"
-                  className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-brand-dark/50 bg-white dark:bg-brand-surface text-slate-900 dark:text-on-brand"
+                  className="w-full px-3 py-2 rounded-lg border border-brand-black/10 dark:border-brand/20 bg-brand-white dark:bg-brand-surface text-brand-black dark:text-on-brand"
                 />
               </label>
             </div>
@@ -100,7 +100,7 @@ export function HealthView() {
               <button type="submit" className="px-4 py-2 rounded-lg bg-brand-dark text-on-brand font-medium text-sm">
                 שמירה
               </button>
-              <button type="button" onClick={() => setShowForm(false)} className="px-4 py-2 rounded-lg border border-slate-200 dark:border-brand-dark/50 text-slate-600 dark:text-on-brand-muted text-sm">
+              <button type="button" onClick={() => setShowForm(false)} className="px-4 py-2 rounded-lg border border-brand-black/10 dark:border-brand/20 text-brand-black/600 dark:text-on-brand-muted text-sm">
                 ביטול
               </button>
             </div>
@@ -109,7 +109,7 @@ export function HealthView() {
       )}
 
       {byDate.length === 0 ? (
-        <Card className="p-8 text-center text-slate-500 dark:text-on-brand-muted">
+        <Card className="p-8 text-center text-brand-black/500 dark:text-on-brand-muted">
           <Activity size={40} className="mx-auto mb-3 opacity-50" />
           <p>אין עדיין רשומות. הוסף אימון, שעות שינה או כוסות מים.</p>
         </Card>
@@ -117,7 +117,7 @@ export function HealthView() {
         <div className="space-y-6">
           {byDate.map(([date, entries]) => (
             <div key={date}>
-              <h3 className="text-sm font-bold text-slate-500 dark:text-on-brand-muted mb-2">
+              <h3 className="text-sm font-bold text-brand-black/500 dark:text-on-brand-muted mb-2">
                 {new Date(date + 'T12:00:00').toLocaleDateString('he-IL', { weekday: 'long', day: 'numeric', month: 'short', year: 'numeric' })}
               </h3>
               <div className="space-y-2">
@@ -130,18 +130,18 @@ export function HealthView() {
                           <Icon size={18} className="text-brand-dark dark:text-brand" />
                         </div>
                         <div>
-                          <span className="font-medium text-slate-900 dark:text-on-brand">{TYPE_LABELS[entry.type]}</span>
-                          <span className="text-slate-500 dark:text-on-brand-muted mr-2">
+                          <span className="font-medium text-brand-black dark:text-on-brand">{TYPE_LABELS[entry.type]}</span>
+                          <span className="text-brand-black/500 dark:text-on-brand-muted mr-2">
                             {' '}
                             {entry.value} {TYPE_UNITS[entry.type]}
                           </span>
-                          {entry.note && <span className="text-sm text-slate-400"> · {entry.note}</span>}
+                          {entry.note && <span className="text-sm text-brand-black/400"> · {entry.note}</span>}
                         </div>
                       </div>
                       <button
                         type="button"
                         onClick={() => deleteHealthEntry(entry.id)}
-                        className="p-2 rounded-lg text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+                        className="p-2 rounded-lg text-brand-black/400 hover:text-brand-accent-secondary hover:bg-brand-accent-secondary/10 transition-colors"
                         aria-label="מחק"
                       >
                         <Trash2 size={16} />

@@ -55,8 +55,8 @@ export function RelationshipsView() {
     <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-500">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-on-brand">יחסים</h2>
-          <p className="text-sm text-slate-500 dark:text-on-brand-muted">מעקב מגע – עם מי לדבר השבוע</p>
+          <h2 className="text-2xl font-bold text-brand-black dark:text-on-brand">יחסים</h2>
+          <p className="text-sm text-brand-black/500 dark:text-on-brand-muted">מעקב מגע – עם מי לדבר השבוע</p>
         </div>
         <button
           type="button"
@@ -71,40 +71,40 @@ export function RelationshipsView() {
         <Card className="p-5 border-t-4 border-t-brand">
           <form onSubmit={handleSubmit} className="space-y-4">
             <label className="block">
-              <span className="text-xs font-medium text-slate-500 dark:text-on-brand-muted block mb-1">שם</span>
+              <span className="text-xs font-medium text-brand-black/500 dark:text-on-brand-muted block mb-1">שם</span>
               <input
                 type="text"
                 value={form.name}
                 onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
                 placeholder="שם האדם"
-                className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-brand-dark/50 bg-white dark:bg-brand-surface text-slate-900 dark:text-on-brand"
+                className="w-full px-3 py-2 rounded-lg border border-brand-black/10 dark:border-brand-dark/50 bg-white dark:bg-brand-surface text-brand-black dark:text-on-brand"
                 required
               />
             </label>
             <label className="block">
-              <span className="text-xs font-medium text-slate-500 dark:text-on-brand-muted block mb-1">מגע אחרון (תאריך)</span>
+              <span className="text-xs font-medium text-brand-black/500 dark:text-on-brand-muted block mb-1">מגע אחרון (תאריך)</span>
               <input
                 type="date"
                 value={form.lastContact}
                 onChange={(e) => setForm((f) => ({ ...f, lastContact: e.target.value }))}
-                className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-brand-dark/50 bg-white dark:bg-brand-surface text-slate-900 dark:text-on-brand"
+                className="w-full px-3 py-2 rounded-lg border border-brand-black/10 dark:border-brand-dark/50 bg-white dark:bg-brand-surface text-brand-black dark:text-on-brand"
               />
             </label>
             <label className="block">
-              <span className="text-xs font-medium text-slate-500 dark:text-on-brand-muted block mb-1">הערה (אופציונלי)</span>
+              <span className="text-xs font-medium text-brand-black/500 dark:text-on-brand-muted block mb-1">הערה (אופציונלי)</span>
               <input
                 type="text"
                 value={form.note}
                 onChange={(e) => setForm((f) => ({ ...f, note: e.target.value }))}
                 placeholder="למשל: יום הולדת בחודש הבא"
-                className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-brand-dark/50 bg-white dark:bg-brand-surface text-slate-900 dark:text-on-brand"
+                className="w-full px-3 py-2 rounded-lg border border-brand-black/10 dark:border-brand-dark/50 bg-white dark:bg-brand-surface text-brand-black dark:text-on-brand"
               />
             </label>
             <div className="flex gap-2">
               <button type="submit" className="px-4 py-2 rounded-lg bg-brand-dark text-on-brand font-medium text-sm">
                 {editing ? 'עדכון' : 'הוספה'}
               </button>
-              <button type="button" onClick={() => { setShowForm(false); setEditing(null); }} className="px-4 py-2 rounded-lg border border-slate-200 dark:border-brand-dark/50 text-slate-600 dark:text-on-brand-muted text-sm">
+              <button type="button" onClick={() => { setShowForm(false); setEditing(null); }} className="px-4 py-2 rounded-lg border border-brand-black/10 dark:border-brand-dark/50 text-brand-black/600 dark:text-on-brand-muted text-sm">
                 ביטול
               </button>
             </div>
@@ -113,7 +113,7 @@ export function RelationshipsView() {
       )}
 
       {relationshipItems.length === 0 && !showForm ? (
-        <Card className="p-8 text-center text-slate-500 dark:text-on-brand-muted">
+        <Card className="p-8 text-center text-brand-black/500 dark:text-on-brand-muted">
           <Users size={40} className="mx-auto mb-3 opacity-50" />
           <p>אין עדיין אנשי קשר. הוסף אנשים שתרצה לשמור איתם על מגע.</p>
         </Card>
@@ -123,26 +123,26 @@ export function RelationshipsView() {
             <Card key={item.id} className="p-4 border-t-4 border-t-brand-dark dark:border-t-brand">
               <div className="flex items-start justify-between gap-3">
                 <div>
-                  <h3 className="font-bold text-slate-900 dark:text-on-brand">{item.name}</h3>
-                  <p className="text-sm text-slate-500 dark:text-on-brand-muted">
+                  <h3 className="font-bold text-brand-black dark:text-on-brand">{item.name}</h3>
+                  <p className="text-sm text-brand-black/500 dark:text-on-brand-muted">
                     מגע אחרון: {formatDate(item.lastContact)}
                   </p>
-                  {item.note && <p className="text-sm text-slate-400 mt-1">{item.note}</p>}
+                  {item.note && <p className="text-sm text-brand-black/400 mt-1">{item.note}</p>}
                 </div>
                 <div className="flex items-center gap-1 shrink-0">
                   <button
                     type="button"
                     onClick={() => setLastContactToday(item)}
-                    className="p-2 rounded-lg text-slate-400 hover:text-brand-dark dark:hover:text-brand hover:bg-brand/10 transition-colors"
+                    className="p-2 rounded-lg text-brand-black/400 hover:text-brand-dark dark:hover:text-brand hover:bg-brand/10 transition-colors"
                     title="סומן מגע היום"
                     aria-label="סומן מגע היום"
                   >
                     <Phone size={16} />
                   </button>
-                  <button type="button" onClick={() => openEdit(item)} className="p-2 rounded-lg text-slate-400 hover:text-brand-dark dark:hover:text-brand" aria-label="ערוך">
+                  <button type="button" onClick={() => openEdit(item)} className="p-2 rounded-lg text-brand-black/400 hover:text-brand-dark dark:hover:text-brand" aria-label="ערוך">
                     <Edit2 size={16} />
                   </button>
-                  <button type="button" onClick={() => deleteRelationshipItem(item.id)} className="p-2 rounded-lg text-slate-400 hover:text-red-500" aria-label="מחק">
+                  <button type="button" onClick={() => deleteRelationshipItem(item.id)} className="p-2 rounded-lg text-brand-black/400 hover:text-brand-accent-secondary" aria-label="מחק">
                     <Trash2 size={16} />
                   </button>
                 </div>

@@ -39,33 +39,33 @@ export function OnboardingView({ isReopened = false }) {
   };
 
   return (
-    <div className="min-h-screen bg-brand-page dark:bg-brand-dark text-slate-900 dark:text-on-brand flex flex-col items-center justify-center p-4" dir="rtl">
+    <div className="min-h-screen bg-brand-page dark:bg-brand-dark text-brand-black dark:text-on-brand flex flex-col items-center justify-center p-4" dir="rtl">
       <div className="w-full max-w-lg">
-        <div className="flex items-center justify-center gap-2 mb-2">
-          <div className="w-10 h-10 bg-brand-dark rounded-xl flex items-center justify-center">
-            <Zap className="text-brand" fill="currentColor" size={20} />
+        <div className="flex items-center justify-center gap-3 mb-3">
+          <div className="w-11 h-11 bg-brand-dark rounded-card flex items-center justify-center shadow-card">
+            <Zap className="text-brand" fill="currentColor" size={22} />
           </div>
-          <span className="font-black text-xl">REFAEL OS</span>
+          <span className="font-extrabold text-xl text-brand-black dark:text-on-brand">REFAEL OS</span>
         </div>
-        <h1 className="text-2xl md:text-3xl font-black text-center mb-2 text-slate-900 dark:text-on-brand">
+        <h1 className="text-2xl md:text-3xl font-extrabold text-center mb-2 text-brand-black dark:text-on-brand">
           {isReopened ? 'עדכן קטגוריות' : 'מה רלוונטי עבורך?'}
         </h1>
-        <p className="text-slate-600 dark:text-on-brand-muted text-center mb-8">
+        <p className="text-brand-black/65 dark:text-on-brand-muted text-center mb-8 text-sm">
           {isReopened
             ? 'בחר אילו אזורים להציג בתפריט.'
             : 'בחר את האזורים שתרצה לראות בדשבורד. תמיד תהיה לך גישה לדשבורד הראשי ולמשימות.'}
         </p>
 
         <div className="space-y-3 mb-8">
-          <div className="flex items-center gap-3 p-4 rounded-2xl bg-brand-white dark:bg-brand-surface border border-slate-200 dark:border-brand/20 opacity-90">
-            <div className="w-12 h-12 rounded-xl bg-brand-dark/10 dark:bg-brand/10 flex items-center justify-center shrink-0">
+          <div className="flex items-center gap-3 p-4 rounded-card-lg bg-brand-white dark:bg-brand-surface-card border border-brand-black/8 dark:border-brand/15">
+            <div className="w-12 h-12 rounded-card bg-brand-dark/10 dark:bg-brand/10 flex items-center justify-center shrink-0">
               <LayoutDashboard className="text-brand-dark dark:text-brand" size={24} />
             </div>
             <div className="flex-1">
-              <h2 className="font-bold text-slate-900 dark:text-on-brand">דשבורד</h2>
-              <p className="text-sm text-slate-600 dark:text-on-brand-muted">סיכום יומי, XP, משימות – תמיד זמין</p>
+              <h2 className="font-bold text-brand-black dark:text-on-brand">דשבורד</h2>
+              <p className="text-sm text-brand-black/65 dark:text-on-brand-muted">סיכום יומי, XP, משימות – תמיד זמין</p>
             </div>
-            <span className="text-xs font-medium text-slate-500 dark:text-on-brand-muted">תמיד מוצג</span>
+            <span className="text-xs font-semibold text-brand-black/50 dark:text-on-brand-muted">תמיד מוצג</span>
           </div>
 
           {OPTIONAL_CATEGORIES.map((cat) => {
@@ -76,23 +76,23 @@ export function OnboardingView({ isReopened = false }) {
                 key={cat.id}
                 type="button"
                 onClick={() => toggle(cat.id)}
-                className={`flex items-center gap-3 w-full p-4 min-h-[48px] rounded-2xl border text-right transition-all touch-manipulation ${
+                className={`flex items-center gap-3 w-full p-4 min-h-[48px] rounded-card-lg border text-right transition-all touch-manipulation ${
                   isChecked
-                    ? 'bg-brand-white dark:bg-brand-surface border-brand-dark/30 dark:border-brand/50 shadow-md'
-                    : 'bg-slate-50 dark:bg-brand-dark/30 border-slate-200 dark:border-brand/20 hover:border-slate-300 dark:hover:border-brand/30'
+                    ? 'bg-brand-white dark:bg-brand-surface-card border-brand-dark/25 dark:border-brand/40 shadow-card'
+                    : 'bg-brand-black/[0.03] dark:bg-brand/5 border-brand-black/10 dark:border-brand/15 hover:border-brand/30 dark:hover:border-brand/25'
                 }`}
               >
-                <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 ${
-                  isChecked ? 'bg-brand-dark/10 dark:bg-brand/10' : 'bg-slate-200 dark:bg-brand-dark/50'
+                <div className={`w-12 h-12 rounded-card flex items-center justify-center shrink-0 ${
+                  isChecked ? 'bg-brand-dark/10 dark:bg-brand/15' : 'bg-brand-black/10 dark:bg-brand-dark/40'
                 }`}>
-                  <Icon className={isChecked ? 'text-brand-dark dark:text-brand' : 'text-slate-400 dark:text-on-brand-muted'} size={24} />
+                  <Icon className={isChecked ? 'text-brand-dark dark:text-brand' : 'text-brand-black/45 dark:text-on-brand-muted'} size={24} />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h2 className="font-bold text-slate-900 dark:text-on-brand">{cat.label}</h2>
-                  <p className="text-sm text-slate-600 dark:text-on-brand-muted">{cat.desc}</p>
+                  <h2 className="font-bold text-brand-black dark:text-on-brand">{cat.label}</h2>
+                  <p className="text-sm text-brand-black/65 dark:text-on-brand-muted">{cat.desc}</p>
                 </div>
-                <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 border-2 ${
-                  isChecked ? 'bg-brand-dark border-brand-dark text-on-brand' : 'border-slate-300 dark:border-brand/30'
+                <div className={`w-8 h-8 rounded-button flex items-center justify-center shrink-0 border-2 ${
+                  isChecked ? 'bg-brand-dark border-brand-dark text-[var(--text-on-dark)]' : 'border-brand-black/25 dark:border-brand/30'
                 }`}>
                   {isChecked && <Check size={18} strokeWidth={3} />}
                 </div>
@@ -105,14 +105,14 @@ export function OnboardingView({ isReopened = false }) {
           <button
             type="button"
             onClick={selectAll}
-            className="px-4 py-2.5 min-h-[44px] rounded-xl border-2 border-slate-300 dark:border-brand/30 font-bold text-sm hover:bg-slate-100 dark:hover:bg-brand-surface transition-colors touch-manipulation"
+            className="px-4 py-2.5 min-h-[44px] rounded-button border-2 border-brand-black/15 dark:border-brand/25 font-bold text-sm text-brand-black dark:text-on-brand hover:bg-brand-black/5 dark:hover:bg-brand/10 transition-colors touch-manipulation"
           >
             הצג הכל
           </button>
           <button
             type="button"
             onClick={handleContinue}
-            className="flex-1 px-6 py-3.5 min-h-[44px] rounded-xl bg-brand-dark text-on-brand font-bold text-lg shadow-lg hover:opacity-90 transition-opacity touch-manipulation"
+            className="flex-1 px-6 py-3.5 min-h-[44px] rounded-button bg-brand-dark text-[var(--text-on-dark)] font-bold text-lg shadow-card hover:opacity-95 transition-opacity touch-manipulation"
           >
             {isReopened ? 'שמור' : 'המשך לדשבורד'}
           </button>

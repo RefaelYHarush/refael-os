@@ -14,19 +14,19 @@ export function LandingView({ onSignUp, onSignIn }) {
 
   return (
     <div className="min-h-screen bg-brand-page dark:bg-brand-dark text-brand-black dark:text-on-brand" dir="rtl">
-      <header className="border-b border-slate-200 dark:border-brand/20 bg-brand-white/95 dark:bg-brand-surface-elevated backdrop-blur sticky top-0 z-50">
-        <div className="max-w-5xl mx-auto px-4 py-3 flex justify-between items-center">
-          <div className="flex items-center gap-2">
-            <div className="w-9 h-9 bg-brand-dark rounded-lg flex items-center justify-center shadow-md shadow-brand-dark/20">
-              <Zap className="text-brand" fill="currentColor" size={18} />
+      <header className="sticky top-0 z-50 border-b border-brand-black/8 dark:border-brand/15 bg-brand-page/95 dark:bg-brand-dark/95 backdrop-blur-md">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-card bg-brand-dark flex items-center justify-center shadow-card dark:shadow-card-dark">
+              <Zap className="text-brand" fill="currentColor" size={20} />
             </div>
-            <span className="font-black text-lg text-brand-black dark:text-on-brand">REFAEL OS</span>
+            <span className="font-extrabold text-lg text-brand-black dark:text-on-brand">REFAEL OS</span>
           </div>
           <nav className="flex items-center gap-2">
             <button
               type="button"
               onClick={toggleTheme}
-              className="w-10 h-10 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg text-brand-black/60 dark:text-on-brand-muted hover:bg-slate-100 dark:hover:bg-brand-dark/50 transition-colors touch-manipulation"
+              className="w-10 h-10 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-button text-brand-black/60 dark:text-on-brand-muted hover:bg-brand-black/5 dark:hover:bg-brand/10 transition-colors touch-manipulation"
               title={isDark ? 'מצב בהיר' : 'מצב כהה'}
               aria-label={isDark ? 'מצב בהיר' : 'מצב כהה'}
             >
@@ -35,14 +35,14 @@ export function LandingView({ onSignUp, onSignIn }) {
             <button
               type="button"
               onClick={onSignIn}
-              className="px-4 py-2 min-h-[44px] text-sm font-bold text-brand-black/80 dark:text-on-brand-muted hover:text-brand-dark dark:hover:text-brand transition-colors touch-manipulation flex items-center"
+              className="px-4 py-2.5 min-h-[44px] text-sm font-semibold text-brand-black/80 dark:text-on-brand-muted hover:text-brand-dark dark:hover:text-brand transition-colors touch-manipulation"
             >
               התחברות
             </button>
             <button
               type="button"
               onClick={onSignUp}
-              className="px-4 py-2 min-h-[44px] text-sm font-bold rounded-xl bg-brand-dark text-brand-white hover:opacity-90 hover:shadow-lg hover:shadow-brand-dark/25 transition-all touch-manipulation flex items-center"
+              className="px-5 py-2.5 min-h-[44px] text-sm font-bold rounded-button bg-brand-dark text-brand-white hover:opacity-95 active:scale-[0.98] transition-all touch-manipulation shadow-card"
             >
               הרשמה בחינם
             </button>
@@ -51,30 +51,32 @@ export function LandingView({ onSignUp, onSignIn }) {
       </header>
 
       <main>
-        <section className="max-w-5xl mx-auto px-4 py-16 md:py-24 text-center bg-gradient-to-b from-slate-50/80 to-transparent dark:from-brand-surface/30 dark:to-transparent">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-tight mb-4 text-brand-black dark:text-on-brand">
+        <section className="max-w-5xl mx-auto px-4 sm:px-6 py-20 md:py-28 text-center">
+          <h1 className="text-display md:text-display-md lg:text-display-lg font-extrabold tracking-tight text-brand-black dark:text-on-brand mb-6 max-w-3xl mx-auto">
             הדשבורד האישי שלך
             <br />
-            <span className="text-brand-dark dark:text-brand">משימות, יעדים ומה שבחרת</span> במקום אחד
+            <span className="text-brand-dark dark:text-brand">משימות, יעדים ומה שבחרת</span>
+            <br />
+            במקום אחד
           </h1>
-          <p className="text-lg text-brand-black/70 dark:text-on-brand-muted max-w-xl mx-auto mb-4">
+          <p className="text-lg md:text-xl text-brand-black/70 dark:text-on-brand-muted max-w-2xl mx-auto mb-4 leading-relaxed">
             מערכת ניהול חיים אחת: משימות יומיות עם XP, דשבורד מרכזי, ובחירה חופשית – יומן מסחר, פרויקטים ו־SaaS, אבני דרך. הנתונים שלך בענן, בכל מכשיר.
           </p>
-          <p className="text-base text-brand-black/60 dark:text-on-brand-muted max-w-xl mx-auto mb-10">
+          <p className="text-base text-brand-black/55 dark:text-on-brand-muted max-w-xl mx-auto mb-12">
             אחרי ההרשמה תבחר אילו אזורים להציג – כך תראה רק מה שרלוונטי עבורך.
           </p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button
               type="button"
               onClick={onSignUp}
-              className="px-8 py-3.5 min-h-[44px] rounded-xl bg-brand-dark text-brand-white font-bold text-lg shadow-lg shadow-brand-dark/25 hover:opacity-90 hover:shadow-xl hover:shadow-brand-dark/30 active:scale-[0.98] transition-all touch-manipulation ring-2 ring-transparent hover:ring-brand/30"
+              className="px-8 py-4 min-h-[48px] rounded-button bg-brand-dark text-brand-white font-bold text-lg shadow-card hover:opacity-95 active:scale-[0.98] transition-all touch-manipulation"
             >
               צור דשבורד בחינם
             </button>
             <button
               type="button"
               onClick={onSignIn}
-              className="px-8 py-3.5 min-h-[44px] rounded-xl border-2 border-brand-dark/30 dark:border-brand/30 font-bold text-lg text-brand-black dark:text-on-brand hover:bg-brand-dark/5 dark:hover:bg-brand-surface hover:text-brand-dark dark:hover:text-brand hover:border-brand dark:hover:border-brand/50 transition-all flex items-center justify-center gap-2 touch-manipulation"
+              className="px-8 py-4 min-h-[48px] rounded-button border-2 border-brand-dark/25 dark:border-brand/30 font-bold text-lg text-brand-black dark:text-on-brand hover:bg-brand-dark/5 dark:hover:bg-brand/10 hover:border-brand-dark/40 dark:hover:border-brand/50 transition-all flex items-center justify-center gap-2 touch-manipulation"
             >
               <LogIn size={20} aria-hidden />
               כבר יש לך חשבון? התחבר
@@ -82,48 +84,48 @@ export function LandingView({ onSignUp, onSignIn }) {
           </div>
         </section>
 
-        <section className="max-w-5xl mx-auto px-4 py-16 border-t border-slate-200 dark:border-brand/20">
-          <h2 className="text-2xl md:text-3xl font-bold text-center mb-2 text-brand-black dark:text-on-brand pb-2 border-b-2 border-brand-dark dark:border-brand/50 w-fit mx-auto">
+        <section className="max-w-5xl mx-auto px-4 sm:px-6 py-20 border-t border-brand-black/8 dark:border-brand/15">
+          <h2 className="text-2xl md:text-3xl font-bold text-center text-brand-black dark:text-on-brand mb-2">
             מה תקבל
           </h2>
-          <p className="text-center text-brand-black/70 dark:text-on-brand-muted text-sm mb-10">בהתחלה תבחר אילו קטגוריות להציג בדשבורד שלך</p>
+          <p className="text-center text-brand-black/60 dark:text-on-brand-muted text-sm mb-12">בהתחלה תבחר אילו קטגוריות להציג בדשבורד שלך</p>
           <div className="grid sm:grid-cols-2 gap-6">
             {features.map(({ icon: Icon, title, desc }) => (
               <div
                 key={title}
-                className="flex gap-4 p-5 rounded-2xl bg-brand-white dark:bg-brand-surface border border-slate-200 dark:border-brand/20 hover:shadow-md hover:shadow-brand-glow-soft hover:border-brand/30 dark:hover:border-brand/40 transition-all hover:-translate-y-0.5"
+                className="flex gap-5 p-6 rounded-card-lg bg-brand-white dark:bg-brand-surface-card border border-brand-black/8 dark:border-brand/15 hover:shadow-card-hover dark:hover:shadow-card-dark hover:border-brand/25 dark:hover:border-brand/30 transition-all"
               >
-                <div className="w-12 h-12 rounded-xl bg-brand-dark/10 dark:bg-brand/10 flex items-center justify-center shrink-0">
-                  <Icon className="text-brand-dark dark:text-brand" size={24} />
+                <div className="w-14 h-14 rounded-card bg-brand-dark/10 dark:bg-brand/15 flex items-center justify-center shrink-0">
+                  <Icon className="text-brand-dark dark:text-brand" size={26} />
                 </div>
                 <div className="text-right">
-                  <h3 className="font-bold text-lg mb-1 text-brand-black dark:text-on-brand">{title}</h3>
-                  <p className="text-brand-black/70 dark:text-on-brand-muted text-sm">{desc}</p>
+                  <h3 className="font-bold text-lg mb-1.5 text-brand-black dark:text-on-brand">{title}</h3>
+                  <p className="text-brand-black/65 dark:text-on-brand-muted text-sm leading-relaxed">{desc}</p>
                 </div>
               </div>
             ))}
           </div>
         </section>
 
-        <section className="max-w-5xl mx-auto px-4 py-16 text-center">
-          <p className="text-brand-black/70 dark:text-on-brand-muted mb-6">הצטרף עכשיו – ללא כרטיס אשראי</p>
+        <section className="max-w-5xl mx-auto px-4 sm:px-6 py-20 text-center">
+          <p className="text-brand-black/60 dark:text-on-brand-muted mb-6">הצטרף עכשיו – ללא כרטיס אשראי</p>
           <button
             type="button"
             onClick={onSignUp}
-            className="px-8 py-3.5 min-h-[44px] rounded-xl bg-brand-dark text-brand-white font-bold text-lg shadow-lg shadow-brand-dark/25 hover:opacity-90 hover:shadow-xl hover:shadow-brand-dark/30 active:scale-[0.98] transition-all touch-manipulation"
+            className="px-8 py-4 min-h-[48px] rounded-button bg-brand-dark text-brand-white font-bold text-lg shadow-card hover:opacity-95 active:scale-[0.98] transition-all touch-manipulation"
           >
             הרשמה בחינם
           </button>
         </section>
       </main>
 
-      <footer className="border-t border-slate-200 dark:border-brand/20 bg-slate-50 dark:bg-brand-dark/80 py-6 mt-8">
-        <div className="max-w-5xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-brand-black/60 dark:text-on-brand-muted">
+      <footer className="border-t border-brand-black/8 dark:border-brand/15 bg-brand-black/5 dark:bg-brand-surface py-8 mt-4">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-brand-black/55 dark:text-on-brand-muted">
           <span>© {new Date().getFullYear()} REFAEL OS</span>
-          <div className="flex gap-6">
-            <Link to="/about" className="hover:text-brand-dark dark:hover:text-brand transition-colors">אודות</Link>
-            <Link to="/terms" className="hover:text-brand-dark dark:hover:text-brand transition-colors">תנאי שימוש</Link>
-            <Link to="/privacy" className="hover:text-brand-dark dark:hover:text-brand transition-colors">פרטיות</Link>
+          <div className="flex gap-8">
+            <Link to="/about" className="hover:text-brand-dark dark:hover:text-brand transition-colors font-medium">אודות</Link>
+            <Link to="/terms" className="hover:text-brand-dark dark:hover:text-brand transition-colors font-medium">תנאי שימוש</Link>
+            <Link to="/privacy" className="hover:text-brand-dark dark:hover:text-brand transition-colors font-medium">פרטיות</Link>
           </div>
         </div>
       </footer>

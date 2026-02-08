@@ -66,11 +66,17 @@ export function AppProvider({ children, userId }) {
 
   useEffect(() => {
     const key = getOnboardingStorageKey(userId);
+    const isDevBypass = userId === 'dev-bypass';
     try {
       const raw = typeof window !== 'undefined' ? localStorage.getItem(key) : null;
       if (raw == null) {
-        setOnboardingDone(false);
-        setEnabledCategories(DEFAULT_ENABLED_CATEGORIES);
+        if (isDevBypass) {
+          setOnboardingDone(true);
+          setEnabledCategories(DEFAULT_ENABLED_CATEGORIES);
+        } else {
+          setOnboardingDone(false);
+          setEnabledCategories(DEFAULT_ENABLED_CATEGORIES);
+        }
       } else {
         const data = JSON.parse(raw);
         setOnboardingDone(!!data.done);
@@ -104,6 +110,11 @@ export function AppProvider({ children, userId }) {
   useEffect(() => {
     if (!hasSupabase || !userId) {
       setLoading(false);
+      return;
+    }
+    if (userId === 'dev-bypass') {
+      setLoading(false);
+      initialLoadDone.current = true;
       return;
     }
     loadAll(userId)
