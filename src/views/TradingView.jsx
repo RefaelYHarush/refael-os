@@ -79,7 +79,7 @@ export function TradingView() {
         <h2 className="text-2xl font-bold">יומן מסחר</h2>
         <button
           onClick={() => { setAddTradeInitialDate(undefined); setShowAddTrade(true); }}
-          className="bg-brand-dark hover:bg-brand-dark/90 dark:bg-brand dark:hover:bg-brand/90 dark:text-brand-dark text-white px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 shadow-lg shadow-brand-dark/20"
+          className="bg-brand-dark hover:bg-brand-dark-hover dark:bg-brand dark:hover:bg-brand/90 dark:text-brand-dark text-white px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 shadow-lg shadow-brand-dark/20"
         >
           <Plus size={16} /> עסקה חדשה
         </button>

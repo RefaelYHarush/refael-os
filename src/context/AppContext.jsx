@@ -5,14 +5,21 @@ import {
   DEFAULT_SAAS_PROJECTS,
   DEFAULT_VISION_MILESTONES,
   DEFAULT_DAILY_TASKS,
+  DEFAULT_HEALTH_ENTRIES,
+  DEFAULT_LEARNING_ITEMS,
+  DEFAULT_FINANCE_GOALS,
+  DEFAULT_RELATIONSHIP_ITEMS,
   INITIAL_XP,
   INITIAL_LEVEL,
   STORAGE_KEYS,
+  DEFAULT_ENABLED_CATEGORIES,
+  ALL_CATEGORY_IDS,
+  getOnboardingStorageKey,
 } from '../data/constants';
 import { hasSupabase } from '../lib/supabase';
-import { loadAll, saveTrades, saveSaasProjects, saveVisionMilestones, saveDailyTasks, saveUserProfile } from '../lib/supabaseSync';
+import { loadAll, saveTrades, saveSaasProjects, saveVisionMilestones, saveDailyTasks, saveUserProfile, saveCalendarProfile, saveHealthEntries, saveLearningItems, saveFinanceGoals, saveRelationships } from '../lib/supabaseSync';
 
-const MAX_SYNC_RETRIES = 2;
+const MAX_SYNC_RETRIES = 3;
 const RETRY_DELAY_MS = 2000;
 
 async function withRetry(fn, onError) {
@@ -23,7 +30,10 @@ async function withRetry(fn, onError) {
       return;
     } catch (e) {
       lastErr = e;
-      if (attempt < MAX_SYNC_RETRIES) await new Promise((r) => setTimeout(r, RETRY_DELAY_MS));
+      if (attempt < MAX_SYNC_RETRIES) {
+        const delayMs = RETRY_DELAY_MS * (attempt + 1);
+        await new Promise((r) => setTimeout(r, delayMs));
+      }
     }
   }
   onError?.(lastErr);
@@ -41,8 +51,54 @@ export function AppProvider({ children, userId }) {
   const [dailyTasks, setDailyTasks] = usePersistedState(STORAGE_KEYS.DAILY_TASKS, DEFAULT_DAILY_TASKS);
   const [userXP, setUserXP] = usePersistedState(STORAGE_KEYS.USER_XP, INITIAL_XP);
   const [userLevel, setUserLevel] = usePersistedState(STORAGE_KEYS.USER_LEVEL, INITIAL_LEVEL);
+  const [healthEntries, setHealthEntries] = usePersistedState(STORAGE_KEYS.HEALTH, DEFAULT_HEALTH_ENTRIES);
+  const [learningItems, setLearningItems] = usePersistedState(STORAGE_KEYS.LEARNING, DEFAULT_LEARNING_ITEMS);
+  const [financeGoals, setFinanceGoals] = usePersistedState(STORAGE_KEYS.FINANCE, DEFAULT_FINANCE_GOALS);
+  const [relationshipItems, setRelationshipItems] = usePersistedState(STORAGE_KEYS.RELATIONSHIPS, DEFAULT_RELATIONSHIP_ITEMS);
   const [displayName, setDisplayName] = useState('');
   const [syncError, setSyncError] = useState(null);
+  const [onboardingDone, setOnboardingDone] = useState(true);
+  const [enabledCategories, setEnabledCategories] = useState(() => DEFAULT_ENABLED_CATEGORIES);
+  const [onboardingLoaded, setOnboardingLoaded] = useState(false);
+  const [calendarEmbedUrl, setCalendarEmbedUrl] = useState('');
+  const [selectedCalendarId, setSelectedCalendarId] = useState('primary');
+
+  useEffect(() => {
+    const key = getOnboardingStorageKey(userId);
+    try {
+      const raw = typeof window !== 'undefined' ? localStorage.getItem(key) : null;
+      if (raw == null) {
+        setOnboardingDone(false);
+        setEnabledCategories(DEFAULT_ENABLED_CATEGORIES);
+      } else {
+        const data = JSON.parse(raw);
+        setOnboardingDone(!!data.done);
+        if (Array.isArray(data.categories) && data.categories.length > 0) {
+          const merged = [...new Set([...data.categories, ...ALL_CATEGORY_IDS])];
+          setEnabledCategories(merged);
+        }
+      }
+    } catch {
+      setOnboardingDone(false);
+      setEnabledCategories(DEFAULT_ENABLED_CATEGORIES);
+    }
+    setOnboardingLoaded(true);
+  }, [userId]);
+
+  const completeOnboarding = useCallback((categories) => {
+    setEnabledCategories(categories);
+    setOnboardingDone(true);
+    const key = getOnboardingStorageKey(userId);
+    try {
+      localStorage.setItem(key, JSON.stringify({ done: true, categories }));
+    } catch (e) {
+      console.warn('Failed to save onboarding', e);
+    }
+  }, [userId]);
+
+  const reopenOnboarding = useCallback(() => {
+    setOnboardingDone(false);
+  }, []);
 
   useEffect(() => {
     if (!hasSupabase || !userId) {
@@ -59,6 +115,22 @@ export function AppProvider({ children, userId }) {
           setUserXP(data.userXP);
           setUserLevel(data.userLevel);
           setDisplayName(data.displayName || '');
+          if (Array.isArray(data.healthEntries)) setHealthEntries(data.healthEntries);
+          if (Array.isArray(data.learningItems)) setLearningItems(data.learningItems);
+          if (Array.isArray(data.financeGoals)) setFinanceGoals(data.financeGoals);
+          if (Array.isArray(data.relationshipItems)) setRelationshipItems(data.relationshipItems);
+          if (Array.isArray(data.enabledCategories) && data.enabledCategories.length > 0) {
+            setEnabledCategories(data.enabledCategories);
+            setOnboardingDone(true);
+            try {
+              const key = getOnboardingStorageKey(userId);
+              localStorage.setItem(key, JSON.stringify({ done: true, categories: data.enabledCategories }));
+            } catch (e) {
+              console.warn('Failed to persist onboarding from Supabase', e);
+            }
+          }
+          if (data.calendarEmbedUrl != null) setCalendarEmbedUrl(data.calendarEmbedUrl);
+          if (data.selectedCalendarId != null) setSelectedCalendarId(data.selectedCalendarId);
         }
       })
       .catch((e) => {
@@ -105,11 +177,50 @@ export function AppProvider({ children, userId }) {
 
   useEffect(() => {
     if (!hasSupabase || !userId || !initialLoadDone.current) return;
-    withRetry(() => saveUserProfile(userId, userXP, userLevel, displayName), (e) => {
+    withRetry(() => saveUserProfile(userId, userXP, userLevel, displayName, enabledCategories), (e) => {
       console.warn('saveUserProfile failed', e);
       setSyncError('שגיאה בסנכרון – הנתונים נשמרו מקומית');
     });
-  }, [userId, userXP, userLevel, displayName]);
+  }, [userId, userXP, userLevel, displayName, enabledCategories]);
+
+  useEffect(() => {
+    if (!hasSupabase || !userId || !initialLoadDone.current) return;
+    withRetry(() => saveCalendarProfile(userId, calendarEmbedUrl, selectedCalendarId), (e) => {
+      console.warn('saveCalendarProfile failed', e);
+    });
+  }, [userId, calendarEmbedUrl, selectedCalendarId]);
+
+  useEffect(() => {
+    if (!hasSupabase || !userId || !initialLoadDone.current) return;
+    withRetry(() => saveHealthEntries(userId, healthEntries), (e) => {
+      console.warn('saveHealthEntries failed', e);
+      setSyncError('שגיאה בסנכרון – הנתונים נשמרו מקומית');
+    });
+  }, [userId, healthEntries]);
+
+  useEffect(() => {
+    if (!hasSupabase || !userId || !initialLoadDone.current) return;
+    withRetry(() => saveLearningItems(userId, learningItems), (e) => {
+      console.warn('saveLearningItems failed', e);
+      setSyncError('שגיאה בסנכרון – הנתונים נשמרו מקומית');
+    });
+  }, [userId, learningItems]);
+
+  useEffect(() => {
+    if (!hasSupabase || !userId || !initialLoadDone.current) return;
+    withRetry(() => saveFinanceGoals(userId, financeGoals), (e) => {
+      console.warn('saveFinanceGoals failed', e);
+      setSyncError('שגיאה בסנכרון – הנתונים נשמרו מקומית');
+    });
+  }, [userId, financeGoals]);
+
+  useEffect(() => {
+    if (!hasSupabase || !userId || !initialLoadDone.current) return;
+    withRetry(() => saveRelationships(userId, relationshipItems), (e) => {
+      console.warn('saveRelationships failed', e);
+      setSyncError('שגיאה בסנכרון – הנתונים נשמרו מקומית');
+    });
+  }, [userId, relationshipItems]);
 
   const toggleTask = useCallback(
     (id) => {
@@ -178,6 +289,86 @@ export function AppProvider({ children, userId }) {
     [setSaasProjects]
   );
 
+  const addHealthEntry = useCallback(
+    (entry) => {
+      const id = Math.max(0, ...healthEntries.map((e) => e.id)) + 1;
+      setHealthEntries((prev) => [{ ...entry, id }, ...prev]);
+    },
+    [healthEntries, setHealthEntries]
+  );
+
+  const updateHealthEntry = useCallback(
+    (updated) => {
+      setHealthEntries((prev) => prev.map((e) => (e.id === updated.id ? { ...updated } : e)));
+    },
+    [setHealthEntries]
+  );
+
+  const deleteHealthEntry = useCallback(
+    (id) => setHealthEntries((prev) => prev.filter((e) => e.id !== id)),
+    [setHealthEntries]
+  );
+
+  const addLearningItem = useCallback(
+    (item) => {
+      const id = Math.max(0, ...learningItems.map((i) => i.id)) + 1;
+      setLearningItems((prev) => [...prev, { ...item, id, progress: item.progress ?? 0 }]);
+    },
+    [learningItems, setLearningItems]
+  );
+
+  const updateLearningItem = useCallback(
+    (updated) => {
+      setLearningItems((prev) => prev.map((i) => (i.id === updated.id ? { ...updated } : i)));
+    },
+    [setLearningItems]
+  );
+
+  const deleteLearningItem = useCallback(
+    (id) => setLearningItems((prev) => prev.filter((i) => i.id !== id)),
+    [setLearningItems]
+  );
+
+  const addFinanceGoal = useCallback(
+    (goal) => {
+      const id = Math.max(0, ...financeGoals.map((g) => g.id)) + 1;
+      setFinanceGoals((prev) => [...prev, { ...goal, id, currentAmount: goal.currentAmount ?? 0 }]);
+    },
+    [financeGoals, setFinanceGoals]
+  );
+
+  const updateFinanceGoal = useCallback(
+    (updated) => {
+      setFinanceGoals((prev) => prev.map((g) => (g.id === updated.id ? { ...updated } : g)));
+    },
+    [setFinanceGoals]
+  );
+
+  const deleteFinanceGoal = useCallback(
+    (id) => setFinanceGoals((prev) => prev.filter((g) => g.id !== id)),
+    [setFinanceGoals]
+  );
+
+  const addRelationshipItem = useCallback(
+    (item) => {
+      const id = Math.max(0, ...relationshipItems.map((r) => r.id)) + 1;
+      setRelationshipItems((prev) => [...prev, { ...item, id, lastContact: item.lastContact || '' }]);
+    },
+    [relationshipItems, setRelationshipItems]
+  );
+
+  const updateRelationshipItem = useCallback(
+    (updated) => {
+      setRelationshipItems((prev) => prev.map((r) => (r.id === updated.id ? { ...updated } : r)));
+    },
+    [setRelationshipItems]
+  );
+
+  const deleteRelationshipItem = useCallback(
+    (id) => setRelationshipItems((prev) => prev.filter((r) => r.id !== id)),
+    [setRelationshipItems]
+  );
+
   const value = {
     trades,
     setTrades,
@@ -196,6 +387,10 @@ export function AppProvider({ children, userId }) {
     setUserLevel,
     displayName,
     setDisplayName,
+    calendarEmbedUrl,
+    setCalendarEmbedUrl,
+    selectedCalendarId,
+    setSelectedCalendarId,
     toggleTask,
     addTrade,
     updateTrade,
@@ -204,6 +399,31 @@ export function AppProvider({ children, userId }) {
     loading,
     syncError,
     setSyncError,
+    onboardingDone,
+    onboardingLoaded,
+    enabledCategories,
+    completeOnboarding,
+    reopenOnboarding,
+    healthEntries,
+    setHealthEntries,
+    addHealthEntry,
+    updateHealthEntry,
+    deleteHealthEntry,
+    learningItems,
+    setLearningItems,
+    addLearningItem,
+    updateLearningItem,
+    deleteLearningItem,
+    financeGoals,
+    setFinanceGoals,
+    addFinanceGoal,
+    updateFinanceGoal,
+    deleteFinanceGoal,
+    relationshipItems,
+    setRelationshipItems,
+    addRelationshipItem,
+    updateRelationshipItem,
+    deleteRelationshipItem,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

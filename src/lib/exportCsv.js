@@ -56,7 +56,19 @@ function downloadJson(filename, data) {
 }
 
 /** גיבוי מלא של כל הנתונים לקובץ JSON */
-export function exportFullBackup({ trades, dailyTasks, visionMilestones, saasProjects, userXP, userLevel, displayName }) {
+export function exportFullBackup({
+  trades,
+  dailyTasks,
+  visionMilestones,
+  saasProjects,
+  userXP,
+  userLevel,
+  displayName,
+  healthEntries = [],
+  learningItems = [],
+  financeGoals = [],
+  relationshipItems = [],
+}) {
   const data = {
     exportedAt: new Date().toISOString(),
     displayName: displayName || '',
@@ -65,6 +77,10 @@ export function exportFullBackup({ trades, dailyTasks, visionMilestones, saasPro
     dailyTasks,
     visionMilestones,
     saasProjects,
+    healthEntries,
+    learningItems,
+    financeGoals,
+    relationshipItems,
   };
   const date = new Date().toISOString().slice(0, 10);
   downloadJson(`refael-os-backup-${date}.json`, data);

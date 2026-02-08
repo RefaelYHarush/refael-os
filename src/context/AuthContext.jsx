@@ -15,10 +15,29 @@ export function AuthProvider({ children }) {
     supabase.auth.getSession().then(({ data: { session: s } }) => {
       setSession(s);
       setAuthLoading(false);
+      if (s && typeof window !== 'undefined' && window.history.replaceState) {
+        const hash = window.location.hash || '';
+        const search = window.location.search || '';
+        if (/access_token|refresh_token|error/.test(hash) || /code=/.test(search)) {
+          window.history.replaceState(null, '', window.location.origin + window.location.pathname);
+        }
+      }
     });
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, s) => setSession(s));
+    } = supabase.auth.onAuthStateChange((_event, s) => {
+      setSession(s);
+      // אחרי התחברות מוצלחת – מנקים את ה-URL hash/query של OAuth כדי שהכתובת תוצג נכון
+      if (s && typeof window !== 'undefined' && window.history.replaceState) {
+        const hash = window.location.hash || '';
+        const search = window.location.search || '';
+        const hasAuthInUrl = /access_token|refresh_token|error/.test(hash) || /code=/.test(search);
+        if (hasAuthInUrl) {
+          const cleanPath = window.location.origin + window.location.pathname;
+          window.history.replaceState(null, '', cleanPath);
+        }
+      }
+    });
     return () => subscription.unsubscribe();
   }, []);
 
@@ -36,11 +55,20 @@ export function AuthProvider({ children }) {
     await supabase.auth.signOut();
   };
 
-  const signInWithGoogle = async () => {
+  /** @param {{ requestTasksScope?: boolean }} [opts] – when true, also requests Google Tasks scope to view/manage tasks in the app */
+  const signInWithGoogle = async (opts = {}) => {
     const redirectTo = typeof window !== 'undefined' ? window.location.origin : '';
+    const scopes = [
+      'https://www.googleapis.com/auth/calendar.readonly',
+      'https://www.googleapis.com/auth/calendar.events',
+      ...(opts.requestTasksScope ? ['https://www.googleapis.com/auth/tasks'] : []),
+    ].join(' ');
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo },
+      options: {
+        redirectTo,
+        scopes,
+      },
     });
     if (error) throw error;
   };

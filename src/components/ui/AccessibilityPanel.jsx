@@ -45,7 +45,7 @@ export function AccessibilityFloatingButton() {
     <div className="fixed bottom-4 left-4 z-50 safe-area-pb" dir="rtl" aria-hidden="true">
       <AccessibilityButton
         floating
-        className="w-12 h-12 flex items-center justify-center rounded-full bg-brand-dark text-white shadow-lg shadow-brand-dark/40 hover:bg-brand-dark/90 hover:scale-105 active:scale-95 transition-transform focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-brand-page dark:focus:ring-offset-brand-dark"
+        className="w-12 h-12 flex items-center justify-center rounded-full bg-brand-dark text-white shadow-lg shadow-brand-dark/40 hover:bg-brand-dark-hover hover:scale-105 active:scale-95 transition-transform focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-brand-page dark:focus:ring-offset-brand-dark"
       />
     </div>
   );

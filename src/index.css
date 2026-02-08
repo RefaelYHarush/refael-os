@@ -9,19 +9,23 @@
   }
 }
 
-/* צבעי מותג מ-Logo – נגישות WCAG AA: ירוק בהיר | ירוק כהה | שחור | לבן */
+/* צבעי מותג מ-Logo – נגישות WCAG AA; גרסאות רכות לשחור/לבן */
 :root {
-  --brand-light: #a0df50;
+  --brand-light: #90c93e;
   --brand-dark: #013024;
-  --brand-black: #000000;
+  --brand-dark-hover: #012a20;
+  --brand-black: #0f1419;
   --brand-white: #ffffff;
+  --brand-page: #fafafa;
+  /* צבע משני (התאמה ללוגו – ניתן להחליף בגוון האדום-ורוד מהלוגו) */
+  --brand-accent-secondary: #d45d4a;
   /* משטחים בכהה – עומק מודרני עם ניגודיות טובה */
   --surface-dark: #0a2e26;
   --surface-dark-elevated: #0d3a30;
   /* טקסט נגיש על רקע כהה */
   --text-on-dark: #ffffff;
   --text-on-dark-muted: #b8d4ce;
-  --accent-on-dark: #a0df50;
+  --accent-on-dark: #90c93e;
 }
 
 /* Respect user preference for reduced motion (WCAG 2.3.3) */
@@ -129,6 +133,14 @@ html {
   text-decoration: underline;
   text-underline-offset: 0.2em;
   text-decoration-color: var(--brand-light);
+}
+
+/* שימוש בצבע המשני (שגיאות, אזהרות, הדגשות) */
+.brand-accent-secondary {
+  color: var(--brand-accent-secondary);
+}
+.bg-brand-accent-secondary {
+  background-color: var(--brand-accent-secondary);
 }
 
 [data-a11y-motion="reduce"] *,

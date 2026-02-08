@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { AppProvider, useApp } from './context/AppContext';
+import { GoogleTasksProvider } from './context/GoogleTasksContext';
 import { Layout } from './components/layout/Layout';
+import { PWAUpdatePrompt } from './components/PWAUpdatePrompt';
 import { LandingView } from './views/LandingView';
 import { AuthView } from './views/AuthView';
 import { AboutPage } from './views/AboutPage';
@@ -13,10 +15,21 @@ import { DashboardView } from './views/DashboardView';
 import { TradingView } from './views/TradingView';
 import { SaasView } from './views/SaasView';
 import { VisionView } from './views/VisionView';
+import { HealthView } from './views/HealthView';
+import { LearningView } from './views/LearningView';
+import { FinanceView } from './views/FinanceView';
+import { RelationshipsView } from './views/RelationshipsView';
+import { CalendarView } from './views/CalendarView';
+import { OnboardingView } from './views/OnboardingView';
 
 function AppContent() {
-  const [activeTab, setActiveTab] = useState('dashboard');
-  const { loading } = useApp();
+  const { loading, onboardingLoaded, onboardingDone, enabledCategories } = useApp();
+  const firstTab = enabledCategories.includes('dashboard') ? 'dashboard' : enabledCategories[0] || 'dashboard';
+  const [activeTab, setActiveTab] = useState(firstTab);
+
+  useEffect(() => {
+    if (!enabledCategories.includes(activeTab)) setActiveTab(firstTab);
+  }, [enabledCategories, activeTab, firstTab]);
 
   if (loading) {
     return (
@@ -26,18 +39,27 @@ function AppContent() {
     );
   }
 
+  if (onboardingLoaded && !onboardingDone) {
+    return <OnboardingView />;
+  }
+
   return (
-    <Layout activeTab={activeTab} onTabChange={setActiveTab}>
+    <Layout activeTab={activeTab} onTabChange={setActiveTab} enabledCategories={enabledCategories}>
       {activeTab === 'dashboard' && <DashboardView onNavigate={setActiveTab} />}
       {activeTab === 'trading' && <TradingView />}
       {activeTab === 'saas' && <SaasView />}
       {activeTab === 'vision' && <VisionView />}
+      {activeTab === 'health' && <HealthView />}
+      {activeTab === 'learning' && <LearningView />}
+      {activeTab === 'finance' && <FinanceView />}
+      {activeTab === 'relationships' && <RelationshipsView />}
+      {activeTab === 'calendar' && <CalendarView />}
     </Layout>
   );
 }
 
 function AppWithAuth() {
-  const { user, authLoading, hasSupabase } = useAuth();
+  const { user, session, authLoading, hasSupabase } = useAuth();
   const [showAuth, setShowAuth] = useState(false);
 
   if (authLoading) {
@@ -61,9 +83,13 @@ function AppWithAuth() {
   }
 
   const userId = user?.id ?? null;
+  const googleAccessToken = session?.provider_token ?? null;
+
   return (
     <AppProvider userId={userId}>
-      <AppContent />
+      <GoogleTasksProvider accessToken={googleAccessToken}>
+        <AppContent />
+      </GoogleTasksProvider>
     </AppProvider>
   );
 }
@@ -71,6 +97,7 @@ function AppWithAuth() {
 export default function App() {
   return (
     <AuthProvider>
+      <PWAUpdatePrompt />
       <Routes>
         <Route path="/" element={<AppWithAuth />} />
         <Route path="/about" element={<AboutPage />} />

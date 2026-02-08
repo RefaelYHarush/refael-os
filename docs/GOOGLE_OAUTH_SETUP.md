@@ -27,6 +27,21 @@ https://ubfebxeqetfxlqkxqwtb.supabase.co/auth/v1/callback
 
 ---
 
+## אם מופיעה השגיאה: "The developer hasn't given you access to this app"
+
+**אם ב־Audience מופיע "In production"** – לא צריך להוסיף Test users; נסה שוב "התחבר עם Google". אם עדיין מופיעה אזהרת "אפליקציה לא מאומתת", אפשר להמשיך דרך "מתקדם" → "עבור ל־[שם האתר] (לא מאובטח)".
+
+**אם ב־Audience מופיע "Testing"** – רק כתובות שמופיעות כ-**Test users** יכולות להתחבר. מה לעשות:
+
+1. היכנס ל־[Google Cloud Console → Audience](https://console.cloud.google.com/auth/audience?project=refaeel-os) (פרויקט "refaeel os").
+2. גלול ל־**Test users**.
+3. לחץ **+ ADD USERS** והוסף את **כתובת הגוגל שלך**.
+4. שמור. נסה שוב "התחבר עם Google" או "חבר גישה למשימות גוגל" באתר.
+
+**חשוב:** אם אתה משתמש ב־localhost (למשל `http://localhost:5179`), וודא שב־**Supabase → Authentication → URL Configuration** ה־Redirect URLs כולל את ה־localhost שלך.
+
+---
+
 ## שלב 2: Supabase – הדבקת Client ID ו-Secret
 
 **אפשרות א – דשבורד (פשוט):**

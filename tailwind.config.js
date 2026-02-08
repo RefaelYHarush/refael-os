@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-/** צבעי נגישות מ-Logo: #a0df50 | #013024 | #000000 | #ffffff */
+/** צבעי נגישות מ-Logo – גרסאות מעודכנות (שחור/לבן רכים, ירוק מעודן, hover) */
 export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   darkMode: 'class',
@@ -10,11 +10,14 @@ export default {
       },
       colors: {
         brand: {
-          DEFAULT: '#a0df50',
-          light: '#a0df50',
+          DEFAULT: '#90c93e',
+          light: '#90c93e',
           dark: '#013024',
-          black: '#000000',
+          'dark-hover': '#012a20',
+          black: '#0f1419',
           white: '#ffffff',
+          'bg-light': '#fafafa',
+          'accent-secondary': '#d45d4a',
           /** משטחים בכהה – עומק ונגישות */
           surface: '#0a2e26',
           'surface-elevated': '#0d3a30',
@@ -26,7 +29,7 @@ export default {
         },
       },
       backgroundColor: {
-        'brand-page': 'rgba(1, 48, 36, 0.04)',
+        'brand-page': 'var(--brand-page)',
       },
       keyframes: {
         'fade-in': {

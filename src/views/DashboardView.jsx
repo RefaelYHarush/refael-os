@@ -9,6 +9,7 @@ import { PnlChart } from '../components/charts/PnlChart';
 import { AddTradeModal } from '../components/modals/AddTradeModal';
 import { AddTaskModal } from '../components/modals/AddTaskModal';
 import { DeepWorkTimerModal } from '../components/modals/DeepWorkTimerModal';
+import { GoogleTasksCard } from '../components/GoogleTasksCard';
 import { useApp } from '../context/AppContext';
 import { XP_PER_LEVEL, TASK_DISPLAY_ORDER } from '../data/constants';
 
@@ -275,6 +276,8 @@ export function DashboardView({ onNavigate }) {
               </div>
             </div>
           </Card>
+
+          <GoogleTasksCard />
         </div>
       </div>
 

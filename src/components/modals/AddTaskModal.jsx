@@ -52,7 +52,7 @@ export function AddTaskModal({ onClose, onSave }) {
             <button type="button" onClick={onClose} className="flex-1 py-2 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 font-medium">
               ביטול
             </button>
-            <button type="submit" className="flex-1 py-2 rounded-lg bg-brand-dark text-white hover:bg-brand-dark/90 font-bold shadow-lg shadow-brand-dark/20">
+            <button type="submit" className="flex-1 py-2 rounded-lg bg-brand-dark text-white hover:bg-brand-dark-hover font-bold shadow-lg shadow-brand-dark/20">
               הוספה
             </button>
           </div>

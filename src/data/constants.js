@@ -81,4 +81,31 @@ export const STORAGE_KEYS = {
   DAILY_TASKS: 'rafael_os_daily_tasks',
   USER_XP: 'rafael_os_user_xp',
   USER_LEVEL: 'rafael_os_user_level',
+  HEALTH: 'rafael_os_health',
+  LEARNING: 'rafael_os_learning',
+  FINANCE: 'rafael_os_finance',
+  RELATIONSHIPS: 'rafael_os_relationships',
 };
+
+/** רשומות בריאות – אימונים, שינה, מים. ברירת מחדל: מערך ריק. */
+export const DEFAULT_HEALTH_ENTRIES = [];
+
+/** פריטי למידה – קורסים, ספרים, מיומנויות. ברירת מחדל: מערך ריק. */
+export const DEFAULT_LEARNING_ITEMS = [];
+
+/** יעדי כספים – חיסכון. ברירת מחדל: מערך ריק. */
+export const DEFAULT_FINANCE_GOALS = [];
+
+/** אנשי קשר – מעקב מגע. ברירת מחדל: מערך ריק. */
+export const DEFAULT_RELATIONSHIP_ITEMS = [];
+
+/** קטגוריות שאפשר להציג – דשבורד תמיד מוצג */
+export const ALL_CATEGORY_IDS = ['dashboard', 'trading', 'saas', 'vision', 'calendar', 'health', 'learning', 'finance', 'relationships'];
+
+/** ברירת מחדל: כל הקטגוריות (למשתמשים קיימים בלי מפתח אונבורדינג) */
+export const DEFAULT_ENABLED_CATEGORIES = [...ALL_CATEGORY_IDS];
+
+/** מפתח אחסון להעדפות אונבורדינג (לפי משתמש) */
+export function getOnboardingStorageKey(userId) {
+  return userId ? `rafael_os_onboarding_${userId}` : 'rafael_os_onboarding';
+}

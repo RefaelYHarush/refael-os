@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { LayoutGrid } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 
 export function ProfileModal({ isOpen, onClose }) {
-  const { displayName, setDisplayName } = useApp();
+  const { displayName, setDisplayName, reopenOnboarding } = useApp();
   const [value, setValue] = useState(displayName);
 
   useEffect(() => {
@@ -13,6 +14,11 @@ export function ProfileModal({ isOpen, onClose }) {
   const handleSave = () => {
     setDisplayName(value.trim());
     onClose();
+  };
+
+  const handleChangeCategories = () => {
+    onClose();
+    reopenOnboarding();
   };
 
   if (!isOpen) return null;
@@ -37,6 +43,14 @@ export function ProfileModal({ isOpen, onClose }) {
             className="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-brand focus:border-transparent"
           />
         </div>
+        <button
+          type="button"
+          onClick={handleChangeCategories}
+          className="w-full mb-3 py-2.5 rounded-xl border border-slate-300 dark:border-brand/30 font-bold text-slate-700 dark:text-on-brand hover:bg-slate-100 dark:hover:bg-brand-surface transition-colors flex items-center justify-center gap-2"
+        >
+          <LayoutGrid size={18} aria-hidden />
+          שנה קטגוריות בתפריט
+        </button>
         <div className="flex gap-2">
           <button
             type="button"

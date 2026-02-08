@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { LayoutDashboard, TrendingUp, Briefcase, Target, Bell, Settings, Zap, LogOut, Download, Sun, Moon, Menu, X } from 'lucide-react';
+import { LayoutDashboard, TrendingUp, Briefcase, Target, Calendar, Activity, BookOpen, Wallet, Users, Bell, Settings, Zap, LogOut, Download, Sun, Moon, Menu, X } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useApp } from '../../context/AppContext';
 import { useTheme } from '../../context/ThemeContext';
@@ -7,16 +7,22 @@ import { ProfileModal } from '../modals/ProfileModal';
 import { AccessibilityButton, AccessibilityFloatingButton } from '../ui/AccessibilityPanel';
 import { exportTradesToCsv, exportDailyTasksToCsv, exportFullBackup } from '../../lib/exportCsv';
 
-const TABS = [
+const ALL_TABS = [
   { id: 'dashboard', label: 'דשבורד', icon: LayoutDashboard },
   { id: 'trading', label: 'מסחר', icon: TrendingUp },
   { id: 'saas', label: 'SaaS Builder', icon: Briefcase },
   { id: 'vision', label: 'החזון', icon: Target },
+  { id: 'health', label: 'בריאות', icon: Activity },
+  { id: 'learning', label: 'למידה', icon: BookOpen },
+  { id: 'finance', label: 'כספים', icon: Wallet },
+  { id: 'relationships', label: 'יחסים', icon: Users },
+  { id: 'calendar', label: 'יומן', icon: Calendar },
 ];
 
-export function Layout({ activeTab, onTabChange, children }) {
+export function Layout({ activeTab, onTabChange, children, enabledCategories = ['dashboard', 'trading', 'saas', 'vision'] }) {
+  const TABS = ALL_TABS.filter((tab) => enabledCategories.includes(tab.id));
   const { signOut, hasSupabase } = useAuth();
-  const { displayName, trades, dailyTasks, visionMilestones, saasProjects, userXP, userLevel, syncError, setSyncError } = useApp();
+  const { displayName, trades, dailyTasks, visionMilestones, saasProjects, userXP, userLevel, healthEntries, learningItems, financeGoals, relationshipItems, syncError, setSyncError } = useApp();
   const { isDark, toggleTheme } = useTheme();
   const [showProfile, setShowProfile] = useState(false);
   const [showExport, setShowExport] = useState(false);
@@ -135,7 +141,7 @@ export function Layout({ activeTab, onTabChange, children }) {
                   </button>
                   <button
                     type="button"
-                    onClick={() => { exportFullBackup({ trades, dailyTasks, visionMilestones, saasProjects, userXP, userLevel, displayName }); setShowExport(false); }}
+                    onClick={() => { exportFullBackup({ trades, dailyTasks, visionMilestones, saasProjects, userXP, userLevel, displayName, healthEntries, learningItems, financeGoals, relationshipItems }); setShowExport(false); }}
                     className="block w-full text-right px-3 py-2 text-sm text-slate-700 dark:text-on-brand hover:bg-slate-100 dark:hover:bg-brand-dark/50 border-t border-slate-100 dark:border-brand-dark/50"
                   >
                     גיבוי מלא (JSON)
@@ -251,7 +257,7 @@ export function Layout({ activeTab, onTabChange, children }) {
               <p className="text-sm font-bold text-slate-600 dark:text-on-brand-muted pb-2">ייצוא / גיבוי</p>
               <button type="button" onClick={() => { exportTradesToCsv(trades); setShowExport(false); }} className="block w-full text-right px-4 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-brand-dark/50 min-h-[44px] font-medium text-slate-700 dark:text-on-brand">ייצוא מסחר (CSV)</button>
               <button type="button" onClick={() => { exportDailyTasksToCsv(dailyTasks); setShowExport(false); }} className="block w-full text-right px-4 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-brand-dark/50 min-h-[44px] font-medium text-slate-700 dark:text-on-brand">ייצוא משימות (CSV)</button>
-              <button type="button" onClick={() => { exportFullBackup({ trades, dailyTasks, visionMilestones, saasProjects, userXP, userLevel, displayName }); setShowExport(false); }} className="block w-full text-right px-4 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-brand-dark/50 min-h-[44px] font-medium text-slate-700 dark:text-on-brand">גיבוי מלא (JSON)</button>
+              <button type="button" onClick={() => { exportFullBackup({ trades, dailyTasks, visionMilestones, saasProjects, userXP, userLevel, displayName, healthEntries, learningItems, financeGoals, relationshipItems }); setShowExport(false); }} className="block w-full text-right px-4 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-brand-dark/50 min-h-[44px] font-medium text-slate-700 dark:text-on-brand">גיבוי מלא (JSON)</button>
               <button type="button" onClick={() => setShowExport(false)} className="block w-full text-right px-4 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-brand-dark/50 min-h-[44px] text-slate-500 dark:text-on-brand-muted">ביטול</button>
             </div>
           </div>
