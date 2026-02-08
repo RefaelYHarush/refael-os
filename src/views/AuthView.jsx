@@ -57,23 +57,23 @@ export function AuthView({ onBack }) {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-brand-page to-slate-100 dark:from-brand-dark dark:via-brand-dark dark:to-brand-surface flex items-center justify-center p-4" dir="rtl">
-      <div className="w-full max-w-sm bg-brand-white dark:bg-brand-surface-elevated rounded-2xl border border-slate-200 dark:border-brand/20 shadow-xl shadow-slate-200/50 dark:shadow-black/20 p-6 relative">
+      <div className="w-full max-w-sm bg-brand-white dark:bg-brand-surface-elevated rounded-2xl border border-slate-200 dark:border-brand/30 shadow-xl shadow-slate-200/50 dark:shadow-brand-glow-soft dark:shadow-brand/10 p-6 relative">
         {onBack && (
           <button
             type="button"
             onClick={onBack}
-            className="absolute top-4 right-4 flex items-center gap-1 text-sm text-slate-500 hover:text-brand-dark dark:hover:text-brand transition-colors"
+            className="absolute top-4 right-4 flex items-center gap-1 text-sm text-slate-500 dark:text-on-brand-muted hover:text-brand-dark dark:hover:text-brand transition-colors"
           >
             <ArrowRight size={16} />
             חזרה
           </button>
         )}
         <div className="flex flex-col items-center gap-2 mb-6">
-          <div className="w-12 h-12 bg-brand-dark rounded-xl flex items-center justify-center shadow-lg">
+          <div className="w-12 h-12 bg-brand-dark dark:bg-brand/20 rounded-xl flex items-center justify-center shadow-lg dark:shadow-brand-glow-soft border border-transparent dark:border-brand/30">
             <Zap className="text-brand" fill="currentColor" size={24} />
           </div>
-          <h1 className="text-xl font-black tracking-tight">REFAEL OS</h1>
-          <p className="text-xs text-slate-500 dark:text-on-brand-muted">Life Management System</p>
+          <h1 className="text-xl font-black tracking-tight text-slate-900 dark:text-brand">REFAEL OS</h1>
+          <p className="text-xs text-slate-500 dark:text-brand/80">Life Management System</p>
         </div>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
@@ -88,7 +88,7 @@ export function AuthView({ onBack }) {
               onChange={(e) => setEmail(e.target.value)}
               required
               autoComplete="email"
-              className="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-brand/30 bg-white dark:bg-brand-surface text-slate-900 dark:text-on-brand focus:ring-2 focus:ring-brand focus:border-transparent"
+              className="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-brand/30 bg-white dark:bg-brand-surface text-slate-900 dark:text-on-brand placeholder-slate-400 dark:placeholder-brand/40 focus:ring-2 focus:ring-brand focus:border-transparent dark:focus:border-brand transition-colors"
               placeholder="you@example.com"
             />
           </div>
@@ -105,7 +105,7 @@ export function AuthView({ onBack }) {
                 required={!isForgot}
                 minLength={6}
                 autoComplete={isSignUp ? 'new-password' : 'current-password'}
-                className="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-brand/30 bg-white dark:bg-brand-surface text-slate-900 dark:text-on-brand focus:ring-2 focus:ring-brand focus:border-transparent"
+                className="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-brand/30 bg-white dark:bg-brand-surface text-slate-900 dark:text-on-brand placeholder-slate-400 dark:placeholder-brand/40 focus:ring-2 focus:ring-brand focus:border-transparent dark:focus:border-brand transition-colors"
                 placeholder="••••••••"
               />
             </div>
@@ -130,7 +130,7 @@ export function AuthView({ onBack }) {
             <button
               type="button"
               onClick={() => { setIsForgot(true); setError(''); setMessage(''); }}
-              className="text-sm text-slate-500 dark:text-on-brand-muted hover:text-brand text-left"
+              className="text-sm text-slate-500 dark:text-brand hover:text-brand-dark dark:hover:opacity-90 text-left font-medium"
             >
               שכחתי סיסמה
             </button>
@@ -144,11 +144,11 @@ export function AuthView({ onBack }) {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-2.5 min-h-[44px] rounded-xl bg-brand-dark text-on-brand font-bold shadow-lg hover:opacity-90 disabled:opacity-50 transition-opacity flex items-center justify-center gap-2 touch-manipulation"
+            className="w-full py-2.5 min-h-[44px] rounded-xl bg-brand-dark dark:bg-brand text-brand dark:text-brand-dark font-bold shadow-lg dark:shadow-brand-glow hover:opacity-90 dark:hover:brightness-110 disabled:opacity-50 transition-all flex items-center justify-center gap-2 touch-manipulation"
           >
             {loading ? (
               <>
-                <span className="inline-block w-4 h-4 border-2 border-on-brand/30 border-t-on-brand rounded-full animate-spin" aria-hidden />
+                <span className="inline-block w-4 h-4 border-2 border-brand-dark/40 border-t-brand-dark rounded-full animate-spin" aria-hidden />
                 <span>מתחבר...</span>
               </>
             ) : isForgot ? 'שלח קישור לאיפוס' : isSignUp ? 'הרשמה' : 'התחברות'}
@@ -156,7 +156,7 @@ export function AuthView({ onBack }) {
           <button
             type="button"
             onClick={() => { setIsSignUp((v) => !v); setIsForgot(false); setError(''); setMessage(''); clearOauthError(); }}
-            className="text-sm text-slate-500 dark:text-on-brand-muted hover:text-brand"
+            className="text-sm text-slate-500 dark:text-brand hover:text-brand-dark dark:hover:text-brand/90 font-medium"
           >
             {isSignUp ? 'כבר יש לך חשבון? התחבר' : isForgot ? 'חזרה להתחברות' : 'אין לך חשבון? הרשם'}
           </button>
@@ -169,14 +169,14 @@ export function AuthView({ onBack }) {
                 <div className="w-full border-t border-slate-200 dark:border-slate-600" />
               </div>
               <div className="relative flex justify-center text-xs">
-                <span className="px-2 bg-brand-white dark:bg-brand-surface-elevated text-slate-500 dark:text-on-brand-muted">או</span>
+                <span className="px-2 bg-brand-white dark:bg-brand-surface-elevated text-slate-500 dark:text-brand/90">או</span>
               </div>
             </div>
             <button
               type="button"
               onClick={handleGoogleSignIn}
               disabled={googleLoading}
-              className="w-full py-2.5 min-h-[44px] rounded-xl border-2 border-slate-300 dark:border-brand/30 bg-white dark:bg-brand-surface text-slate-700 dark:text-on-brand font-semibold flex items-center justify-center gap-2 hover:bg-slate-50 dark:hover:bg-brand-dark/50 disabled:opacity-50 transition-colors focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-brand-page dark:focus:ring-offset-brand-dark touch-manipulation"
+              className="w-full py-2.5 min-h-[44px] rounded-xl border-2 border-slate-300 dark:border-brand/40 bg-white dark:bg-brand-surface text-slate-700 dark:text-on-brand font-semibold flex items-center justify-center gap-2 hover:bg-slate-50 dark:hover:border-brand/60 dark:hover:bg-brand/5 disabled:opacity-50 transition-colors focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-brand-page dark:focus:ring-offset-brand-dark touch-manipulation"
               aria-label="התחבר עם Google"
             >
               {googleLoading ? (
