@@ -14,10 +14,12 @@ export function ResetPasswordPage() {
   const [message, setMessage] = useState('');
   const [isRecovery, setIsRecovery] = useState(false);
 
+  // Supabase recovery links use hash (#type=recovery&...). We also support type=recovery in query for compatibility.
   useEffect(() => {
     if (!hasSupabase) return;
     const hash = window.location.hash || '';
-    if (hash.includes('type=recovery')) setIsRecovery(true);
+    const search = window.location.search || '';
+    if (hash.includes('type=recovery') || search.includes('type=recovery')) setIsRecovery(true);
   }, [hasSupabase]);
 
   const handleSubmit = async (e) => {

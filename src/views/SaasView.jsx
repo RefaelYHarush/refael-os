@@ -12,6 +12,7 @@ export function SaasView() {
   const [showAddProject, setShowAddProject] = useState(false);
   const [editingProject, setEditingProject] = useState(null);
   const [dropTargetColumn, setDropTargetColumn] = useState(null);
+  const [dropError, setDropError] = useState(null);
 
   const columns = [
     { key: 'Idea', label: 'Idea Phase', statuses: ['Idea'] },
@@ -31,13 +32,17 @@ export function SaasView() {
   const handleDrop = (e, col) => {
     e.preventDefault();
     setDropTargetColumn(null);
+    setDropError(null);
     const raw = e.dataTransfer.getData('application/json');
     if (!raw) return;
     try {
       const project = JSON.parse(raw);
       const newStatus = COLUMN_STATUS[col.key];
       if (newStatus && project.status !== newStatus) updateSaasProject({ ...project, status: newStatus });
-    } catch (_) {}
+    } catch {
+      setDropError('שגיאה בעדכון הסטטוס – נסה שוב');
+      setTimeout(() => setDropError(null), 5000);
+    }
   };
 
   const handleDragOver = (e, col) => {
@@ -50,6 +55,12 @@ export function SaasView() {
     <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-500">
       <h2 className="text-2xl font-bold">SaaS Builder</h2>
       <p className="text-sm text-slate-500 dark:text-on-brand-muted">גרור כרטיסים בין עמודות כדי לעדכן סטטוס</p>
+      {dropError && (
+        <div className="flex items-center justify-between gap-3 px-4 py-3 rounded-xl bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 text-amber-800 dark:text-amber-200 text-sm" role="alert">
+          <span>{dropError}</span>
+          <button type="button" onClick={() => setDropError(null)} className="shrink-0 px-2 py-1 rounded hover:bg-amber-200 dark:hover:bg-amber-800 font-medium" aria-label="סגור">✕</button>
+        </div>
+      )}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {columns.map((col) => (
           <div

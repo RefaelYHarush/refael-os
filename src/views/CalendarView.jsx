@@ -59,6 +59,7 @@ export function CalendarView() {
 
   const [calendars, setCalendars] = useState([]);
   const [calendarsLoading, setCalendarsLoading] = useState(false);
+  const [calendarsError, setCalendarsError] = useState(null);
 
   const [syncLoading, setSyncLoading] = useState(false);
   const [syncResult, setSyncResult] = useState(null);
@@ -68,9 +69,11 @@ export function CalendarView() {
   const loadCalendars = useCallback(async () => {
     if (!canUseApi || !session?.provider_token) return;
     setCalendarsLoading(true);
-    const { calendars: list } = await fetchCalendarList(session.provider_token);
+    setCalendarsError(null);
+    const { calendars: list, error } = await fetchCalendarList(session.provider_token);
     setCalendarsLoading(false);
-    setCalendars(list);
+    if (error) setCalendarsError(error);
+    else setCalendars(list);
   }, [canUseApi, session?.provider_token]);
 
   const loadEvents = useCallback(async () => {
@@ -221,6 +224,12 @@ export function CalendarView() {
               </button>
             </div>
           </div>
+          {calendarsError && (
+            <div className="flex items-center gap-2 p-3 rounded-xl bg-amber-50 dark:bg-amber-900/20 text-amber-800 dark:text-amber-200 text-sm mb-3" role="alert">
+              <AlertCircle size={18} className="shrink-0" />
+              <span>{calendarsError}</span>
+            </div>
+          )}
           {eventsError && (
             <div className="flex items-center gap-2 p-3 rounded-xl bg-amber-50 dark:bg-amber-900/20 text-amber-800 dark:text-amber-200 text-sm mb-3" role="alert">
               <AlertCircle size={18} className="shrink-0" />

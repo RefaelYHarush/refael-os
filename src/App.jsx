@@ -59,7 +59,7 @@ function AppContent() {
 }
 
 function AppWithAuth() {
-  const { user, session, authLoading, hasSupabase } = useAuth();
+  const { user, session, authLoading, hasSupabase, clearOauthError } = useAuth();
   const [showAuth, setShowAuth] = useState(false);
 
   if (authLoading) {
@@ -72,7 +72,7 @@ function AppWithAuth() {
 
   if (hasSupabase && !user) {
     if (showAuth) {
-      return <AuthView onBack={() => setShowAuth(false)} />;
+      return <AuthView onBack={() => { clearOauthError(); setShowAuth(false); }} />;
     }
     return (
       <LandingView

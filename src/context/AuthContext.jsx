@@ -3,9 +3,25 @@ import { supabase, hasSupabase } from '../lib/supabase';
 
 const AuthContext = createContext(null);
 
+function parseOAuthErrorFromHash() {
+  if (typeof window === 'undefined') return null;
+  const hash = window.location.hash || '';
+  if (!hash.includes('error=')) return null;
+  try {
+    const params = new URLSearchParams(hash.slice(1));
+    const code = params.get('error');
+    if (!code) return null;
+    if (code === 'access_denied') return 'ההתחברות עם גוגל בוטלה';
+    return params.get('error_description') || 'אירעה שגיאה בהתחברות עם גוגל';
+  } catch {
+    return 'אירעה שגיאה בהתחברות עם גוגל';
+  }
+}
+
 export function AuthProvider({ children }) {
   const [session, setSession] = useState(null);
   const [authLoading, setAuthLoading] = useState(hasSupabase);
+  const [oauthError, setOauthError] = useState(null);
 
   useEffect(() => {
     if (!hasSupabase) {
@@ -15,10 +31,13 @@ export function AuthProvider({ children }) {
     supabase.auth.getSession().then(({ data: { session: s } }) => {
       setSession(s);
       setAuthLoading(false);
-      if (s && typeof window !== 'undefined' && window.history.replaceState) {
+      if (typeof window !== 'undefined' && window.history.replaceState) {
         const hash = window.location.hash || '';
         const search = window.location.search || '';
-        if (/access_token|refresh_token|error/.test(hash) || /code=/.test(search)) {
+        const hasAuthInUrl = /access_token|refresh_token|error/.test(hash) || /code=/.test(search);
+        if (hasAuthInUrl) {
+          const oauthErr = parseOAuthErrorFromHash();
+          if (oauthErr) setOauthError(oauthErr);
           window.history.replaceState(null, '', window.location.origin + window.location.pathname);
         }
       }
@@ -27,14 +46,14 @@ export function AuthProvider({ children }) {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, s) => {
       setSession(s);
-      // אחרי התחברות מוצלחת – מנקים את ה-URL hash/query של OAuth כדי שהכתובת תוצג נכון
-      if (s && typeof window !== 'undefined' && window.history.replaceState) {
+      if (typeof window !== 'undefined' && window.history.replaceState) {
         const hash = window.location.hash || '';
         const search = window.location.search || '';
         const hasAuthInUrl = /access_token|refresh_token|error/.test(hash) || /code=/.test(search);
         if (hasAuthInUrl) {
-          const cleanPath = window.location.origin + window.location.pathname;
-          window.history.replaceState(null, '', cleanPath);
+          const oauthErr = parseOAuthErrorFromHash();
+          if (oauthErr) setOauthError(oauthErr);
+          window.history.replaceState(null, '', window.location.origin + window.location.pathname);
         }
       }
     });
@@ -95,6 +114,8 @@ export function AuthProvider({ children }) {
     resetPassword,
     updatePassword,
     hasSupabase,
+    oauthError,
+    clearOauthError: () => setOauthError(null),
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

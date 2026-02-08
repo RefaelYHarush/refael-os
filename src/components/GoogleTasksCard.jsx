@@ -57,7 +57,7 @@ export function GoogleTasksCard() {
           <div className="min-w-0">
             <h3 className="font-bold text-slate-900 dark:text-on-brand mb-1">משימות גוגל</h3>
             <p className="text-sm text-slate-600 dark:text-on-brand-muted mb-4">
-              חבר את חשבון גוגל כדי לצפות ולנהל את משימות Google Tasks ישירות מהאתר.
+              כדי לראות ולנהל משימות גוגל מהאתר, התחבר עם גוגל ואשר גישה ל־Google Tasks בהמשך ההתחברות.
             </p>
             <button
               type="button"
@@ -196,9 +196,10 @@ export function GoogleTasksCard() {
       )}
 
       {taskLists.length === 0 && !loading && hasToken && !error && (
-        <p className="text-sm text-slate-500 dark:text-on-brand-muted py-4">
-          לא נמצאו רשימות משימות. צור רשימה ב־Google Tasks ואז רענן.
-        </p>
+        <div className="text-sm text-slate-500 dark:text-on-brand-muted py-4 space-y-2">
+          <p>לא נמצאו רשימות משימות.</p>
+          <p>אם התחברת בלי לאשר גישה למשימות: התחבר מחדש עם גוגל ואשר גישה ל־Google Tasks, או צור רשימה ב־Google Tasks ורענן.</p>
+        </div>
       )}
     </Card>
   );

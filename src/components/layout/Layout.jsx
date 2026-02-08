@@ -22,7 +22,7 @@ const ALL_TABS = [
 export function Layout({ activeTab, onTabChange, children, enabledCategories = ['dashboard', 'trading', 'saas', 'vision'] }) {
   const TABS = ALL_TABS.filter((tab) => enabledCategories.includes(tab.id));
   const { signOut, hasSupabase } = useAuth();
-  const { displayName, trades, dailyTasks, visionMilestones, saasProjects, userXP, userLevel, healthEntries, learningItems, financeGoals, relationshipItems, syncError, setSyncError } = useApp();
+  const { displayName, trades, dailyTasks, visionMilestones, saasProjects, userXP, userLevel, healthEntries, learningItems, financeGoals, relationshipItems, syncError, setSyncError, syncBannerDismissed, setSyncBannerDismissed } = useApp();
   const { isDark, toggleTheme } = useTheme();
   const [showProfile, setShowProfile] = useState(false);
   const [showExport, setShowExport] = useState(false);
@@ -265,10 +265,17 @@ export function Layout({ activeTab, onTabChange, children, enabledCategories = [
 
         <ProfileModal isOpen={showProfile} onClose={() => setShowProfile(false)} />
 
-        {syncError && (
+        {syncError && !syncBannerDismissed && (
           <div className="mb-4 px-4 py-3 rounded-xl bg-amber-100 dark:bg-amber-900/30 border border-amber-200 dark:border-amber-800 text-amber-800 dark:text-amber-200 text-sm flex items-center justify-between gap-3" role="alert">
             <span>{syncError}</span>
-            <button type="button" onClick={() => setSyncError(null)} className="shrink-0 px-2 py-1 rounded hover:bg-amber-200 dark:hover:bg-amber-800 font-medium" aria-label="סגור">✕</button>
+            <button type="button" onClick={() => setSyncBannerDismissed(true)} className="shrink-0 px-2 py-1 rounded hover:bg-amber-200 dark:hover:bg-amber-800 font-medium" aria-label="סגור">✕</button>
+          </div>
+        )}
+        {syncError && syncBannerDismissed && (
+          <div className="mb-2 px-3 py-2 rounded-lg bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 text-amber-700 dark:text-amber-300 text-xs flex items-center gap-2" role="status">
+            <span className="inline-block w-2 h-2 rounded-full bg-amber-500" aria-hidden />
+            <span>אין סנכרון – הנתונים נשמרים מקומית</span>
+            <button type="button" onClick={() => setSyncBannerDismissed(false)} className="mr-auto text-[10px] underline hover:no-underline" aria-label="הצג פרטים">הצג</button>
           </div>
         )}
 

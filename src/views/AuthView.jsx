@@ -4,7 +4,7 @@ import { Zap, ArrowRight } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 export function AuthView({ onBack }) {
-  const { signIn, signUp, signInWithGoogle, resetPassword, hasSupabase } = useAuth();
+  const { signIn, signUp, signInWithGoogle, resetPassword, hasSupabase, oauthError, clearOauthError } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isSignUp, setIsSignUp] = useState(false);
@@ -17,6 +17,7 @@ export function AuthView({ onBack }) {
 
   const handleGoogleSignIn = async () => {
     setError('');
+    clearOauthError();
     setGoogleLoading(true);
     try {
       await signInWithGoogle();
@@ -134,7 +135,11 @@ export function AuthView({ onBack }) {
               שכחתי סיסמה
             </button>
           )}
-          {error && <p className="text-sm text-red-600 dark:text-red-400" role="alert">{error}</p>}
+          {(error || oauthError) && (
+            <p className="text-sm text-red-600 dark:text-red-400" role="alert">
+              {error || oauthError}
+            </p>
+          )}
           {message && <p className="text-sm text-green-600 dark:text-green-400" role="status">{message}</p>}
           <button
             type="submit"
@@ -150,7 +155,7 @@ export function AuthView({ onBack }) {
           </button>
           <button
             type="button"
-            onClick={() => { setIsSignUp((v) => !v); setIsForgot(false); setError(''); setMessage(''); }}
+            onClick={() => { setIsSignUp((v) => !v); setIsForgot(false); setError(''); setMessage(''); clearOauthError(); }}
             className="text-sm text-slate-500 dark:text-on-brand-muted hover:text-brand"
           >
             {isSignUp ? 'כבר יש לך חשבון? התחבר' : isForgot ? 'חזרה להתחברות' : 'אין לך חשבון? הרשם'}

@@ -57,6 +57,7 @@ export function AppProvider({ children, userId }) {
   const [relationshipItems, setRelationshipItems] = usePersistedState(STORAGE_KEYS.RELATIONSHIPS, DEFAULT_RELATIONSHIP_ITEMS);
   const [displayName, setDisplayName] = useState('');
   const [syncError, setSyncError] = useState(null);
+  const [syncBannerDismissed, setSyncBannerDismissed] = useState(false);
   const [onboardingDone, setOnboardingDone] = useState(true);
   const [enabledCategories, setEnabledCategories] = useState(() => DEFAULT_ENABLED_CATEGORIES);
   const [onboardingLoaded, setOnboardingLoaded] = useState(false);
@@ -108,6 +109,8 @@ export function AppProvider({ children, userId }) {
     loadAll(userId)
       .then((data) => {
         if (data) {
+          setSyncError(null);
+          setSyncBannerDismissed(false);
           setTrades(data.trades);
           setSaasProjects(data.saasProjects);
           setVisionMilestones(data.visionMilestones);
@@ -147,7 +150,7 @@ export function AppProvider({ children, userId }) {
     if (!hasSupabase || !userId || !initialLoadDone.current) return;
     withRetry(() => saveTrades(userId, trades), (e) => {
       console.warn('saveTrades failed', e);
-      setSyncError('שגיאה בסנכרון – הנתונים נשמרו מקומית');
+      setSyncError('שגיאה בסנכרון המסחר – נשמר מקומית');
     });
   }, [userId, trades]);
 
@@ -155,7 +158,7 @@ export function AppProvider({ children, userId }) {
     if (!hasSupabase || !userId || !initialLoadDone.current) return;
     withRetry(() => saveSaasProjects(userId, saasProjects), (e) => {
       console.warn('saveSaasProjects failed', e);
-      setSyncError('שגיאה בסנכרון – הנתונים נשמרו מקומית');
+      setSyncError('שגיאה בסנכרון פרויקטי SaaS – נשמר מקומית');
     });
   }, [userId, saasProjects]);
 
@@ -163,7 +166,7 @@ export function AppProvider({ children, userId }) {
     if (!hasSupabase || !userId || !initialLoadDone.current) return;
     withRetry(() => saveVisionMilestones(userId, visionMilestones), (e) => {
       console.warn('saveVisionMilestones failed', e);
-      setSyncError('שגיאה בסנכרון – הנתונים נשמרו מקומית');
+      setSyncError('שגיאה בסנכרון החזון – נשמר מקומית');
     });
   }, [userId, visionMilestones]);
 
@@ -171,7 +174,7 @@ export function AppProvider({ children, userId }) {
     if (!hasSupabase || !userId || !initialLoadDone.current) return;
     withRetry(() => saveDailyTasks(userId, dailyTasks), (e) => {
       console.warn('saveDailyTasks failed', e);
-      setSyncError('שגיאה בסנכרון – הנתונים נשמרו מקומית');
+      setSyncError('שגיאה בסנכרון המשימות – נשמר מקומית');
     });
   }, [userId, dailyTasks]);
 
@@ -179,7 +182,7 @@ export function AppProvider({ children, userId }) {
     if (!hasSupabase || !userId || !initialLoadDone.current) return;
     withRetry(() => saveUserProfile(userId, userXP, userLevel, displayName, enabledCategories), (e) => {
       console.warn('saveUserProfile failed', e);
-      setSyncError('שגיאה בסנכרון – הנתונים נשמרו מקומית');
+      setSyncError('שגיאה בסנכרון הפרופיל – נשמר מקומית');
     });
   }, [userId, userXP, userLevel, displayName, enabledCategories]);
 
@@ -187,6 +190,7 @@ export function AppProvider({ children, userId }) {
     if (!hasSupabase || !userId || !initialLoadDone.current) return;
     withRetry(() => saveCalendarProfile(userId, calendarEmbedUrl, selectedCalendarId), (e) => {
       console.warn('saveCalendarProfile failed', e);
+      setSyncError('שגיאה בשמירת הגדרות היומן – נשמר מקומית');
     });
   }, [userId, calendarEmbedUrl, selectedCalendarId]);
 
@@ -194,7 +198,7 @@ export function AppProvider({ children, userId }) {
     if (!hasSupabase || !userId || !initialLoadDone.current) return;
     withRetry(() => saveHealthEntries(userId, healthEntries), (e) => {
       console.warn('saveHealthEntries failed', e);
-      setSyncError('שגיאה בסנכרון – הנתונים נשמרו מקומית');
+      setSyncError('שגיאה בסנכרון הבריאות – נשמר מקומית');
     });
   }, [userId, healthEntries]);
 
@@ -202,7 +206,7 @@ export function AppProvider({ children, userId }) {
     if (!hasSupabase || !userId || !initialLoadDone.current) return;
     withRetry(() => saveLearningItems(userId, learningItems), (e) => {
       console.warn('saveLearningItems failed', e);
-      setSyncError('שגיאה בסנכרון – הנתונים נשמרו מקומית');
+      setSyncError('שגיאה בסנכרון הלמידה – נשמר מקומית');
     });
   }, [userId, learningItems]);
 
@@ -210,7 +214,7 @@ export function AppProvider({ children, userId }) {
     if (!hasSupabase || !userId || !initialLoadDone.current) return;
     withRetry(() => saveFinanceGoals(userId, financeGoals), (e) => {
       console.warn('saveFinanceGoals failed', e);
-      setSyncError('שגיאה בסנכרון – הנתונים נשמרו מקומית');
+      setSyncError('שגיאה בסנכרון הכספים – נשמר מקומית');
     });
   }, [userId, financeGoals]);
 
@@ -218,7 +222,7 @@ export function AppProvider({ children, userId }) {
     if (!hasSupabase || !userId || !initialLoadDone.current) return;
     withRetry(() => saveRelationships(userId, relationshipItems), (e) => {
       console.warn('saveRelationships failed', e);
-      setSyncError('שגיאה בסנכרון – הנתונים נשמרו מקומית');
+      setSyncError('שגיאה בסנכרון היחסים – נשמר מקומית');
     });
   }, [userId, relationshipItems]);
 
@@ -399,6 +403,8 @@ export function AppProvider({ children, userId }) {
     loading,
     syncError,
     setSyncError,
+    syncBannerDismissed,
+    setSyncBannerDismissed,
     onboardingDone,
     onboardingLoaded,
     enabledCategories,

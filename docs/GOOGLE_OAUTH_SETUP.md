@@ -27,16 +27,55 @@ https://ubfebxeqetfxlqkxqwtb.supabase.co/auth/v1/callback
 
 ---
 
-## אם מופיעה השגיאה: "The developer hasn't given you access to this app"
+## "האפליקציה לא אומתה" / This app isn't verified – איך לפתור
 
-**אם ב־Audience מופיע "In production"** – לא צריך להוסיף Test users; נסה שוב "התחבר עם Google". אם עדיין מופיעה אזהרת "אפליקציה לא מאומתת", אפשר להמשיך דרך "מתקדם" → "עבור ל־[שם האתר] (לא מאובטח)".
+גוגל מציגה הודעה כזו כי האפליקציה במצב **Testing** (לא עברה אימות רשמי של גוגל). יש שתי דרכים:
 
-**אם ב־Audience מופיע "Testing"** – רק כתובות שמופיעות כ-**Test users** יכולות להתחבר. מה לעשות:
+---
 
-1. היכנס ל־[Google Cloud Console → Audience](https://console.cloud.google.com/auth/audience?project=refaeel-os) (פרויקט "refaeel os").
-2. גלול ל־**Test users**.
-3. לחץ **+ ADD USERS** והוסף את **כתובת הגוגל שלך**.
-4. שמור. נסה שוב "התחבר עם Google" או "חבר גישה למשימות גוגל" באתר.
+### אפשרות 1: להמשיך בלי אימות (מהיר – מתאים לשימוש אישי או צוות קטן)
+
+**שלב א – להוסיף משתמשי בדיקה (Test users):**
+
+1. היכנס ל־[Google Cloud Console](https://console.cloud.google.com/) ובחר את הפרויקט של Refael OS.
+2. בתפריט השמאלי: **APIs & Services** → **OAuth consent screen** (או ישירות: [OAuth consent screen](https://console.cloud.google.com/apis/credentials/consent)).
+3. גלול ל־**Test users**.
+4. לחץ **+ ADD USERS** והוסף את **כתובת Gmail שלך** (וכל משתמש נוסף שאמור להתחבר).
+5. **Save**.
+
+**שלב ב – להתחבר למרות האזהרה:**
+
+1. באתר לחץ "התחבר עם Google".
+2. אם מופיעה המסך **"Google לא אימתה את האפליקציה הזו"** (עם הכפתור "חזרה למצב בטוח" ו"מתקדם"):
+   - **אל** תלחץ "חזרה למצב בטוח".
+   - לחץ **מתקדם** (הקישור בתחתית).
+   - במסך הבא תופיע האפשרות **"עבור ל־[Refael OS] (לא מאובטח)"** – לחץ עליה.
+3. אשר גישה – ההתחברות תעבוד.
+
+זה בטוח כי **רק** הכתובות שהוספת כ־Test users יכולות להתחבר.
+
+---
+
+### אפשרות 2: שהמסך לא יופיע בכלל – אימות האפליקציה אצל גוגל
+
+אם תרצה ש**המסך "Google לא אימתה את האפליקציה" לא יופיע** (וגם בלי "מתקדם"), צריך לפרסם את האפליקציה ולשלוח אותה **לאימות (Verification)** אצל גוגל.
+
+**הנחיות מפורטות:** יש מסמך נפרד עם כל השלבים – [**איך לגרום למסך לא להופיע (אימות אפליקציה)**](./GOOGLE_APP_VERIFICATION.md).
+
+**בקצרה:**
+1. [OAuth consent screen](https://console.cloud.google.com/apis/credentials/consent) → **PUBLISH APP** (העברה ל־Production).
+2. **Prepare for verification** / **Submit for verification** – למלא קישורים למדיניות פרטיות ולתנאי שימוש, להעלות סרטון הדגמה, להסביר את השימוש ב־scope (יומן).
+3. לשלוח – גוגל בודקים (בדרך כלל עד כמה שבועות). אחרי אישור – המסך לא יופיע יותר.
+
+לאפליקציה אישית/פנימית בדרך כלל מספיק **אפשרות 1** (Test users + "מתקדם" → "עבור ל־...").
+
+---
+
+## אם מופיעה: "The developer hasn't given you access to this app"
+
+**אם ב־Audience מופיע "In production"** – לא צריך להוסיף Test users; נסה שוב "התחבר עם Google". אם עדיין מופיעה "אפליקציה לא מאומתת", המשך דרך **מתקדם** → **עבור ל־[שם האתר] (לא מאובטח)**.
+
+**אם ב־Audience מופיע "Testing"** – רק כתובות שמופיעות כ-**Test users** יכולות להתחבר. הוסף את עצמך (ואת שאר המשתמשים) ב־[OAuth consent screen → Test users](https://console.cloud.google.com/apis/credentials/consent) (פרויקט הנכון) → **+ ADD USERS** → שמור.
 
 **חשוב:** אם אתה משתמש ב־localhost (למשל `http://localhost:5179`), וודא שב־**Supabase → Authentication → URL Configuration** ה־Redirect URLs כולל את ה־localhost שלך.
 
@@ -86,8 +125,10 @@ SUPABASE_PAT="הטוקן_שלך" \
 
 ב־[URL Configuration](https://supabase.com/dashboard/project/ubfebxeqetfxlqkxqwtb/auth/url-configuration):
 
-- **Site URL**: כתובת האתר (production), למשל `https://refael-os.vercel.app`.
-- **Redirect URLs**: רשימת הכתובות שאליהן Supabase יכול להפנות אחרי התחברות. חובה להוסיף כאן את השרת המקומי.
+- **Site URL**: כתובת האתר (production), **בדיוק** כמו שמופיע בדפדפן – בלי סלאש בסוף. למשל `https://refael-os.vercel.app` (לא `https://refael-os.vercel.app/`).
+- **Redirect URLs**: רשימת הכתובות שאליהן Supabase יכול להפנות אחרי התחברות. חובה ש-**כתובת השורש של האתר** תהיה ברשימה (אותה כתובת כמו Site URL). חובה גם להוסיף את הכתובת המקומית לפיתוח.
+
+**אם אחרי ההתחברות עם גוגל ההפניה "לא נכונה"** (לא נכנסים לאפליקציה, או נשארים עם כתובת מוזרה): וודא ש־Site URL ו־Redirect URLs תואמים **בדיוק** לכתובת שבה האתר רץ (כולל http vs https, עם או בלי www). אחרי התחברות מוצלחת האפליקציה מנקה אוטומטית את ה־hash מה־URL כדי שהכתובת תוצג יפה.
 
 ---
 
