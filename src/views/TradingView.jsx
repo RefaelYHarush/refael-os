@@ -106,7 +106,7 @@ export function TradingView() {
                     {trade.pnl > 0 ? '+' : ''}{trade.pnl}$
                   </td>
                   <td className="p-4 text-left">
-                    <button type="button" className="text-slate-400 hover:text-brand"><ChevronRight size={18} /></button>
+                    <button type="button" className="text-slate-400 hover:text-brand" aria-label="פרטי עסקה"><ChevronRight size={18} aria-hidden /></button>
                   </td>
                 </tr>
               ))}

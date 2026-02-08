@@ -26,6 +26,13 @@ export function SimplePageLayout({ title, children }) {
         <h1 className="text-2xl font-bold mb-6">{title}</h1>
         <div className="prose prose-slate dark:prose-invert max-w-none">{children}</div>
       </main>
+      <footer className="border-t border-slate-200 dark:border-slate-700/50 mt-12 py-4">
+        <div className="max-w-3xl mx-auto px-4 flex flex-wrap justify-center gap-4 text-sm text-slate-500 dark:text-slate-400">
+          <Link to="/about" className="hover:text-brand-dark dark:hover:text-brand transition-colors">אודות</Link>
+          <Link to="/terms" className="hover:text-brand-dark dark:hover:text-brand transition-colors">תנאי שימוש</Link>
+          <Link to="/privacy" className="hover:text-brand-dark dark:hover:text-brand transition-colors">מדיניות פרטיות</Link>
+        </div>
+      </footer>
     </div>
   );
 }

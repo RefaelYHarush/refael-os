@@ -53,12 +53,42 @@ SUPABASE_PAT="הטוקן_שלך" \
 
 ---
 
-## שלב 3: Site URL (אם צריך)
+## שלב 3: Vercel – משתני סביבה (חובה כדי שהכפתור יופיע)
+
+כדי שכפתור "התחבר עם Google" יוצג באתר ב-Vercel, חייבים להגדיר שם את משתני Supabase:
+
+1. Vercel → הפרויקט **refael-os** → **Settings** → **Environment Variables**
+2. הוסף:
+   - **Name:** `VITE_SUPABASE_URL` | **Value:** `https://ubfebxeqetfxlqkxqwtb.supabase.co`
+   - **Name:** `VITE_SUPABASE_ANON_KEY` | **Value:** (המפתח מ־Supabase → Project Settings → API → anon public)
+3. **Redeploy** את האתר (Deployments → ⋮ → Redeploy).
+
+בלי המשתנים האלה האפליקציה לא יודעת שיש Supabase, ולכן הכפתור לא מוצג.
+
+---
+
+## שלב 4: Site URL ו-Redirect URLs
 
 ב־[URL Configuration](https://supabase.com/dashboard/project/ubfebxeqetfxlqkxqwtb/auth/url-configuration):
 
 - **Site URL**: כתובת האתר (production), למשל `https://refael-os.vercel.app`.
-- לפיתוח מקומי אפשר להוסיף ב-**Redirect URLs**: `http://localhost:5173`.
+- **Redirect URLs**: רשימת הכתובות שאליהן Supabase יכול להפנות אחרי התחברות. חובה להוסיף כאן את השרת המקומי.
+
+---
+
+## פיתוח מקומי – התחברות עם גוגל "מבוילת"
+
+אם התחברות עם גוגל עובדת ב-production אבל **לא ב-localhost**, Supabase חוסם הפניה חזרה לשרת המקומי.
+
+**פתרון:** להוסיף את כתובת הלוקל ל-**Redirect URLs** ב-Supabase:
+
+1. פתח [Supabase → URL Configuration](https://supabase.com/dashboard/project/ubfebxeqetfxlqkxqwtb/auth/url-configuration).
+2. בשדה **Redirect URLs** הוסף שורה (או וודא שהיא קיימת):
+   - `http://localhost:5173`
+   - אם Vite רץ על פורט אחר (למשל 5176), הוסף גם: `http://localhost:5176`.
+3. **Save**.
+
+אחרי השמירה – נסה שוב "התחבר עם Google" מהשרת המקומי.
 
 ---
 

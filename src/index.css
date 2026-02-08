@@ -60,3 +60,13 @@
 .pb-safe {
   padding-bottom: max(env(safe-area-inset-bottom, 0), 0.25rem);
 }
+
+/* נגישות: טבעת פוקוס גלויה לניווט במקלדת */
+button:focus-visible,
+a:focus-visible,
+[role="button"]:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--brand-light);
+  outline-offset: 2px;
+}

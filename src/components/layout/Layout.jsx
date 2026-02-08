@@ -43,6 +43,12 @@ export function Layout({ activeTab, onTabChange, children }) {
 
   return (
     <div className="min-h-screen bg-brand-page dark:bg-brand-dark/95 text-slate-900 dark:text-slate-100 font-sans p-3 sm:p-4 md:p-6 transition-colors duration-300 safe-area-pb" dir="rtl">
+      <a
+        href="#main-content"
+        className="absolute right-4 -top-[200%] z-[100] px-4 py-2 bg-brand-dark text-white rounded-lg outline-none focus:top-4 focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-brand-page dark:focus:ring-offset-brand-dark transition-[top]"
+      >
+        דלג לתוכן הראשי
+      </a>
       <div className="max-w-7xl mx-auto flex flex-col h-full">
         <header className="flex flex-row justify-between items-center gap-3 md:gap-6 mb-6 md:mb-8 bg-brand-white dark:bg-brand-dark p-3 md:p-4 rounded-2xl border border-slate-200 dark:border-brand-dark/80 shadow-sm sticky top-2 z-40">
           <div className="flex items-center gap-3 md:gap-4 min-w-0">
@@ -55,21 +61,25 @@ export function Layout({ activeTab, onTabChange, children }) {
             </div>
           </div>
 
-          <nav className="hidden md:flex bg-slate-100 dark:bg-slate-800/50 p-1.5 rounded-xl overflow-x-auto no-scrollbar">
-            {TABS.map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => onTabChange(tab.id)}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all whitespace-nowrap min-h-[44px] ${
-                  activeTab === tab.id
-                    ? 'bg-brand-dark text-white shadow-lg shadow-brand-dark/20 scale-100'
-                    : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 scale-95 hover:scale-100'
-                }`}
-              >
-                <tab.icon size={16} className={activeTab === tab.id ? 'text-brand' : ''} />
-                {tab.label}
-              </button>
-            ))}
+          <nav className="hidden md:flex bg-slate-100 dark:bg-slate-800/50 p-1.5 rounded-xl overflow-x-auto no-scrollbar" aria-label="ניווט ראשי">
+            <div role="tablist" className="flex gap-1">
+              {TABS.map((tab) => (
+                <button
+                  key={tab.id}
+                  role="tab"
+                  aria-selected={activeTab === tab.id}
+                  onClick={() => onTabChange(tab.id)}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all whitespace-nowrap min-h-[44px] ${
+                    activeTab === tab.id
+                      ? 'bg-brand-dark text-white shadow-lg shadow-brand-dark/20 scale-100'
+                      : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 scale-95 hover:scale-100'
+                  }`}
+                >
+                  <tab.icon size={16} className={activeTab === tab.id ? 'text-brand' : ''} aria-hidden />
+                  {tab.label}
+                </button>
+              ))}
+            </div>
           </nav>
 
           <div className="flex md:hidden items-center gap-1">
@@ -89,8 +99,9 @@ export function Layout({ activeTab, onTabChange, children }) {
               onClick={toggleTheme}
               className="w-9 h-9 flex items-center justify-center rounded-full text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
               title={isDark ? 'מצב בהיר' : 'מצב כהה'}
+              aria-label={isDark ? 'מצב בהיר' : 'מצב כהה'}
             >
-              {isDark ? <Sun size={18} /> : <Moon size={18} />}
+              {isDark ? <Sun size={18} aria-hidden /> : <Moon size={18} aria-hidden />}
             </button>
             <div className="relative" ref={exportRef}>
               <button
@@ -98,8 +109,10 @@ export function Layout({ activeTab, onTabChange, children }) {
                 onClick={() => setShowExport((v) => !v)}
                 className="w-9 h-9 flex items-center justify-center rounded-full text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
                 title="ייצוא נתונים"
+                aria-label="ייצוא נתונים"
+                aria-expanded={showExport}
               >
-                <Download size={18} />
+                <Download size={18} aria-hidden />
               </button>
               {showExport && (
                 <div className="absolute right-0 top-full mt-1 py-1 w-48 bg-brand-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 shadow-lg z-50">
@@ -127,16 +140,17 @@ export function Layout({ activeTab, onTabChange, children }) {
                 </div>
               )}
             </div>
-            <button type="button" className="w-9 h-9 flex items-center justify-center rounded-full text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
-              <Bell size={18} />
+            <button type="button" className="w-9 h-9 flex items-center justify-center rounded-full text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" aria-label="התראות">
+              <Bell size={18} aria-hidden />
             </button>
             <button
               type="button"
               onClick={() => setShowProfile(true)}
               className="w-9 h-9 flex items-center justify-center rounded-full text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
               title="פרופיל"
+              aria-label="פרופיל"
             >
-              <Settings size={18} />
+              <Settings size={18} aria-hidden />
             </button>
             {hasSupabase && (
               <button
@@ -144,11 +158,12 @@ export function Layout({ activeTab, onTabChange, children }) {
                 onClick={() => signOut()}
                 className="w-9 h-9 flex items-center justify-center rounded-full text-slate-400 hover:text-red-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
                 title="התנתק"
+                aria-label="התנתק"
               >
-                <LogOut size={18} />
+                <LogOut size={18} aria-hidden />
               </button>
             )}
-            <div className="w-9 h-9 rounded-full bg-brand-dark border-2 border-white dark:border-brand shadow-sm flex items-center justify-center" title={displayName || 'פרופיל'}>
+            <div className="w-9 h-9 rounded-full bg-brand-dark border-2 border-white dark:border-brand shadow-sm flex items-center justify-center" title={displayName || 'פרופיל'} aria-hidden>
               <span className="text-xs font-bold text-brand">{avatarLetter}</span>
             </div>
           </div>
@@ -181,14 +196,15 @@ export function Layout({ activeTab, onTabChange, children }) {
               <X size={22} />
             </button>
           </div>
-          <nav className="p-4 space-y-1">
+          <nav className="p-4 space-y-1" aria-label="ניווט ראשי">
             {TABS.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => { onTabChange(tab.id); closeMobile(); }}
                 className={navButtonClass(tab)}
+                aria-current={activeTab === tab.id ? 'page' : undefined}
               >
-                <tab.icon size={20} className={activeTab === tab.id ? 'text-brand' : ''} />
+                <tab.icon size={20} className={activeTab === tab.id ? 'text-brand' : ''} aria-hidden />
                 {tab.label}
               </button>
             ))}
@@ -240,7 +256,7 @@ export function Layout({ activeTab, onTabChange, children }) {
 
         <ProfileModal isOpen={showProfile} onClose={() => setShowProfile(false)} />
 
-        <main className="flex-1 pb-safe">{children}</main>
+        <main id="main-content" className="flex-1 pb-safe" tabIndex={-1}>{children}</main>
       </div>
     </div>
   );

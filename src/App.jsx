@@ -20,7 +20,7 @@ function AppContent() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-brand-page dark:bg-brand-dark/95 flex items-center justify-center" dir="rtl">
+      <div className="min-h-screen bg-brand-page dark:bg-brand-dark/95 flex items-center justify-center" dir="rtl" role="status" aria-live="polite">
         <p className="text-slate-500 dark:text-slate-400 font-medium">טוען...</p>
       </div>
     );
@@ -42,7 +42,7 @@ function AppWithAuth() {
 
   if (authLoading) {
     return (
-      <div className="min-h-screen bg-brand-page dark:bg-brand-dark/95 flex items-center justify-center" dir="rtl">
+      <div className="min-h-screen bg-brand-page dark:bg-brand-dark/95 flex items-center justify-center" dir="rtl" role="status" aria-live="polite">
         <p className="text-slate-500 dark:text-slate-400 font-medium">טוען...</p>
       </div>
     );

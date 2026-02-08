@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Zap, ArrowRight } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
@@ -12,6 +13,7 @@ export function AuthView({ onBack }) {
   const [googleLoading, setGoogleLoading] = useState(false);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
 
   const handleGoogleSignIn = async () => {
     setError('');
@@ -35,6 +37,11 @@ export function AuthView({ onBack }) {
         await resetPassword(email);
         setMessage('אם יש חשבון עם האימייל הזה, נשלח אליך קישור לאיפוס סיסמה. בדוק גם בתיקיית דואר זבל.');
       } else if (isSignUp) {
+        if (!agreedToTerms) {
+          setError('יש לאשר את תנאי השימוש ומדיניות הפרטיות');
+          setLoading(false);
+          return;
+        }
         await signUp(email, password);
         setMessage('נשלח אליך אימייל לאימות. בדוק את תיבת הדואר לפני ההתחברות.');
       } else {
@@ -102,6 +109,22 @@ export function AuthView({ onBack }) {
               />
             </div>
           )}
+          {isSignUp && (
+            <label className="flex items-start gap-2 cursor-pointer text-sm text-slate-600 dark:text-slate-400">
+              <input
+                type="checkbox"
+                checked={agreedToTerms}
+                onChange={(e) => setAgreedToTerms(e.target.checked)}
+                className="mt-0.5 rounded border-slate-300 dark:border-slate-600 text-brand-dark focus:ring-brand"
+              />
+              <span>
+                אני מסכים/ה ל
+                <Link to="/terms" className="text-brand-dark dark:text-brand font-medium underline hover:no-underline" target="_blank" rel="noopener noreferrer">תנאי השימוש</Link>
+                {' '}ול
+                <Link to="/privacy" className="text-brand-dark dark:text-brand font-medium underline hover:no-underline" target="_blank" rel="noopener noreferrer">מדיניות הפרטיות</Link>
+              </span>
+            </label>
+          )}
           {!isForgot && !isSignUp && (
             <button
               type="button"
@@ -111,8 +134,8 @@ export function AuthView({ onBack }) {
               שכחתי סיסמה
             </button>
           )}
-          {error && <p className="text-sm text-red-600 dark:text-red-400">{error}</p>}
-          {message && <p className="text-sm text-green-600 dark:text-green-400">{message}</p>}
+          {error && <p className="text-sm text-red-600 dark:text-red-400" role="alert">{error}</p>}
+          {message && <p className="text-sm text-green-600 dark:text-green-400" role="status">{message}</p>}
           <button
             type="submit"
             disabled={loading}

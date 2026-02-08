@@ -127,7 +127,7 @@ export function DashboardView({ onNavigate }) {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Card className="p-5 hover:border-brand transition-colors cursor-pointer group bg-gradient-to-br from-white to-slate-50 dark:from-brand-dark dark:to-slate-800">
               <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 rounded-full bg-brand-dark flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg shadow-brand-dark/20">
+                <div className="w-10 h-10 rounded-full bg-brand-dark flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg shadow-brand-dark/20" aria-hidden>
                   <Play size={20} className="text-brand" fill="currentColor" />
                 </div>
                 <div>
@@ -136,9 +136,16 @@ export function DashboardView({ onNavigate }) {
                 </div>
               </div>
             </Card>
-            <Card className="p-5 hover:border-brand transition-colors cursor-pointer group" onClick={() => setShowAddTrade(true)}>
+            <Card
+              className="p-5 hover:border-brand transition-colors cursor-pointer group"
+              onClick={() => setShowAddTrade(true)}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setShowAddTrade(true); } }}
+              aria-label="הוסף עסקה – תיעוד מהיר ליומן"
+            >
               <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center group-hover:bg-brand/10 dark:group-hover:bg-brand/20 transition-colors">
+                <div className="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center group-hover:bg-brand/10 dark:group-hover:bg-brand/20 transition-colors" aria-hidden>
                   <Plus size={20} className="text-slate-600 dark:text-slate-400 group-hover:text-brand-dark" />
                 </div>
                 <div>
@@ -161,21 +168,26 @@ export function DashboardView({ onNavigate }) {
                 <span className="text-xs text-slate-400">{new Date().toLocaleDateString('he-IL')}</span>
               </div>
             </div>
-            <div className="space-y-3">
+            <div className="space-y-3" role="list">
               {dailyTasks.map((task) => (
                 <div
                   key={task.id}
+                  role="button"
+                  tabIndex={0}
                   onClick={() => toggleTask(task.id)}
+                  onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleTask(task.id); } }}
                   className={`flex items-center justify-between p-3 rounded-xl border transition-all cursor-pointer ${
                     task.completed
                       ? 'bg-slate-50 border-slate-200 dark:bg-slate-800/50 dark:border-slate-800'
                       : 'bg-white border-slate-100 hover:border-brand dark:bg-slate-900 dark:border-slate-800 dark:hover:border-brand/50'
                   }`}
+                  aria-pressed={task.completed}
+                  aria-label={`${task.label}, ${task.xp} XP, ${task.completed ? 'הושלמה' : 'לא הושלמה'}. לחץ לסימון`}
                 >
                   <div className="flex items-center gap-3">
                     <div className={`w-5 h-5 rounded-md border flex items-center justify-center transition-colors ${
                       task.completed ? 'bg-brand-dark border-brand-dark' : 'border-slate-300 dark:border-slate-600'
-                    }`}>
+                    }`} aria-hidden>
                       {task.completed && <CheckCircle2 size={14} className="text-brand" />}
                     </div>
                     <span className={`text-sm ${task.completed ? 'text-slate-400 line-through' : 'text-slate-700 dark:text-slate-200'}`}>

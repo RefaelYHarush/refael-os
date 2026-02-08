@@ -22,18 +22,19 @@ export function AddTradeModal({ onClose, onSave }) {
   };
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm" onClick={onClose}>
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm" onClick={onClose} role="dialog" aria-modal="true" aria-labelledby="add-trade-title">
       <Card className="w-full max-w-md p-6 shadow-xl" onClick={(e) => e.stopPropagation()}>
         <div className="flex justify-between items-center mb-6">
-          <h3 className="text-lg font-bold">עסקה חדשה</h3>
-          <button type="button" onClick={onClose} className="p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500">
-            <X size={20} />
+          <h3 id="add-trade-title" className="text-lg font-bold">עסקה חדשה</h3>
+          <button type="button" onClick={onClose} className="p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500" aria-label="סגור">
+            <X size={20} aria-hidden />
           </button>
         </div>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-slate-600 dark:text-slate-400 mb-1">תאריך</label>
+            <label htmlFor="add-trade-date" className="block text-sm font-medium text-slate-600 dark:text-slate-400 mb-1">תאריך</label>
             <input
+              id="add-trade-date"
               type="date"
               value={date}
               onChange={(e) => setDate(e.target.value)}
@@ -41,11 +42,13 @@ export function AddTradeModal({ onClose, onSave }) {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-600 dark:text-slate-400 mb-1">נכס</label>
+            <label htmlFor="add-trade-symbol" className="block text-sm font-medium text-slate-600 dark:text-slate-400 mb-1">נכס</label>
             <select
+              id="add-trade-symbol"
               value={symbol}
               onChange={(e) => setSymbol(e.target.value)}
               className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
+              aria-label="נכס"
             >
               {['NQ', 'ES', 'GC', 'CL', 'Other'].map((s) => (
                 <option key={s} value={s}>{s}</option>
@@ -53,8 +56,9 @@ export function AddTradeModal({ onClose, onSave }) {
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-600 dark:text-slate-400 mb-1">P&L ($)</label>
+            <label htmlFor="add-trade-pnl" className="block text-sm font-medium text-slate-600 dark:text-slate-400 mb-1">P&L ($)</label>
             <input
+              id="add-trade-pnl"
               type="number"
               value={pnl}
               onChange={(e) => setPnl(e.target.value)}
@@ -64,11 +68,13 @@ export function AddTradeModal({ onClose, onSave }) {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-600 dark:text-slate-400 mb-1">Setup</label>
+            <label htmlFor="add-trade-setup" className="block text-sm font-medium text-slate-600 dark:text-slate-400 mb-1">Setup</label>
             <select
+              id="add-trade-setup"
               value={setup}
               onChange={(e) => setSetup(e.target.value)}
               className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
+              aria-label="אסטרטגיה"
             >
               {SETUPS.map((s) => (
                 <option key={s} value={s}>{s}</option>
@@ -76,11 +82,13 @@ export function AddTradeModal({ onClose, onSave }) {
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-600 dark:text-slate-400 mb-1">מצב רוח</label>
+            <label htmlFor="add-trade-mood" className="block text-sm font-medium text-slate-600 dark:text-slate-400 mb-1">מצב רוח</label>
             <select
+              id="add-trade-mood"
               value={mood}
               onChange={(e) => setMood(e.target.value)}
               className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
+              aria-label="מצב רוח"
             >
               {MOODS.map((m) => (
                 <option key={m} value={m}>{m}</option>
