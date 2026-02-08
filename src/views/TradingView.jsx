@@ -9,12 +9,25 @@ export function TradingView() {
   const { trades, addTrade } = useApp();
   const [showAddTrade, setShowAddTrade] = useState(false);
 
-  const monthPnL = trades.reduce((sum, t) => sum + t.pnl, 0);
-  const wins = trades.filter((t) => t.pnl > 0).length;
-  const winRate = trades.length ? Math.round((wins / trades.length) * 100) : 0;
-  const avgWin = wins ? Math.round(trades.filter((t) => t.pnl > 0).reduce((s, t) => s + t.pnl, 0) / wins) : 0;
-  const losses = trades.filter((t) => t.pnl < 0);
+  const now = new Date();
+  const currentYear = now.getFullYear();
+  const currentMonth = now.getMonth();
+  const monthName = now.toLocaleDateString('he-IL', { month: 'long', year: 'numeric' });
+  const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+  const firstDayOfWeek = new Date(currentYear, currentMonth, 1).getDay();
+  const monthTrades = trades.filter((t) => {
+    const [y, m] = t.date.split('-').map(Number);
+    return y === currentYear && m === currentMonth + 1;
+  });
+  const monthPnL = monthTrades.reduce((sum, t) => sum + t.pnl, 0);
+  const wins = monthTrades.filter((t) => t.pnl > 0).length;
+  const winRate = monthTrades.length ? Math.round((wins / monthTrades.length) * 100) : 0;
+  const avgWin = wins ? Math.round(monthTrades.filter((t) => t.pnl > 0).reduce((s, t) => s + t.pnl, 0) / wins) : 0;
+  const losses = monthTrades.filter((t) => t.pnl < 0);
   const avgLoss = losses.length ? Math.round(losses.reduce((s, t) => s + t.pnl, 0) / losses.length) : 0;
+
+  const weekdays = ['א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ש'];
+  const emptyCells = firstDayOfWeek === 0 ? 6 : firstDayOfWeek - 1;
 
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-500">
@@ -32,17 +45,20 @@ export function TradingView() {
         <Card className="lg:col-span-2 p-6">
           <div className="flex items-center gap-2 mb-6">
             <Calendar className="text-brand" size={20} />
-            <h3 className="font-bold">פברואר 2025</h3>
+            <h3 className="font-bold">{monthName}</h3>
           </div>
           <div className="grid grid-cols-7 gap-2">
-            {['א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ש'].map((d) => (
+            {weekdays.map((d) => (
               <div key={d} className="text-center text-xs text-slate-400 py-2">{d}</div>
             ))}
-            {Array.from({ length: 31 }).map((_, i) => {
+            {Array.from({ length: emptyCells }).map((_, i) => (
+              <div key={`empty-${i}`} className="aspect-square rounded-lg bg-transparent" aria-hidden />
+            ))}
+            {Array.from({ length: daysInMonth }).map((_, i) => {
               const day = i + 1;
-              const trade = trades.find((t) => parseInt(t.date.split('-')[2], 10) === day);
+              const trade = monthTrades.find((t) => parseInt(t.date.split('-')[2], 10) === day);
               return (
-                <div key={i} className="aspect-square border border-slate-100 dark:border-slate-800 rounded-lg p-1 relative hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group cursor-pointer">
+                <div key={day} className="aspect-square border border-slate-100 dark:border-slate-800 rounded-lg p-1 relative hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group cursor-pointer">
                   <span className="text-xs text-slate-400 absolute top-1 right-2">{day}</span>
                   {trade && (
                     <div className={`absolute inset-x-1 bottom-1 top-6 rounded flex items-center justify-center text-xs font-bold ${

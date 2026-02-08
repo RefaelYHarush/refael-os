@@ -20,7 +20,7 @@ export function PnlChart({ data }) {
               className={`w-full rounded-t-sm transition-all duration-500 hover:opacity-80 ${isPositive ? 'bg-brand' : 'bg-rose-500'}`}
               style={{ height: `${Math.max(height, 5)}%` }}
             />
-            <span className="text-[10px] text-slate-400 hidden md:block">{d.date.split('-')[2]}</span>
+            <span className="text-[10px] text-slate-400 dark:text-on-brand-muted hidden md:block">{d.date.split('-')[2]}</span>
           </div>
         );
       })}

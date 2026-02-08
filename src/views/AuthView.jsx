@@ -55,8 +55,8 @@ export function AuthView({ onBack }) {
   };
 
   return (
-    <div className="min-h-screen bg-brand-page dark:bg-brand-dark/95 flex items-center justify-center p-4" dir="rtl">
-      <div className="w-full max-w-sm bg-brand-white dark:bg-brand-dark rounded-2xl border border-slate-200 dark:border-brand-dark/80 shadow-xl p-6 relative">
+    <div className="min-h-screen bg-brand-page dark:bg-brand-dark flex items-center justify-center p-4" dir="rtl">
+      <div className="w-full max-w-sm bg-brand-white dark:bg-brand-surface-elevated rounded-2xl border border-slate-200 dark:border-brand/20 shadow-xl p-6 relative">
         {onBack && (
           <button
             type="button"
@@ -72,12 +72,12 @@ export function AuthView({ onBack }) {
             <Zap className="text-brand" fill="currentColor" size={24} />
           </div>
           <h1 className="text-xl font-black tracking-tight">REFAEL OS</h1>
-          <p className="text-xs text-slate-500 dark:text-slate-400">Life Management System</p>
+          <p className="text-xs text-slate-500 dark:text-on-brand-muted">Life Management System</p>
         </div>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div>
-            <label htmlFor="auth-email" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+            <label htmlFor="auth-email" className="block text-sm font-medium text-slate-700 dark:text-on-brand mb-1">
               אימייל
             </label>
             <input
@@ -87,13 +87,13 @@ export function AuthView({ onBack }) {
               onChange={(e) => setEmail(e.target.value)}
               required
               autoComplete="email"
-              className="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-brand focus:border-transparent"
+              className="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-brand/30 bg-white dark:bg-brand-surface text-slate-900 dark:text-on-brand focus:ring-2 focus:ring-brand focus:border-transparent"
               placeholder="you@example.com"
             />
           </div>
           {!isForgot && (
             <div>
-              <label htmlFor="auth-password" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="auth-password" className="block text-sm font-medium text-slate-700 dark:text-on-brand mb-1">
                 סיסמה
               </label>
               <input
@@ -104,13 +104,13 @@ export function AuthView({ onBack }) {
                 required={!isForgot}
                 minLength={6}
                 autoComplete={isSignUp ? 'new-password' : 'current-password'}
-                className="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-brand focus:border-transparent"
+                className="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-brand/30 bg-white dark:bg-brand-surface text-slate-900 dark:text-on-brand focus:ring-2 focus:ring-brand focus:border-transparent"
                 placeholder="••••••••"
               />
             </div>
           )}
           {isSignUp && (
-            <label className="flex items-start gap-2 cursor-pointer text-sm text-slate-600 dark:text-slate-400">
+            <label className="flex items-start gap-2 cursor-pointer text-sm text-slate-600 dark:text-on-brand-muted">
               <input
                 type="checkbox"
                 checked={agreedToTerms}
@@ -129,7 +129,7 @@ export function AuthView({ onBack }) {
             <button
               type="button"
               onClick={() => { setIsForgot(true); setError(''); setMessage(''); }}
-              className="text-sm text-slate-500 dark:text-slate-400 hover:text-brand text-left"
+              className="text-sm text-slate-500 dark:text-on-brand-muted hover:text-brand text-left"
             >
               שכחתי סיסמה
             </button>
@@ -139,14 +139,14 @@ export function AuthView({ onBack }) {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-2.5 rounded-xl bg-brand-dark text-white font-bold shadow-lg hover:opacity-90 disabled:opacity-50 transition-opacity"
+            className="w-full py-2.5 rounded-xl bg-brand-dark text-on-brand font-bold shadow-lg hover:opacity-90 disabled:opacity-50 transition-opacity"
           >
             {loading ? '...' : isForgot ? 'שלח קישור לאיפוס' : isSignUp ? 'הרשמה' : 'התחברות'}
           </button>
           <button
             type="button"
             onClick={() => { setIsSignUp((v) => !v); setIsForgot(false); setError(''); setMessage(''); }}
-            className="text-sm text-slate-500 dark:text-slate-400 hover:text-brand"
+            className="text-sm text-slate-500 dark:text-on-brand-muted hover:text-brand"
           >
             {isSignUp ? 'כבר יש לך חשבון? התחבר' : isForgot ? 'חזרה להתחברות' : 'אין לך חשבון? הרשם'}
           </button>
@@ -159,14 +159,14 @@ export function AuthView({ onBack }) {
                 <div className="w-full border-t border-slate-200 dark:border-slate-600" />
               </div>
               <div className="relative flex justify-center text-xs">
-                <span className="px-2 bg-brand-white dark:bg-brand-dark text-slate-500">או</span>
+                <span className="px-2 bg-brand-white dark:bg-brand-surface-elevated text-slate-500 dark:text-on-brand-muted">או</span>
               </div>
             </div>
             <button
               type="button"
               onClick={handleGoogleSignIn}
               disabled={googleLoading}
-              className="w-full py-2.5 rounded-xl border-2 border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-semibold flex items-center justify-center gap-2 hover:bg-slate-50 dark:hover:bg-slate-700 disabled:opacity-50 transition-colors"
+              className="w-full py-2.5 rounded-xl border-2 border-slate-300 dark:border-brand/30 bg-white dark:bg-brand-surface text-slate-700 dark:text-on-brand font-semibold flex items-center justify-center gap-2 hover:bg-slate-50 dark:hover:bg-brand-dark/50 disabled:opacity-50 transition-colors"
             >
               <svg className="w-5 h-5" viewBox="0 0 24 24">
                 <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>

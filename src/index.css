@@ -2,12 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
-/* צבעי מותג מ-Logo: ירוק בהיר | ירוק כהה | שחור | לבן */
+/* צבעי מותג מ-Logo – נגישות WCAG AA: ירוק בהיר | ירוק כהה | שחור | לבן */
 :root {
   --brand-light: #a0df50;
   --brand-dark: #013024;
   --brand-black: #000000;
   --brand-white: #ffffff;
+  /* משטחים בכהה – עומק מודרני עם ניגודיות טובה */
+  --surface-dark: #0a2e26;
+  --surface-dark-elevated: #0d3a30;
+  /* טקסט נגיש על רקע כהה */
+  --text-on-dark: #ffffff;
+  --text-on-dark-muted: #b8d4ce;
+  --accent-on-dark: #a0df50;
 }
 
 /* Custom animation utilities for REFAEL OS - animate transform only so content stays visible */
@@ -61,12 +68,48 @@
   padding-bottom: max(env(safe-area-inset-bottom, 0), 0.25rem);
 }
 
-/* נגישות: טבעת פוקוס גלויה לניווט במקלדת */
+/* נגישות: טבעת פוקוס גלויה וניגודית (WCAG 2.4.7) */
 button:focus-visible,
 a:focus-visible,
 [role="button"]:focus-visible,
 input:focus-visible,
 select:focus-visible {
-  outline: 2px solid var(--brand-light);
+  outline: 3px solid var(--brand-light);
   outline-offset: 2px;
+}
+
+/* --- הגדרות נגישות (כפתור נגישות) --- */
+html {
+  font-size: calc(100% * var(--a11y-font-scale, 1));
+}
+
+[data-a11y-contrast="high"] {
+  --brand-page: #f5f5f5;
+}
+[data-a11y-contrast="high"].dark {
+  --brand-page: #0a0a0a;
+}
+[data-a11y-contrast="high"] button,
+[data-a11y-contrast="high"] a[href] {
+  font-weight: 600;
+}
+[data-a11y-contrast="high"] input,
+[data-a11y-contrast="high"] select,
+[data-a11y-contrast="high"] button {
+  border-width: 2px;
+  border-color: currentColor;
+}
+
+[data-a11y-links="highlight"] a[href] {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  text-decoration-color: var(--brand-light);
+}
+
+[data-a11y-motion="reduce"] *,
+[data-a11y-motion="reduce"] *::before,
+[data-a11y-motion="reduce"] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
 }

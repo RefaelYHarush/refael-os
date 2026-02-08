@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-/** צבעי מותג מ-Logo: ירוק בהיר #a0df50 | ירוק כהה #013024 | שחור #000000 | לבן #ffffff */
+/** צבעי נגישות מ-Logo: #a0df50 | #013024 | #000000 | #ffffff */
 export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   darkMode: 'class',
@@ -12,6 +12,14 @@ export default {
           dark: '#013024',
           black: '#000000',
           white: '#ffffff',
+          /** משטחים בכהה – עומק ונגישות */
+          surface: '#0a2e26',
+          'surface-elevated': '#0d3a30',
+        },
+        /** טקסט נגיש על רקע כהה (WCAG AA) */
+        'on-brand': {
+          DEFAULT: '#ffffff',
+          muted: '#b8d4ce',
         },
       },
       backgroundColor: {

@@ -4,6 +4,7 @@ import { useAuth } from '../../context/AuthContext';
 import { useApp } from '../../context/AppContext';
 import { useTheme } from '../../context/ThemeContext';
 import { ProfileModal } from '../modals/ProfileModal';
+import { AccessibilityButton, AccessibilityFloatingButton } from '../ui/AccessibilityPanel';
 import { exportTradesToCsv, exportDailyTasksToCsv, exportFullBackup } from '../../lib/exportCsv';
 
 const TABS = [
@@ -38,19 +39,19 @@ export function Layout({ activeTab, onTabChange, children }) {
   const closeMobile = () => setMobileMenuOpen(false);
   const navButtonClass = (tab) =>
     `flex items-center gap-3 w-full px-4 py-3 rounded-xl text-right text-sm font-bold min-h-[44px] touch-manipulation ${
-      activeTab === tab.id ? 'bg-brand-dark text-white' : 'text-slate-600 dark:text-slate-300'
+      activeTab === tab.id ? 'bg-brand-dark text-on-brand' : 'text-slate-600 dark:text-on-brand'
     }`;
 
   return (
-    <div className="min-h-screen bg-brand-page dark:bg-brand-dark/95 text-slate-900 dark:text-slate-100 font-sans p-3 sm:p-4 md:p-6 transition-colors duration-300 safe-area-pb" dir="rtl">
+    <div className="min-h-screen bg-brand-page dark:bg-brand-dark text-slate-900 dark:text-on-brand font-sans p-3 sm:p-4 md:p-6 transition-colors duration-300 safe-area-pb" dir="rtl">
       <a
         href="#main-content"
-        className="absolute right-4 -top-[200%] z-[100] px-4 py-2 bg-brand-dark text-white rounded-lg outline-none focus:top-4 focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-brand-page dark:focus:ring-offset-brand-dark transition-[top]"
+        className="absolute right-4 -top-[200%] z-[100] px-4 py-2 bg-brand-dark text-on-brand rounded-lg outline-none focus:top-4 focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-brand-page dark:focus:ring-offset-brand-surface transition-[top]"
       >
         דלג לתוכן הראשי
       </a>
       <div className="max-w-7xl mx-auto flex flex-col h-full">
-        <header className="flex flex-row justify-between items-center gap-3 md:gap-6 mb-6 md:mb-8 bg-brand-white dark:bg-brand-dark p-3 md:p-4 rounded-2xl border border-slate-200 dark:border-brand-dark/80 shadow-sm sticky top-2 z-40">
+        <header className="flex flex-row justify-between items-center gap-3 md:gap-6 mb-6 md:mb-8 bg-brand-white dark:bg-brand-surface-elevated p-3 md:p-4 rounded-2xl border border-slate-200 dark:border-brand/20 shadow-sm sticky top-2 z-40">
           <div className="flex items-center gap-3 md:gap-4 min-w-0">
             <div className="w-10 h-10 shrink-0 bg-brand-dark rounded-xl flex items-center justify-center shadow-lg shadow-brand-dark/30">
               <Zap className="text-brand" fill="currentColor" size={20} />
@@ -61,7 +62,7 @@ export function Layout({ activeTab, onTabChange, children }) {
             </div>
           </div>
 
-          <nav className="hidden md:flex bg-slate-100 dark:bg-slate-800/50 p-1.5 rounded-xl overflow-x-auto no-scrollbar" aria-label="ניווט ראשי">
+          <nav className="hidden md:flex bg-slate-100 dark:bg-brand-dark/50 p-1.5 rounded-xl overflow-x-auto no-scrollbar" aria-label="ניווט ראשי">
             <div role="tablist" className="flex gap-1">
               {TABS.map((tab) => (
                 <button
@@ -71,8 +72,8 @@ export function Layout({ activeTab, onTabChange, children }) {
                   onClick={() => onTabChange(tab.id)}
                   className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all whitespace-nowrap min-h-[44px] ${
                     activeTab === tab.id
-                      ? 'bg-brand-dark text-white shadow-lg shadow-brand-dark/20 scale-100'
-                      : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 scale-95 hover:scale-100'
+                      ? 'bg-brand-dark text-on-brand shadow-lg shadow-brand-dark/20 scale-100'
+                      : 'text-slate-500 hover:text-slate-700 dark:text-on-brand-muted dark:hover:text-on-brand scale-95 hover:scale-100'
                   }`}
                 >
                   <tab.icon size={16} className={activeTab === tab.id ? 'text-brand' : ''} aria-hidden />
@@ -83,6 +84,7 @@ export function Layout({ activeTab, onTabChange, children }) {
           </nav>
 
           <div className="flex md:hidden items-center gap-1">
+            <AccessibilityButton className="w-11 h-11 flex items-center justify-center rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors touch-manipulation" />
             <button
               type="button"
               onClick={() => setMobileMenuOpen(true)}
@@ -94,6 +96,7 @@ export function Layout({ activeTab, onTabChange, children }) {
           </div>
 
           <div className="hidden md:flex items-center gap-2">
+            <AccessibilityButton className="w-9 h-9 flex items-center justify-center rounded-full text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" />
             <button
               type="button"
               onClick={toggleTheme}
@@ -115,25 +118,25 @@ export function Layout({ activeTab, onTabChange, children }) {
                 <Download size={18} aria-hidden />
               </button>
               {showExport && (
-                <div className="absolute right-0 top-full mt-1 py-1 w-48 bg-brand-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 shadow-lg z-50">
+                <div className="absolute right-0 top-full mt-1 py-1 w-48 bg-brand-white dark:bg-brand-surface rounded-lg border border-slate-200 dark:border-brand-dark/50 shadow-lg z-50">
                   <button
                     type="button"
                     onClick={() => { exportTradesToCsv(trades); setShowExport(false); }}
-                    className="block w-full text-right px-3 py-2 text-sm hover:bg-slate-100 dark:hover:bg-slate-700"
+                    className="block w-full text-right px-3 py-2 text-sm text-slate-700 dark:text-on-brand hover:bg-slate-100 dark:hover:bg-brand-dark/50"
                   >
                     ייצוא מסחר (CSV)
                   </button>
                   <button
                     type="button"
                     onClick={() => { exportDailyTasksToCsv(dailyTasks); setShowExport(false); }}
-                    className="block w-full text-right px-3 py-2 text-sm hover:bg-slate-100 dark:hover:bg-slate-700"
+                    className="block w-full text-right px-3 py-2 text-sm text-slate-700 dark:text-on-brand hover:bg-slate-100 dark:hover:bg-brand-dark/50"
                   >
                     ייצוא משימות (CSV)
                   </button>
                   <button
                     type="button"
                     onClick={() => { exportFullBackup({ trades, dailyTasks, visionMilestones, saasProjects, userXP, userLevel, displayName }); setShowExport(false); }}
-                    className="block w-full text-right px-3 py-2 text-sm hover:bg-slate-100 dark:hover:bg-slate-700 border-t border-slate-100 dark:border-slate-700"
+                    className="block w-full text-right px-3 py-2 text-sm text-slate-700 dark:text-on-brand hover:bg-slate-100 dark:hover:bg-brand-dark/50 border-t border-slate-100 dark:border-brand-dark/50"
                   >
                     גיבוי מלא (JSON)
                   </button>
@@ -185,7 +188,7 @@ export function Layout({ activeTab, onTabChange, children }) {
           aria-modal="true"
           aria-label="תפריט ניווט"
         >
-          <div className="sticky top-0 flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-700 bg-brand-white dark:bg-brand-dark z-10">
+          <div className="sticky top-0 flex items-center justify-between p-4 border-b border-slate-200 dark:border-brand/20 bg-brand-white dark:bg-brand-dark z-10">
             <span className="font-black text-lg">REFAEL OS</span>
             <button
               type="button"
@@ -209,7 +212,7 @@ export function Layout({ activeTab, onTabChange, children }) {
               </button>
             ))}
           </nav>
-          <div className="p-4 pt-6 border-t border-slate-200 dark:border-slate-700 space-y-1">
+          <div className="p-4 pt-6 border-t border-slate-200 dark:border-brand/20 space-y-1">
             <button type="button" onClick={() => { toggleTheme(); closeMobile(); }} className={navButtonClass({ id: '' })}>
               {isDark ? <Sun size={20} /> : <Moon size={20} />}
               {isDark ? 'מצב בהיר' : 'מצב כהה'}
@@ -232,7 +235,7 @@ export function Layout({ activeTab, onTabChange, children }) {
                 התנתק
               </button>
             )}
-            <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-slate-100 dark:bg-slate-800 min-h-[44px]">
+            <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-slate-100 dark:bg-brand-surface min-h-[44px]">
               <div className="w-9 h-9 rounded-full bg-brand-dark flex items-center justify-center">
                 <span className="text-xs font-bold text-brand">{avatarLetter}</span>
               </div>
@@ -244,17 +247,19 @@ export function Layout({ activeTab, onTabChange, children }) {
         {/* Mobile export popover - when opened from mobile menu we need to show export options; keep dropdown logic for when menu is closed */}
         {showExport && (
           <div className="md:hidden fixed inset-0 z-[60] flex items-end sm:items-center justify-center p-4 bg-black/50" onClick={() => setShowExport(false)}>
-            <div className="w-full max-w-sm bg-brand-white dark:bg-slate-800 rounded-2xl shadow-xl p-4 space-y-1" onClick={(e) => e.stopPropagation()} dir="rtl">
-              <p className="text-sm font-bold text-slate-600 dark:text-slate-400 pb-2">ייצוא / גיבוי</p>
-              <button type="button" onClick={() => { exportTradesToCsv(trades); setShowExport(false); }} className="block w-full text-right px-4 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 min-h-[44px] font-medium">ייצוא מסחר (CSV)</button>
-              <button type="button" onClick={() => { exportDailyTasksToCsv(dailyTasks); setShowExport(false); }} className="block w-full text-right px-4 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 min-h-[44px] font-medium">ייצוא משימות (CSV)</button>
-              <button type="button" onClick={() => { exportFullBackup({ trades, dailyTasks, visionMilestones, saasProjects, userXP, userLevel, displayName }); setShowExport(false); }} className="block w-full text-right px-4 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 min-h-[44px] font-medium">גיבוי מלא (JSON)</button>
-              <button type="button" onClick={() => setShowExport(false)} className="block w-full text-right px-4 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 min-h-[44px] text-slate-500">ביטול</button>
+            <div className="w-full max-w-sm bg-brand-white dark:bg-brand-surface rounded-2xl shadow-xl p-4 space-y-1" onClick={(e) => e.stopPropagation()} dir="rtl">
+              <p className="text-sm font-bold text-slate-600 dark:text-on-brand-muted pb-2">ייצוא / גיבוי</p>
+              <button type="button" onClick={() => { exportTradesToCsv(trades); setShowExport(false); }} className="block w-full text-right px-4 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-brand-dark/50 min-h-[44px] font-medium text-slate-700 dark:text-on-brand">ייצוא מסחר (CSV)</button>
+              <button type="button" onClick={() => { exportDailyTasksToCsv(dailyTasks); setShowExport(false); }} className="block w-full text-right px-4 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-brand-dark/50 min-h-[44px] font-medium text-slate-700 dark:text-on-brand">ייצוא משימות (CSV)</button>
+              <button type="button" onClick={() => { exportFullBackup({ trades, dailyTasks, visionMilestones, saasProjects, userXP, userLevel, displayName }); setShowExport(false); }} className="block w-full text-right px-4 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-brand-dark/50 min-h-[44px] font-medium text-slate-700 dark:text-on-brand">גיבוי מלא (JSON)</button>
+              <button type="button" onClick={() => setShowExport(false)} className="block w-full text-right px-4 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-brand-dark/50 min-h-[44px] text-slate-500 dark:text-on-brand-muted">ביטול</button>
             </div>
           </div>
         )}
 
         <ProfileModal isOpen={showProfile} onClose={() => setShowProfile(false)} />
+
+        <AccessibilityFloatingButton />
 
         <main id="main-content" className="flex-1 pb-safe" tabIndex={-1}>{children}</main>
       </div>
