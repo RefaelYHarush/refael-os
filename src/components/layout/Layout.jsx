@@ -16,7 +16,7 @@ const TABS = [
 
 export function Layout({ activeTab, onTabChange, children }) {
   const { signOut, hasSupabase } = useAuth();
-  const { displayName, trades, dailyTasks, visionMilestones, saasProjects, userXP, userLevel } = useApp();
+  const { displayName, trades, dailyTasks, visionMilestones, saasProjects, userXP, userLevel, syncError, setSyncError } = useApp();
   const { isDark, toggleTheme } = useTheme();
   const [showProfile, setShowProfile] = useState(false);
   const [showExport, setShowExport] = useState(false);
@@ -258,6 +258,13 @@ export function Layout({ activeTab, onTabChange, children }) {
         )}
 
         <ProfileModal isOpen={showProfile} onClose={() => setShowProfile(false)} />
+
+        {syncError && (
+          <div className="mb-4 px-4 py-3 rounded-xl bg-amber-100 dark:bg-amber-900/30 border border-amber-200 dark:border-amber-800 text-amber-800 dark:text-amber-200 text-sm flex items-center justify-between gap-3" role="alert">
+            <span>{syncError}</span>
+            <button type="button" onClick={() => setSyncError(null)} className="shrink-0 px-2 py-1 rounded hover:bg-amber-200 dark:hover:bg-amber-800 font-medium" aria-label="סגור">✕</button>
+          </div>
+        )}
 
         <AccessibilityFloatingButton />
 

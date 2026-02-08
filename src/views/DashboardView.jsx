@@ -8,6 +8,7 @@ import { Badge } from '../components/ui/Badge';
 import { PnlChart } from '../components/charts/PnlChart';
 import { AddTradeModal } from '../components/modals/AddTradeModal';
 import { AddTaskModal } from '../components/modals/AddTaskModal';
+import { DeepWorkTimerModal } from '../components/modals/DeepWorkTimerModal';
 import { useApp } from '../context/AppContext';
 import { XP_PER_LEVEL } from '../data/constants';
 
@@ -25,6 +26,7 @@ export function DashboardView({ onNavigate }) {
   const { trades, dailyTasks, saasProjects, userXP, userLevel, toggleTask, addTrade, addTask } = useApp();
   const [showAddTrade, setShowAddTrade] = useState(false);
   const [showAddTask, setShowAddTask] = useState(false);
+  const [showTimer, setShowTimer] = useState(false);
 
   const saasStats = useMemo(() => {
     const live = saasProjects.filter((p) => p.status === 'Live' || p.status === 'In Progress');
@@ -55,6 +57,7 @@ export function DashboardView({ onNavigate }) {
 
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+      <h2 className="sr-only">דשבורד – סיכום יומי</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card className="p-5 flex flex-col justify-between h-32 bg-brand-dark text-on-brand border-brand-dark shadow-xl shadow-brand-dark/20">
           <div className="flex justify-between items-start">
@@ -137,18 +140,32 @@ export function DashboardView({ onNavigate }) {
               </h3>
               <button type="button" className="text-sm text-slate-500 dark:text-on-brand-muted hover:text-brand transition-colors hover:underline" onClick={() => onNavigate('trading')}>לכל הנתונים</button>
             </div>
-            <PnlChart data={last7DaysChartData} />
+            {last7DaysChartData.length === 0 ? (
+              <div className="h-48 flex flex-col items-center justify-center gap-2 text-slate-500 dark:text-slate-400 text-sm">
+                <p>אין נתונים ל־7 הימים האחרונים</p>
+                <button type="button" onClick={() => onNavigate('trading')} className="text-brand-dark dark:text-brand font-medium hover:underline">הוסף עסקה ביומן המסחר</button>
+              </div>
+            ) : (
+              <PnlChart data={last7DaysChartData} />
+            )}
           </Card>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Card className="p-5 hover:border-brand transition-colors cursor-pointer group bg-gradient-to-br from-white to-slate-50 dark:from-brand-surface-elevated dark:to-brand-surface">
+            <Card
+              className="p-5 hover:border-brand transition-colors cursor-pointer group bg-gradient-to-br from-white to-slate-50 dark:from-brand-dark dark:to-slate-800"
+              onClick={() => setShowTimer(true)}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setShowTimer(true); } }}
+              aria-label="התחל טיימר Deep Work – סשן עבודה 25 דקות"
+            >
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-10 h-10 rounded-full bg-brand-dark flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg shadow-brand-dark/20" aria-hidden>
                   <Play size={20} className="text-brand" fill="currentColor" />
                 </div>
                 <div>
                   <div className="font-bold text-slate-900 dark:text-on-brand">Deep Work Timer</div>
-                  <div className="text-xs text-slate-500 dark:text-on-brand-muted">התחל סשן עבודה (SaaS)</div>
+                  <div className="text-xs text-slate-500 dark:text-on-brand-muted">התחל סשן עבודה (25 דקות)</div>
                 </div>
               </div>
             </Card>
@@ -235,6 +252,7 @@ export function DashboardView({ onNavigate }) {
 
       {showAddTrade && <AddTradeModal onClose={() => setShowAddTrade(false)} onSave={addTrade} />}
       {showAddTask && <AddTaskModal onClose={() => setShowAddTask(false)} onSave={addTask} />}
+      {showTimer && <DeepWorkTimerModal onClose={() => setShowTimer(false)} />}
     </div>
   );
 }

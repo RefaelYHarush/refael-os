@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Plus, DollarSign, ListChecks, MoreHorizontal } from 'lucide-react';
 import { Card } from '../components/ui/Card';
 import { ProgressBar } from '../components/ui/ProgressBar';
+import { AddSaasProjectModal } from '../components/modals/AddSaasProjectModal';
 import { useApp } from '../context/AppContext';
 
 export function SaasView() {
-  const { saasProjects } = useApp();
+  const { saasProjects, addSaasProject, updateSaasProject, deleteSaasProject } = useApp();
+  const [showAddProject, setShowAddProject] = useState(false);
+  const [editingProject, setEditingProject] = useState(null);
 
   const columns = [
     { key: 'Idea', label: 'Idea Phase', statuses: ['Idea'] },
@@ -18,6 +21,7 @@ export function SaasView() {
 
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-500">
+      <h2 className="text-2xl font-bold">SaaS Builder</h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {columns.map((col) => (
           <div key={col.key} className="space-y-4">
@@ -32,11 +36,16 @@ export function SaasView() {
               {getProjectsForColumn(col).map((project) => (
                 <Card
                   key={project.id}
-                  className="p-4 cursor-grab active:cursor-grabbing hover:shadow-md transition-shadow border-t-4 border-t-brand-dark dark:border-t-brand"
+                  className="p-4 cursor-pointer hover:shadow-md transition-shadow border-t-4 border-t-brand-dark dark:border-t-brand"
+                  onClick={() => setEditingProject(project)}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setEditingProject(project); } }}
+                  aria-label={`ערוך פרויקט ${project.name}`}
                 >
                   <div className="flex justify-between items-start mb-2">
                     <h4 className="font-bold">{project.name}</h4>
-                    <MoreHorizontal size={16} className="text-slate-400" />
+                    <MoreHorizontal size={16} className="text-slate-400 shrink-0" aria-hidden />
                   </div>
                   <div className="space-y-3">
                     <div className="flex justify-between text-xs text-slate-500">
@@ -62,6 +71,7 @@ export function SaasView() {
 
               <button
                 type="button"
+                onClick={() => { setEditingProject(null); setShowAddProject(true); }}
                 className="w-full py-3 border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-xl text-slate-400 text-sm hover:border-brand hover:text-brand transition-colors flex items-center justify-center gap-2"
               >
                 <Plus size={16} /> פרויקט חדש
@@ -70,6 +80,29 @@ export function SaasView() {
           </div>
         ))}
       </div>
+      {showAddProject && !editingProject && (
+        <AddSaasProjectModal
+          onClose={() => setShowAddProject(false)}
+          onSave={(project) => {
+            addSaasProject(project);
+            setShowAddProject(false);
+          }}
+        />
+      )}
+      {editingProject && (
+        <AddSaasProjectModal
+          project={editingProject}
+          onClose={() => setEditingProject(null)}
+          onSave={(updated) => {
+            updateSaasProject(updated);
+            setEditingProject(null);
+          }}
+          onDelete={(id) => {
+            deleteSaasProject(id);
+            setEditingProject(null);
+          }}
+        />
+      )}
     </div>
   );
 }

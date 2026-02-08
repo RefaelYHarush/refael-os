@@ -3,11 +3,13 @@ import { Plus, Calendar, ChevronRight } from 'lucide-react';
 import { Card } from '../components/ui/Card';
 import { Badge } from '../components/ui/Badge';
 import { AddTradeModal } from '../components/modals/AddTradeModal';
+import { TradeDetailModal } from '../components/modals/TradeDetailModal';
 import { useApp } from '../context/AppContext';
 
 export function TradingView() {
-  const { trades, addTrade } = useApp();
+  const { trades, addTrade, updateTrade, deleteTrade } = useApp();
   const [showAddTrade, setShowAddTrade] = useState(false);
+  const [selectedTrade, setSelectedTrade] = useState(null);
 
   const now = new Date();
   const currentYear = now.getFullYear();
@@ -122,7 +124,7 @@ export function TradingView() {
                     {trade.pnl > 0 ? '+' : ''}{trade.pnl}$
                   </td>
                   <td className="p-4 text-left">
-                    <button type="button" className="text-slate-400 hover:text-brand" aria-label="פרטי עסקה"><ChevronRight size={18} aria-hidden /></button>
+                    <button type="button" onClick={() => setSelectedTrade(trade)} className="text-slate-400 hover:text-brand" aria-label="פרטי עסקה"><ChevronRight size={18} aria-hidden /></button>
                   </td>
                 </tr>
               ))}
@@ -132,6 +134,14 @@ export function TradingView() {
       </Card>
 
       {showAddTrade && <AddTradeModal onClose={() => setShowAddTrade(false)} onSave={addTrade} />}
+      {selectedTrade && (
+        <TradeDetailModal
+          trade={selectedTrade}
+          onClose={() => setSelectedTrade(null)}
+          onUpdate={(updated) => { updateTrade(updated); setSelectedTrade(updated); }}
+          onDelete={deleteTrade}
+        />
+      )}
     </div>
   );
 }

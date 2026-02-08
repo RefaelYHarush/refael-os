@@ -12,6 +12,23 @@ import {
 import { hasSupabase } from '../lib/supabase';
 import { loadAll, saveTrades, saveSaasProjects, saveVisionMilestones, saveDailyTasks, saveUserProfile } from '../lib/supabaseSync';
 
+const MAX_SYNC_RETRIES = 2;
+const RETRY_DELAY_MS = 2000;
+
+async function withRetry(fn, onError) {
+  let lastErr;
+  for (let attempt = 0; attempt <= MAX_SYNC_RETRIES; attempt++) {
+    try {
+      await fn();
+      return;
+    } catch (e) {
+      lastErr = e;
+      if (attempt < MAX_SYNC_RETRIES) await new Promise((r) => setTimeout(r, RETRY_DELAY_MS));
+    }
+  }
+  onError?.(lastErr);
+}
+
 const AppContext = createContext(null);
 
 export function AppProvider({ children, userId }) {
@@ -25,6 +42,7 @@ export function AppProvider({ children, userId }) {
   const [userXP, setUserXP] = usePersistedState(STORAGE_KEYS.USER_XP, INITIAL_XP);
   const [userLevel, setUserLevel] = usePersistedState(STORAGE_KEYS.USER_LEVEL, INITIAL_LEVEL);
   const [displayName, setDisplayName] = useState('');
+  const [syncError, setSyncError] = useState(null);
 
   useEffect(() => {
     if (!hasSupabase || !userId) {
@@ -43,7 +61,10 @@ export function AppProvider({ children, userId }) {
           setDisplayName(data.displayName || '');
         }
       })
-      .catch((e) => console.warn('Supabase load failed', e))
+      .catch((e) => {
+        console.warn('Supabase load failed', e);
+        setSyncError('שגיאה בטעינת הנתונים – מוצגים נתונים מקומיים');
+      })
       .finally(() => {
         setLoading(false);
         initialLoadDone.current = true;
@@ -52,27 +73,42 @@ export function AppProvider({ children, userId }) {
 
   useEffect(() => {
     if (!hasSupabase || !userId || !initialLoadDone.current) return;
-    saveTrades(userId, trades).catch((e) => console.warn('saveTrades failed', e));
+    withRetry(() => saveTrades(userId, trades), (e) => {
+      console.warn('saveTrades failed', e);
+      setSyncError('שגיאה בסנכרון – הנתונים נשמרו מקומית');
+    });
   }, [userId, trades]);
 
   useEffect(() => {
     if (!hasSupabase || !userId || !initialLoadDone.current) return;
-    saveSaasProjects(userId, saasProjects).catch((e) => console.warn('saveSaasProjects failed', e));
+    withRetry(() => saveSaasProjects(userId, saasProjects), (e) => {
+      console.warn('saveSaasProjects failed', e);
+      setSyncError('שגיאה בסנכרון – הנתונים נשמרו מקומית');
+    });
   }, [userId, saasProjects]);
 
   useEffect(() => {
     if (!hasSupabase || !userId || !initialLoadDone.current) return;
-    saveVisionMilestones(userId, visionMilestones).catch((e) => console.warn('saveVisionMilestones failed', e));
+    withRetry(() => saveVisionMilestones(userId, visionMilestones), (e) => {
+      console.warn('saveVisionMilestones failed', e);
+      setSyncError('שגיאה בסנכרון – הנתונים נשמרו מקומית');
+    });
   }, [userId, visionMilestones]);
 
   useEffect(() => {
     if (!hasSupabase || !userId || !initialLoadDone.current) return;
-    saveDailyTasks(userId, dailyTasks).catch((e) => console.warn('saveDailyTasks failed', e));
+    withRetry(() => saveDailyTasks(userId, dailyTasks), (e) => {
+      console.warn('saveDailyTasks failed', e);
+      setSyncError('שגיאה בסנכרון – הנתונים נשמרו מקומית');
+    });
   }, [userId, dailyTasks]);
 
   useEffect(() => {
     if (!hasSupabase || !userId || !initialLoadDone.current) return;
-    saveUserProfile(userId, userXP, userLevel, displayName).catch((e) => console.warn('saveUserProfile failed', e));
+    withRetry(() => saveUserProfile(userId, userXP, userLevel, displayName), (e) => {
+      console.warn('saveUserProfile failed', e);
+      setSyncError('שגיאה בסנכרון – הנתונים נשמרו מקומית');
+    });
   }, [userId, userXP, userLevel, displayName]);
 
   const toggleTask = useCallback(
@@ -98,6 +134,20 @@ export function AppProvider({ children, userId }) {
     [trades, setTrades]
   );
 
+  const updateTrade = useCallback(
+    (updated) => {
+      setTrades((prev) => prev.map((t) => (t.id === updated.id ? { ...updated } : t)));
+    },
+    [setTrades]
+  );
+
+  const deleteTrade = useCallback(
+    (id) => {
+      setTrades((prev) => prev.filter((t) => t.id !== id));
+    },
+    [setTrades]
+  );
+
   const addTask = useCallback(
     (task) => {
       const id = `custom-${Date.now()}`;
@@ -106,11 +156,36 @@ export function AppProvider({ children, userId }) {
     [setDailyTasks]
   );
 
+  const addSaasProject = useCallback(
+    (project) => {
+      const id = Math.max(0, ...saasProjects.map((p) => p.id)) + 1;
+      setSaasProjects((prev) => [...prev, { ...project, id }]);
+    },
+    [saasProjects, setSaasProjects]
+  );
+
+  const updateSaasProject = useCallback(
+    (project) => {
+      setSaasProjects((prev) => prev.map((p) => (p.id === project.id ? { ...project } : p)));
+    },
+    [setSaasProjects]
+  );
+
+  const deleteSaasProject = useCallback(
+    (id) => {
+      setSaasProjects((prev) => prev.filter((p) => p.id !== id));
+    },
+    [setSaasProjects]
+  );
+
   const value = {
     trades,
     setTrades,
     saasProjects,
     setSaasProjects,
+    addSaasProject,
+    updateSaasProject,
+    deleteSaasProject,
     visionMilestones,
     setVisionMilestones,
     dailyTasks,
@@ -123,8 +198,12 @@ export function AppProvider({ children, userId }) {
     setDisplayName,
     toggleTask,
     addTrade,
+    updateTrade,
+    deleteTrade,
     addTask,
     loading,
+    syncError,
+    setSyncError,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
