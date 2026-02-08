@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+/* פונט עברי – Heebo (נטען מ-index.html) */
+@layer base {
+  html {
+    font-family: 'Heebo', sans-serif;
+  }
+}
+
 /* צבעי מותג מ-Logo – נגישות WCAG AA: ירוק בהיר | ירוק כהה | שחור | לבן */
 :root {
   --brand-light: #a0df50;

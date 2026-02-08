@@ -20,7 +20,7 @@
 
 | # | משימה | קובץ/מיקום | סטטוס |
 |---|--------|-------------|--------|
-| א2.1 | הוספת פונט עברי (Heebo / Rubik / Assistant) ב־`index.html` + Tailwind | `index.html`, `index.css` או `tailwind.config.js` | ☐ |
+| א2.1 | הוספת פונט עברי (Heebo / Rubik / Assistant) ב־`index.html` + Tailwind | `index.html`, `index.css` או `tailwind.config.js` | ☑ |
 | א2.2 | רקע Hero עם עומק: גרדיאנט עדין או דפוס עדין | `LandingView.jsx` – סקשן ה־Hero | ☑ |
 | א2.3 | כותרת "מה תקבל": קו תחתון בצבע מותג או גופן גדול יותר | `LandingView.jsx` | ☑ |
 | א2.4 | Footer: רקע נפרד (למשל `bg-slate-50 dark:bg-brand-dark/80`) | `LandingView.jsx` – `footer` | ☑ |
