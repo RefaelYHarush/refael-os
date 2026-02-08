@@ -6,10 +6,48 @@ import { AddTradeModal } from '../components/modals/AddTradeModal';
 import { TradeDetailModal } from '../components/modals/TradeDetailModal';
 import { useApp } from '../context/AppContext';
 
+function DayTradesModal({ dateStr, tradesOnDay, onClose, onAddTrade }) {
+  const displayDate = dateStr ? new Date(dateStr + 'T12:00:00').toLocaleDateString('he-IL', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) : '';
+
+  return (
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm" onClick={onClose} role="dialog" aria-modal="true" aria-labelledby="day-trades-title">
+      <Card className="w-full max-w-sm p-6 shadow-xl" onClick={(e) => e.stopPropagation()} dir="rtl">
+        <div className="flex justify-between items-center mb-4">
+          <h3 id="day-trades-title" className="text-lg font-bold">עסקאות ביום {displayDate}</h3>
+          <button type="button" onClick={onClose} className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500" aria-label="סגור">✕</button>
+        </div>
+        {tradesOnDay.length === 0 ? (
+          <p className="text-slate-500 dark:text-on-brand-muted text-sm mb-4">אין עסקאות ביום זה</p>
+        ) : (
+          <ul className="space-y-2 mb-4" role="list">
+            {tradesOnDay.map((t) => (
+              <li key={t.id} className="flex justify-between items-center py-2 border-b border-slate-100 dark:border-slate-800 last:border-0">
+                <span className="font-medium">{t.symbol}</span>
+                <span className={t.pnl >= 0 ? 'text-brand-dark dark:text-brand' : 'text-rose-500'}>
+                  {t.pnl >= 0 ? '+' : ''}{t.pnl}$
+                </span>
+              </li>
+            ))}
+          </ul>
+        )}
+        <button
+          type="button"
+          onClick={() => { onAddTrade(dateStr); onClose(); }}
+          className="w-full py-2.5 rounded-xl bg-brand-dark dark:bg-brand text-white font-bold flex items-center justify-center gap-2"
+        >
+          <Plus size={18} /> הוסף עסקה ליום זה
+        </button>
+      </Card>
+    </div>
+  );
+}
+
 export function TradingView() {
   const { trades, addTrade, updateTrade, deleteTrade } = useApp();
   const [showAddTrade, setShowAddTrade] = useState(false);
+  const [addTradeInitialDate, setAddTradeInitialDate] = useState(undefined);
   const [selectedTrade, setSelectedTrade] = useState(null);
+  const [selectedDayDate, setSelectedDayDate] = useState(null);
 
   const now = new Date();
   const currentYear = now.getFullYear();
@@ -31,12 +69,16 @@ export function TradingView() {
   const weekdays = ['א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ש'];
   const emptyCells = firstDayOfWeek === 0 ? 6 : firstDayOfWeek - 1;
 
+  const tradesForSelectedDay = selectedDayDate
+    ? trades.filter((t) => t.date === selectedDayDate)
+    : [];
+
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-500">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold">יומן מסחר</h2>
         <button
-          onClick={() => setShowAddTrade(true)}
+          onClick={() => { setAddTradeInitialDate(undefined); setShowAddTrade(true); }}
           className="bg-brand-dark hover:bg-brand-dark/90 dark:bg-brand dark:hover:bg-brand/90 dark:text-brand-dark text-white px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 shadow-lg shadow-brand-dark/20"
         >
           <Plus size={16} /> עסקה חדשה
@@ -58,18 +100,27 @@ export function TradingView() {
             ))}
             {Array.from({ length: daysInMonth }).map((_, i) => {
               const day = i + 1;
-              const trade = monthTrades.find((t) => parseInt(t.date.split('-')[2], 10) === day);
+              const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+              const dayTrades = monthTrades.filter((t) => t.date === dateStr);
+              const trade = dayTrades[0];
+              const hasMultiple = dayTrades.length > 1;
               return (
-                <div key={day} className="aspect-square border border-slate-100 dark:border-slate-800 rounded-lg p-1 relative hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group cursor-pointer">
+                <button
+                  key={day}
+                  type="button"
+                  onClick={() => setSelectedDayDate(dateStr)}
+                  className="aspect-square border border-slate-100 dark:border-slate-800 rounded-lg p-1 relative hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer text-right"
+                  aria-label={`יום ${day}, ${dayTrades.length ? `${dayTrades.length} עסקאות` : 'אין עסקאות'}. לחץ לפרטים`}
+                >
                   <span className="text-xs text-slate-400 absolute top-1 right-2">{day}</span>
                   {trade && (
                     <div className={`absolute inset-x-1 bottom-1 top-6 rounded flex items-center justify-center text-xs font-bold ${
                       trade.pnl > 0 ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-400' : 'bg-rose-100 text-rose-700 dark:bg-rose-900/40 dark:text-rose-400'
                     }`}>
-                      {trade.pnl > 0 ? '+' : ''}{trade.pnl}$
+                      {hasMultiple ? `${dayTrades.length} עסקאות` : (trade.pnl > 0 ? '+' : '') + trade.pnl + '$'}
                     </div>
                   )}
-                </div>
+                </button>
               );
             })}
           </div>
@@ -133,7 +184,22 @@ export function TradingView() {
         </div>
       </Card>
 
-      {showAddTrade && <AddTradeModal onClose={() => setShowAddTrade(false)} onSave={addTrade} />}
+      {selectedDayDate && (
+        <DayTradesModal
+          dateStr={selectedDayDate}
+          tradesOnDay={tradesForSelectedDay}
+          onClose={() => setSelectedDayDate(null)}
+          onAddTrade={(dateStr) => { setAddTradeInitialDate(dateStr); setShowAddTrade(true); setSelectedDayDate(null); }}
+        />
+      )}
+      {showAddTrade && (
+        <AddTradeModal
+          key={addTradeInitialDate ?? 'today'}
+          initialDate={addTradeInitialDate}
+          onClose={() => { setShowAddTrade(false); setAddTradeInitialDate(undefined); }}
+          onSave={addTrade}
+        />
+      )}
       {selectedTrade && (
         <TradeDetailModal
           trade={selectedTrade}

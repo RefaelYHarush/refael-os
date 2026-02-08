@@ -1,0 +1,12 @@
+{
+  "name": "REFAEL OS – דשבורד אישי",
+  "short_name": "REFAEL OS",
+  "description": "דשבורד אישי למסחר, משימות יומיות וחזון. הנתונים שלך בענן.",
+  "lang": "he",
+  "dir": "rtl",
+  "theme_color": "#013024",
+  "background_color": "#013024",
+  "display": "standalone",
+  "start_url": "/",
+  "scope": "/"
+}

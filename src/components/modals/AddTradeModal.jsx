@@ -5,9 +5,9 @@ import { Card } from '../ui/Card';
 const SETUPS = ['Opening Range Breakout', 'Reversal', 'Trend Following', 'News Event', 'Choppy', 'Scalp', 'Trend', 'Other'];
 const MOODS = ['Calm', 'Anxious', 'Confident', 'Excited', 'Bored', 'Neutral', 'Flow'];
 
-export function AddTradeModal({ onClose, onSave }) {
+export function AddTradeModal({ onClose, onSave, initialDate }) {
   const today = new Date().toISOString().slice(0, 10);
-  const [date, setDate] = useState(today);
+  const [date, setDate] = useState(initialDate ?? today);
   const [symbol, setSymbol] = useState('NQ');
   const [pnl, setPnl] = useState('');
   const [setup, setSetup] = useState(SETUPS[0]);

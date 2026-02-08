@@ -24,12 +24,49 @@ export const DEFAULT_VISION_MILESTONES = [
   { year: 2030, title: "חופש כלכלי מלא ($2M Net Worth)", icon: 'Trophy', achieved: false },
 ];
 
+/** סדר תצוגה מומלץ: בוקר → עבודה/מסחר → ערב. משימות מותאמות אישית (id שמתחיל ב-custom-) יופיעו בסוף. */
+export const TASK_DISPLAY_ORDER = [
+  'prayer',
+  'meditation',
+  'dafYomi',
+  'news',
+  'workout',
+  'hydration',
+  'deepWork',
+  'reading',
+  'learning',
+  'prepMarket',
+  'journal',
+  'review',
+  'planning',
+  'reflection',
+  'noScreens',
+  'sleep',
+];
+
+/** משימות יומיות ברירת מחדל – מקובצות לוגית: בוקר, פוקוס, מסחר, ערב/שינה */
 export const DEFAULT_DAILY_TASKS = [
-  { id: 'prayer', label: 'תפילת שחרית ומתיחות', xp: 50, completed: true },
+  // בוקר
+  { id: 'prayer', label: 'תפילת שחרית ומתיחות', xp: 50, completed: false },
+  { id: 'meditation', label: 'מדיטציה / נשימות (5 דק׳)', xp: 25, completed: false },
   { id: 'dafYomi', label: 'דף יומי (בבא קמא)', xp: 100, completed: false },
-  { id: 'workout', label: 'אימון כושר', xp: 80, completed: true },
-  { id: 'news', label: 'חדשות מסחר', xp: 20, completed: true },
+  { id: 'news', label: 'חדשות מסחר', xp: 20, completed: false },
+  { id: 'workout', label: 'אימון כושר', xp: 80, completed: false },
+  // בריאות לאורך היום
+  { id: 'hydration', label: 'שתיית מים (מעקב)', xp: 15, completed: false },
+  // פוקוס ועבודה
+  { id: 'deepWork', label: 'סשן Deep Work (25 דקות)', xp: 60, completed: false },
+  { id: 'reading', label: 'קריאה (ספר/מאמר)', xp: 40, completed: false },
+  { id: 'learning', label: 'למידה (קורס/וידאו)', xp: 45, completed: false },
+  // מסחר
+  { id: 'prepMarket', label: 'הכנה לשוק / תכנית מסחר', xp: 55, completed: false },
   { id: 'journal', label: 'כתיבת יומן מסחר', xp: 50, completed: false },
+  { id: 'review', label: 'סקירת עסקאות השבוע', xp: 70, completed: false },
+  // ערב
+  { id: 'planning', label: 'תכנון יום המחר', xp: 30, completed: false },
+  { id: 'reflection', label: 'רפלקציה יומית (3 דברים טובים)', xp: 35, completed: false },
+  { id: 'noScreens', label: 'ללא מסכים שעה לפני שינה', xp: 35, completed: false },
+  { id: 'sleep', label: 'שינה מספקת (7+ שעות)', xp: 40, completed: false },
 ];
 
 export const INITIAL_XP = 2450;

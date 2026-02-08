@@ -51,7 +51,7 @@ export function Layout({ activeTab, onTabChange, children }) {
         דלג לתוכן הראשי
       </a>
       <div className="max-w-7xl mx-auto flex flex-col h-full">
-        <header className="flex flex-row justify-between items-center gap-3 md:gap-6 mb-6 md:mb-8 bg-brand-white dark:bg-brand-surface-elevated p-3 md:p-4 rounded-2xl border border-slate-200 dark:border-brand/20 shadow-sm sticky top-2 z-40">
+        <header className="flex flex-row justify-between items-center gap-3 md:gap-6 mb-6 md:mb-8 bg-brand-white dark:bg-brand-surface-elevated p-3 md:p-4 pt-safe rounded-2xl border border-slate-200 dark:border-brand/20 shadow-sm sticky top-2 z-40">
           <div className="flex items-center gap-3 md:gap-4 min-w-0">
             <div className="w-10 h-10 shrink-0 bg-brand-dark rounded-xl flex items-center justify-center shadow-lg shadow-brand-dark/30">
               <Zap className="text-brand" fill="currentColor" size={20} />

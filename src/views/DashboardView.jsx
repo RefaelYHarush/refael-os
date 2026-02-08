@@ -10,7 +10,7 @@ import { AddTradeModal } from '../components/modals/AddTradeModal';
 import { AddTaskModal } from '../components/modals/AddTaskModal';
 import { DeepWorkTimerModal } from '../components/modals/DeepWorkTimerModal';
 import { useApp } from '../context/AppContext';
-import { XP_PER_LEVEL } from '../data/constants';
+import { XP_PER_LEVEL, TASK_DISPLAY_ORDER } from '../data/constants';
 
 function getLast7Days() {
   const d = new Date();
@@ -36,6 +36,14 @@ export function DashboardView({ onNavigate }) {
 
   const dafYomiTask = useMemo(() => dailyTasks.find((t) => t.label.includes('דף')), [dailyTasks]);
 
+  const sortedDailyTasks = useMemo(() => {
+    const order = (id) => {
+      const i = TASK_DISPLAY_ORDER.indexOf(id);
+      return i >= 0 ? i : TASK_DISPLAY_ORDER.length + 1;
+    };
+    return [...dailyTasks].sort((a, b) => order(a.id) - order(b.id));
+  }, [dailyTasks]);
+
   const weekStats = useMemo(() => {
     const last7 = getLast7Days();
     const weekTrades = trades.filter((t) => last7.has(t.date));
@@ -51,6 +59,26 @@ export function DashboardView({ onNavigate }) {
       .sort((a, b) => a.date.localeCompare(b.date))
       .slice(-7);
   }, [trades]);
+
+  const rethinkMessage = useMemo(() => {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    const yesterdayStr = yesterday.toISOString().slice(0, 10);
+    const yesterdayTrades = trades.filter((t) => t.date === yesterdayStr);
+    const count = yesterdayTrades.length;
+    const wins = yesterdayTrades.filter((t) => t.pnl > 0).length;
+    const winRate = count ? Math.round((wins / count) * 100) : 0;
+    const pnl = yesterdayTrades.reduce((s, t) => s + t.pnl, 0);
+    const tasksDoneToday = dailyTasks.filter((t) => t.completed).length;
+    const tasksTotal = dailyTasks.length;
+
+    if (count === 0) return 'אתמול לא תועדו עסקאות. היום תעדכן יומן ותתמקד ב־Setups עם edge ברור.';
+    if (count >= 5 && winRate < 50) return 'אתמול הרבה תנועה ו־Win Rate נמוך. היום איכות על כמות – פחות עסקאות, יותר מיקוד.';
+    if (winRate >= 70 && pnl > 0) return `אתמול ביצועים מעולים (${winRate}% Win Rate). המשך באותה משמעת.`;
+    if (winRate < 50) return 'אתמול היו כניסות לא אידיאליות. היום רק Setups עם edge ברור – אל תאלץ.';
+    if (tasksDoneToday >= tasksTotal && tasksTotal > 0) return 'כל המשימות היומיות הושלמו. המשך להקפיד על רישום ו־review.';
+    return 'היום תתמקד ב־A+ Setups בלבד. תעדכן יומן ותסקור את אתמול.';
+  }, [trades, dailyTasks]);
 
   const levelProgress = Math.min(100, (userXP % XP_PER_LEVEL) / XP_PER_LEVEL * 100);
   const xpToNext = XP_PER_LEVEL - (userXP % XP_PER_LEVEL);
@@ -197,19 +225,19 @@ export function DashboardView({ onNavigate }) {
                 <Zap size={18} className="text-brand" fill="currentColor" /> צ'ק ליסט יומי
               </h3>
               <div className="flex items-center gap-2">
-                <button type="button" onClick={() => setShowAddTask(true)} className="text-xs text-brand hover:underline font-medium">+ משימה</button>
+                <button type="button" onClick={() => setShowAddTask(true)} className="text-xs text-brand hover:underline font-medium py-2 px-3 -my-1 -mx-1 rounded-lg touch-target-min inline-flex items-center">+ משימה</button>
                 <span className="text-xs text-slate-400 dark:text-on-brand-muted">{new Date().toLocaleDateString('he-IL')}</span>
               </div>
             </div>
             <div className="space-y-3" role="list">
-              {dailyTasks.map((task) => (
+              {sortedDailyTasks.map((task) => (
                 <div
                   key={task.id}
                   role="button"
                   tabIndex={0}
                   onClick={() => toggleTask(task.id)}
                   onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleTask(task.id); } }}
-                  className={`flex items-center justify-between p-3 rounded-xl border transition-all cursor-pointer ${
+                  className={`flex items-center justify-between p-3 min-h-[44px] rounded-xl border transition-all cursor-pointer touch-manipulation ${
                     task.completed
                       ? 'bg-slate-50 border-slate-200 dark:bg-brand-dark/40 dark:border-brand-dark/50'
                       : 'bg-white border-slate-100 hover:border-brand dark:bg-brand-surface dark:border-brand-dark/50 dark:hover:border-brand/50'
@@ -240,7 +268,7 @@ export function DashboardView({ onNavigate }) {
                   <div>
                     <div className="text-xs font-bold text-slate-800 dark:text-brand mb-1">Rethink יומי</div>
                     <p className="text-xs text-slate-600 dark:text-on-brand-muted leading-relaxed">
-                      "אתמול היית מפוזר. המערכת זיהתה 3 כניסות לא בתוכנית. היום תתמקד ב-A+ Setups בלבד."
+                      {rethinkMessage}
                     </p>
                   </div>
                 </div>

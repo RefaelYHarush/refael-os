@@ -5,10 +5,13 @@ import { ProgressBar } from '../components/ui/ProgressBar';
 import { AddSaasProjectModal } from '../components/modals/AddSaasProjectModal';
 import { useApp } from '../context/AppContext';
 
+const COLUMN_STATUS = { 'Idea': 'Idea', 'In Progress': 'In Progress', 'Live': 'Live' };
+
 export function SaasView() {
   const { saasProjects, addSaasProject, updateSaasProject, deleteSaasProject } = useApp();
   const [showAddProject, setShowAddProject] = useState(false);
   const [editingProject, setEditingProject] = useState(null);
+  const [dropTargetColumn, setDropTargetColumn] = useState(null);
 
   const columns = [
     { key: 'Idea', label: 'Idea Phase', statuses: ['Idea'] },
@@ -19,12 +22,43 @@ export function SaasView() {
   const getProjectsForColumn = (col) =>
     saasProjects.filter((p) => col.statuses.includes(p.status));
 
+  const handleDragStart = (e, project) => {
+    e.dataTransfer.setData('application/json', JSON.stringify(project));
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', project.name);
+  };
+
+  const handleDrop = (e, col) => {
+    e.preventDefault();
+    setDropTargetColumn(null);
+    const raw = e.dataTransfer.getData('application/json');
+    if (!raw) return;
+    try {
+      const project = JSON.parse(raw);
+      const newStatus = COLUMN_STATUS[col.key];
+      if (newStatus && project.status !== newStatus) updateSaasProject({ ...project, status: newStatus });
+    } catch (_) {}
+  };
+
+  const handleDragOver = (e, col) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    setDropTargetColumn(col.key);
+  };
+
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-500">
       <h2 className="text-2xl font-bold">SaaS Builder</h2>
+      <p className="text-sm text-slate-500 dark:text-on-brand-muted">גרור כרטיסים בין עמודות כדי לעדכן סטטוס</p>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {columns.map((col) => (
-          <div key={col.key} className="space-y-4">
+          <div
+            key={col.key}
+            className={`space-y-4 rounded-xl transition-colors min-h-[200px] p-2 -m-2 ${dropTargetColumn === col.key ? 'bg-brand/10 dark:bg-brand/20 ring-2 ring-brand-dark dark:ring-brand' : ''}`}
+            onDragOver={(e) => handleDragOver(e, col)}
+            onDragLeave={() => setDropTargetColumn(null)}
+            onDrop={(e) => handleDrop(e, col)}
+          >
             <div className="flex items-center justify-between px-2">
               <h3 className="font-bold text-slate-500 text-sm uppercase tracking-wider">{col.label}</h3>
               <span className="bg-slate-100 dark:bg-slate-800 text-xs px-2 py-1 rounded-full text-slate-500">
@@ -32,16 +66,18 @@ export function SaasView() {
               </span>
             </div>
 
-            <div className="space-y-3 min-h-[200px]">
+            <div className="space-y-3 min-h-[180px]">
               {getProjectsForColumn(col).map((project) => (
                 <Card
                   key={project.id}
-                  className="p-4 cursor-pointer hover:shadow-md transition-shadow border-t-4 border-t-brand-dark dark:border-t-brand"
+                  draggable
+                  onDragStart={(e) => handleDragStart(e, project)}
+                  className="p-4 cursor-grab active:cursor-grabbing hover:shadow-md transition-shadow border-t-4 border-t-brand-dark dark:border-t-brand"
                   onClick={() => setEditingProject(project)}
                   role="button"
                   tabIndex={0}
                   onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setEditingProject(project); } }}
-                  aria-label={`ערוך פרויקט ${project.name}`}
+                  aria-label={`ערוך פרויקט ${project.name}. גרור לעדכן סטטוס`}
                 >
                   <div className="flex justify-between items-start mb-2">
                     <h4 className="font-bold">{project.name}</h4>
