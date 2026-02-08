@@ -18,18 +18,22 @@ export default {
           white: '#ffffff',
           'bg-light': '#fafafa',
           'accent-secondary': '#d45d4a',
-          /** משטחים בכהה – עומק ונגישות */
-          surface: '#0a2e26',
-          'surface-elevated': '#0d3a30',
+          surface: 'var(--surface-dark)',
+          'surface-elevated': 'var(--surface-dark-elevated)',
+          'surface-card': 'var(--surface-dark-card)',
         },
-        /** טקסט נגיש על רקע כהה (WCAG AA) */
         'on-brand': {
-          DEFAULT: '#ffffff',
-          muted: '#b8d4ce',
+          DEFAULT: 'var(--text-on-dark)',
+          muted: 'var(--text-on-dark-muted)',
         },
       },
       backgroundColor: {
         'brand-page': 'var(--brand-page)',
+      },
+      boxShadow: {
+        'brand-glow': '0 0 12px var(--brand-glow)',
+        'brand-glow-soft': '0 0 20px var(--brand-glow-soft)',
+        'ring-brand': '0 0 0 4px var(--brand-glow-soft)',
       },
       keyframes: {
         'fade-in': {

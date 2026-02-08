@@ -26,7 +26,7 @@ export function VisionView() {
           const IconComponent = ICON_MAP[milestone.icon] || Trophy;
           return (
             <div key={index} className="relative flex flex-col md:flex-row items-center md:even:flex-row-reverse gap-8 md:gap-16">
-              <div className="absolute right-[-9px] md:right-1/2 md:translate-x-1/2 w-4 h-4 rounded-full bg-white dark:bg-brand-dark border-4 border-brand shadow-[0_0_0_4px_rgba(160,223,80,0.2)]" />
+              <div className="absolute right-[-9px] md:right-1/2 md:translate-x-1/2 w-4 h-4 rounded-full bg-white dark:bg-brand-dark border-4 border-brand shadow-ring-brand" />
 
               <div className="md:w-1/2 flex md:justify-end md:even:justify-start pr-8 md:pr-0 md:pl-0 md:even:pl-0">
                 <span className="text-4xl font-black text-slate-200 dark:text-slate-800">{milestone.year}</span>

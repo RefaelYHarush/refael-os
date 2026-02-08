@@ -64,11 +64,11 @@ export function Layout({ activeTab, onTabChange, children, enabledCategories = [
             </div>
             <div className="min-w-0">
               <h1 className="text-lg md:text-xl font-black tracking-tight leading-none truncate">REFAEL OS</h1>
-              <span className="text-[10px] text-slate-400 font-medium tracking-widest uppercase hidden sm:inline">Life Management System</span>
+              <span className="text-[10px] text-slate-400 dark:text-on-brand-muted font-medium tracking-widest uppercase hidden sm:inline">Life Management System</span>
             </div>
           </div>
 
-          <nav className="hidden md:flex bg-slate-100 dark:bg-brand-dark/50 p-1.5 rounded-xl overflow-x-auto no-scrollbar" aria-label="ניווט ראשי">
+          <nav className="hidden md:flex bg-slate-100 dark:bg-brand-surface p-1.5 rounded-xl overflow-x-auto no-scrollbar" aria-label="ניווט ראשי">
             <div role="tablist" className="flex gap-1">
               {TABS.map((tab) => (
                 <button

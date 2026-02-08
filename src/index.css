@@ -9,7 +9,7 @@
   }
 }
 
-/* צבעי מותג מ-Logo – נגישות WCAG AA; גרסאות רכות לשחור/לבן */
+/* צבעי מותג מ-Logo – נגישות WCAG AA; פלטה מאוזנת וברורה */
 :root {
   --brand-light: #90c93e;
   --brand-dark: #013024;
@@ -17,15 +17,18 @@
   --brand-black: #0f1419;
   --brand-white: #ffffff;
   --brand-page: #fafafa;
-  /* צבע משני (התאמה ללוגו – ניתן להחליף בגוון האדום-ורוד מהלוגו) */
   --brand-accent-secondary: #d45d4a;
-  /* משטחים בכהה – עומק מודרני עם ניגודיות טובה */
+  /* משטחים בכהה – היררכיה ויזואלית (רקע עמוק → כרטיסים → אלמנטים מורמים) */
   --surface-dark: #0a2e26;
-  --surface-dark-elevated: #0d3a30;
-  /* טקסט נגיש על רקע כהה */
-  --text-on-dark: #ffffff;
-  --text-on-dark-muted: #b8d4ce;
+  --surface-dark-elevated: #0f3d34;
+  --surface-dark-card: #0d362d;
+  /* טקסט נגיש על רקע כהה – גוון חם־ירקרק לקריאות */
+  --text-on-dark: #f0f7f4;
+  --text-on-dark-muted: #9ebdb4;
   --accent-on-dark: #90c93e;
+  /* גלואים מהמותג – לשימוש בבר־התקדמות, פוקוס, הדגשות */
+  --brand-glow: rgba(144, 201, 62, 0.4);
+  --brand-glow-soft: rgba(144, 201, 62, 0.15);
 }
 
 /* Respect user preference for reduced motion (WCAG 2.3.3) */

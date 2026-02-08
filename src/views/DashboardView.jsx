@@ -98,7 +98,7 @@ export function DashboardView({ onNavigate }) {
           <div>
             <div className="text-2xl font-bold mb-1 text-on-brand">{userXP.toLocaleString()} XP</div>
             <div className="w-full bg-brand-black/30 h-1.5 rounded-full overflow-hidden">
-              <div className="bg-brand h-full shadow-[0_0_10px_rgba(160,223,80,0.5)]" style={{ width: `${levelProgress}%` }} />
+              <div className="bg-brand h-full shadow-brand-glow rounded-full" style={{ width: `${levelProgress}%` }} />
             </div>
             <div className="text-[10px] mt-1 text-on-brand-muted">עוד {xpToNext} XP לרמה {userLevel + 1}</div>
           </div>
