@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { LayoutDashboard, TrendingUp, Briefcase, Target, Calendar, Activity, BookOpen, Wallet, Users, Bell, Settings, Zap, LogOut, Download, Sun, Moon, Menu, X } from 'lucide-react';
+import { LayoutDashboard, TrendingUp, Briefcase, Target, Calendar, Activity, BookOpen, Wallet, Users, Bell, Settings, Zap, LogOut, Download, Sun, Moon, Menu, X, CloudOff } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useApp } from '../../context/AppContext';
 import { useTheme } from '../../context/ThemeContext';
@@ -63,6 +63,12 @@ export function Layout({ activeTab, onTabChange, children, enabledCategories = [
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col min-h-full">
         <header className="flex flex-wrap items-center justify-between gap-4 py-5 border-b border-brand-black/8 dark:border-brand/15">
           <div className="flex items-center gap-3 min-w-0">
+            {syncError && (
+              <span className="flex items-center gap-1.5 px-2 py-1 rounded-button bg-brand-accent-secondary/10 border border-brand-accent-secondary/25 text-brand-accent-secondary text-xs font-medium" title="אין סנכרון – הנתונים נשמרים מקומית">
+                <CloudOff size={14} aria-hidden />
+                <span className="hidden sm:inline">ללא סנכרון</span>
+              </span>
+            )}
             <div className="w-11 h-11 rounded-card flex items-center justify-center bg-brand-dark shadow-card dark:shadow-card-dark">
               <Zap className="text-brand" fill="currentColor" size={22} />
             </div>
@@ -129,7 +135,7 @@ export function Layout({ activeTab, onTabChange, children, enabledCategories = [
                 </div>
               )}
             </div>
-            <button type="button" className="w-10 h-10 flex items-center justify-center rounded-button text-brand-black/60 dark:text-on-brand-muted hover:bg-brand-black/5 dark:hover:bg-brand/10 transition-colors hidden md:flex" aria-label="התראות">
+            <button type="button" disabled className="w-10 h-10 flex items-center justify-center rounded-button text-brand-black/40 dark:text-on-brand-muted cursor-not-allowed opacity-70 hidden md:flex" title="התראות – בקרוב" aria-label="התראות – בקרוב">
               <Bell size={18} aria-hidden />
             </button>
             <button type="button" onClick={() => setShowProfile(true)} className="w-10 h-10 flex items-center justify-center rounded-button text-brand-black/60 dark:text-on-brand-muted hover:bg-brand-black/5 dark:hover:bg-brand/10 transition-colors" title="פרופיל" aria-label="פרופיל">

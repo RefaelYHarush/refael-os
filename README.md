@@ -18,3 +18,8 @@ npm run dev
 - Tailwind CSS (כולל dark mode)
 - Lucide React (אייקונים)
 - RTL (עברית)
+
+## פיתוח מקומי בלי התחברות
+
+להרצה בלי Supabase: פתח `http://localhost:5173/?dev=1` (רק ב־localhost – לא בפרודקשן).  
+פרטים נוספים: [docs/DEVELOPER_NOTES.md](docs/DEVELOPER_NOTES.md).

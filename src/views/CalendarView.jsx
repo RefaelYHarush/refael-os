@@ -22,6 +22,52 @@ import {
 } from '../lib/googleCalendar';
 
 const STORAGE_KEY = 'refael-os-calendar-embed-url';
+const STORAGE_KEY_VIEW_MODE = 'refael-os-calendar-embed-mode';
+const STORAGE_KEY_HEIGHT = 'refael-os-calendar-embed-height';
+
+const EMBED_VIEW_MODES = [
+  { value: 'WEEK', label: 'שבוע' },
+  { value: 'MONTH', label: 'חודש' },
+  { value: 'AGENDA', label: 'רשימה' },
+];
+
+const EMBED_HEIGHTS = [
+  { value: 'compact', label: 'קטן', style: 'min(50vh, 420px)' },
+  { value: 'medium', label: 'בינוני', style: 'min(70vh, 600px)' },
+  { value: 'tall', label: 'גדול', style: 'min(85vh, 800px)' },
+];
+
+/** פרמטרי embed: שפה עברית, timezone, תצוגה (שבוע/חודש/רשימה) */
+function buildEmbedUrlWithParams(calendarId, mode = 'WEEK') {
+  const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || 'Asia/Jerusalem';
+  const params = new URLSearchParams({
+    src: calendarId,
+    ctz: tz,
+    hl: 'iw',
+    mode,
+    showTitle: '0',
+    showPrint: '0',
+  });
+  return `https://calendar.google.com/calendar/embed?${params.toString()}`;
+}
+
+/** מוסיף או מעדכן פרמטר mode ב-URL (לקישור ידני) */
+function withEmbedMode(url, mode) {
+  if (!url || !url.includes('calendar.google.com')) return url;
+  try {
+    const u = new URL(url);
+    u.searchParams.set('mode', mode);
+    u.searchParams.set('hl', 'iw');
+    return u.toString();
+  } catch {
+    return url;
+  }
+}
+
+/** קישור לפתיחת היומן באתר גוגל (בטאב חדש) */
+function buildOpenInGoogleUrl(calendarId) {
+  return `https://calendar.google.com/calendar/u/0/r?cid=${encodeURIComponent(calendarId)}`;
+}
 
 function formatEventTime(start, isAllDay) {
   if (!start) return '';
@@ -63,8 +109,40 @@ export function CalendarView() {
 
   const [syncLoading, setSyncLoading] = useState(false);
   const [syncResult, setSyncResult] = useState(null);
+  const [iframeLoaded, setIframeLoaded] = useState(false);
+  const [iframeShouldLoad, setIframeShouldLoad] = useState(false);
+
+  const [embedViewMode, setEmbedViewMode] = useState(() => {
+    try {
+      return localStorage.getItem(STORAGE_KEY_VIEW_MODE) || 'WEEK';
+    } catch {
+      return 'WEEK';
+    }
+  });
+  const [embedHeight, setEmbedHeight] = useState(() => {
+    try {
+      return localStorage.getItem(STORAGE_KEY_HEIGHT) || 'medium';
+    } catch {
+      return 'medium';
+    }
+  });
 
   const savedUrl = calendarEmbedUrl || '';
+
+  // הטמעה אוטומטית: כשמחוברים עם גוגל ויש יומן נבחר – בונים קישור embed בלי הדבקה ידנית
+  const calendarIdForEmbed =
+    selectedCalendarId === 'primary' && calendars.length > 0
+      ? calendars.find((c) => c.primary)?.id || calendars[0]?.id || 'primary'
+      : selectedCalendarId;
+  const autoEmbedUrl =
+    canUseApi && calendarIdForEmbed
+      ? buildEmbedUrlWithParams(calendarIdForEmbed, embedViewMode)
+      : '';
+  const displayUrl = savedUrl
+    ? withEmbedMode(savedUrl, embedViewMode)
+    : autoEmbedUrl;
+  const openInGoogleUrl = calendarIdForEmbed ? buildOpenInGoogleUrl(calendarIdForEmbed) : '';
+  const iframeHeightStyle = EMBED_HEIGHTS.find((h) => h.value === embedHeight)?.style || 'min(70vh, 600px)';
 
   const loadCalendars = useCallback(async () => {
     if (!canUseApi || !session?.provider_token) return;
@@ -104,10 +182,44 @@ export function CalendarView() {
     } catch (_) {}
   }, []);
 
+  useEffect(() => {
+    if (!displayUrl) {
+      setIframeLoaded(false);
+      setIframeShouldLoad(false);
+      return;
+    }
+    setIframeLoaded(false);
+    setIframeShouldLoad(false);
+    const tLoad = setTimeout(() => setIframeShouldLoad(true), 300);
+    const tDone = setTimeout(() => setIframeLoaded(true), 1800);
+    return () => {
+      clearTimeout(tLoad);
+      clearTimeout(tDone);
+    };
+  }, [displayUrl]);
+
+  const setViewMode = (mode) => {
+    setEmbedViewMode(mode);
+    try {
+      localStorage.setItem(STORAGE_KEY_VIEW_MODE, mode);
+    } catch (_) {}
+  };
+  const setHeight = (value) => {
+    setEmbedHeight(value);
+    try {
+      localStorage.setItem(STORAGE_KEY_HEIGHT, value);
+    } catch (_) {}
+  };
+
   const handleSave = () => {
     const url = embedUrl.trim();
     if (!url) return;
-    const src = url.includes('src="') ? url.match(/src="([^"]+)"/)?.[1] : url;
+    const src =
+      url.includes('src="')
+        ? url.match(/src="([^"]+)"/)?.[1]
+        : url.includes("src='")
+          ? url.match(/src='([^']+)'/)?.[1]
+          : url;
     if (src && (src.startsWith('https://calendar.google.com/') || src.startsWith('http://calendar.google.com/'))) {
       setCalendarEmbedUrl(src);
       setEmbedUrl('');
@@ -289,11 +401,14 @@ export function CalendarView() {
         </Card>
       )}
 
-      {!savedUrl ? (
+      {!displayUrl ? (
         <Card className="p-4">
           <label htmlFor="calendar-embed-url" className="block text-sm font-medium text-brand-black dark:text-on-brand mb-2">
             קישור להטמעת יומן (מגוגל קלנדר)
           </label>
+          <p className="text-sm text-brand-black/600 dark:text-on-brand-muted mb-3">
+            מחובר עם גוגל? בחר יומן ברשימה למעלה – היומן יוצג אוטומטית. או הדבק כאן קישור הטמעה ידני.
+          </p>
           <div className="flex gap-2 flex-wrap">
             <input
               id="calendar-embed-url"
@@ -316,21 +431,79 @@ export function CalendarView() {
         </Card>
       ) : (
         <>
-          <div className="flex justify-end">
-            <button
-              type="button"
-              onClick={clearSaved}
-              className="text-sm text-brand-black/500 dark:text-on-brand-muted hover:text-brand-accent-secondary"
-            >
-              נתק יומן
-            </button>
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-sm text-brand-black/600 dark:text-on-brand-muted">תצוגה:</span>
+              {EMBED_VIEW_MODES.map((m) => (
+                <button
+                  key={m.value}
+                  type="button"
+                  onClick={() => setViewMode(m.value)}
+                  className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                    embedViewMode === m.value
+                      ? 'bg-brand-dark text-on-brand'
+                      : 'bg-brand-black/10 dark:bg-brand/20 text-brand-black dark:text-on-brand hover:bg-brand-black/15 dark:hover:bg-brand/30'
+                  }`}
+                  aria-pressed={embedViewMode === m.value}
+                  aria-label={`תצוגת ${m.label}`}
+                >
+                  {m.label}
+                </button>
+              ))}
+              <span className="text-sm text-brand-black/600 dark:text-on-brand-muted mr-2">גובה:</span>
+              <select
+                value={embedHeight}
+                onChange={(e) => setHeight(e.target.value)}
+                className="px-2 py-1.5 rounded-lg border border-brand-black/15 dark:border-brand/30 bg-brand-white dark:bg-brand-surface text-brand-black dark:text-on-brand text-sm"
+                aria-label="גובה תצוגת היומן"
+              >
+                {EMBED_HEIGHTS.map((h) => (
+                  <option key={h.value} value={h.value}>
+                    {h.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="flex flex-wrap justify-end items-center gap-3">
+              {!savedUrl && autoEmbedUrl ? (
+                <span className="text-sm text-brand-black/500 dark:text-on-brand-muted">הצגה אוטומטית</span>
+              ) : null}
+              {openInGoogleUrl ? (
+                <a
+                  href={openInGoogleUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-sm text-brand font-medium hover:underline"
+                >
+                  פתח ביומן גוגל
+                  <ExternalLink size={14} aria-hidden />
+                </a>
+              ) : null}
+              {savedUrl ? (
+                <button
+                  type="button"
+                  onClick={clearSaved}
+                  className="text-sm text-brand-black/500 dark:text-on-brand-muted hover:text-brand-accent-secondary"
+                >
+                  נתק יומן
+                </button>
+              ) : null}
+            </div>
           </div>
-          <div className="rounded-2xl border border-brand-black/10 dark:border-brand/20 overflow-hidden bg-brand-white dark:bg-brand-surface shadow-sm">
+          <div className="relative rounded-2xl border border-brand-black/10 dark:border-brand/20 overflow-hidden bg-brand-white dark:bg-brand-surface shadow-sm">
+            {!iframeLoaded && (
+              <div
+                className="absolute inset-0 flex items-center justify-center bg-brand-black/5 dark:bg-brand-surface text-brand-black/60 dark:text-on-brand-muted text-sm z-10"
+                aria-live="polite"
+              >
+                טוען יומן…
+              </div>
+            )}
             <iframe
               title="יומן גוגל"
-              src={savedUrl}
-              className="w-full min-h-[500px] border-0"
-              style={{ height: 'min(80vh, 700px)' }}
+              src={iframeShouldLoad ? displayUrl : ''}
+              className="w-full min-h-[300px] border-0"
+              style={{ height: iframeHeightStyle }}
             />
           </div>
         </>

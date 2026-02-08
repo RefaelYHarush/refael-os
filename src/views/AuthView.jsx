@@ -58,8 +58,9 @@ export function AuthView({ onBack }) {
   const inputClass = 'w-full px-4 py-3 rounded-button border border-brand-black/15 dark:border-brand/25 bg-brand-white dark:bg-brand-surface text-brand-black dark:text-on-brand placeholder-brand-black/40 dark:placeholder-brand/50 focus:ring-2 focus:ring-brand focus:border-transparent dark:focus:border-brand transition-colors';
 
   return (
-    <div className="min-h-screen bg-brand-page dark:bg-brand-dark flex items-center justify-center p-4 py-12" dir="rtl">
-      <div className="w-full max-w-[400px] bg-brand-white dark:bg-brand-surface-card rounded-card-lg border border-brand-black/8 dark:border-brand/15 shadow-card dark:shadow-card-dark p-8 relative">
+    <div className="min-h-screen bg-brand-page dark:bg-brand-dark flex items-center justify-center p-4 py-12 relative overflow-hidden" dir="rtl">
+      <div className="absolute inset-0 bg-gradient-to-br from-brand-dark/5 via-transparent to-brand/5 dark:from-brand/10 dark:to-brand-dark pointer-events-none" aria-hidden />
+      <div className="w-full max-w-[400px] bg-brand-white dark:bg-brand-surface-card rounded-card-lg border border-brand-black/8 dark:border-brand/15 shadow-card dark:shadow-card-dark p-8 relative z-10">
         {onBack && (
           <button
             type="button"
@@ -178,7 +179,7 @@ export function AuthView({ onBack }) {
               type="button"
               onClick={handleGoogleSignIn}
               disabled={googleLoading}
-              className="w-full py-3.5 min-h-[48px] rounded-button border-2 border-brand-black/15 dark:border-brand/25 bg-brand-white dark:bg-brand-surface text-brand-black dark:text-on-brand font-semibold flex items-center justify-center gap-2 hover:bg-brand-black/5 dark:hover:bg-brand/10 hover:border-brand/40 disabled:opacity-50 transition-colors focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-brand-page dark:focus:ring-offset-brand-dark touch-manipulation"
+              className="w-full py-3.5 min-h-[48px] rounded-button border-2 border-brand-black/15 dark:border-brand/25 bg-brand-white dark:bg-brand-surface text-brand-black dark:text-on-brand font-semibold flex items-center justify-center gap-2 hover:bg-brand-black/5 dark:hover:bg-brand/10 hover:border-brand/40 disabled:opacity-50 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-brand-page dark:focus-visible:ring-offset-brand-dark touch-manipulation"
               aria-label="התחבר עם Google"
             >
               {googleLoading ? (

@@ -51,8 +51,9 @@ export function LandingView({ onSignUp, onSignIn }) {
       </header>
 
       <main>
-        <section className="max-w-5xl mx-auto px-4 sm:px-6 py-20 md:py-28 text-center">
-          <h1 className="text-display md:text-display-md lg:text-display-lg font-extrabold tracking-tight text-brand-black dark:text-on-brand mb-6 max-w-3xl mx-auto">
+        <section className="max-w-5xl mx-auto px-4 sm:px-6 py-20 md:py-28 text-center relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-b from-brand-dark/5 via-transparent to-transparent dark:from-brand/10 pointer-events-none" aria-hidden />
+          <h1 className="text-display md:text-display-md lg:text-display-lg font-extrabold tracking-tight text-brand-black dark:text-on-brand mb-6 max-w-3xl mx-auto relative">
             הדשבורד האישי שלך
             <br />
             <span className="text-brand-dark dark:text-brand">משימות, יעדים ומה שבחרת</span>
@@ -69,14 +70,14 @@ export function LandingView({ onSignUp, onSignIn }) {
             <button
               type="button"
               onClick={onSignUp}
-              className="px-8 py-4 min-h-[48px] rounded-button bg-brand-dark text-brand-white font-bold text-lg shadow-card hover:opacity-95 active:scale-[0.98] transition-all touch-manipulation"
+              className="px-8 py-4 min-h-[48px] rounded-button bg-brand-dark text-brand-white font-bold text-lg shadow-card hover:opacity-95 hover:shadow-xl hover:shadow-brand-dark/25 active:scale-[0.98] transition-all touch-manipulation"
             >
               צור דשבורד בחינם
             </button>
             <button
               type="button"
               onClick={onSignIn}
-              className="px-8 py-4 min-h-[48px] rounded-button border-2 border-brand-dark/25 dark:border-brand/30 font-bold text-lg text-brand-black dark:text-on-brand hover:bg-brand-dark/5 dark:hover:bg-brand/10 hover:border-brand-dark/40 dark:hover:border-brand/50 transition-all flex items-center justify-center gap-2 touch-manipulation"
+              className="px-8 py-4 min-h-[48px] rounded-button border-2 border-brand-dark/25 dark:border-brand/30 font-bold text-lg text-brand-black dark:text-on-brand hover:bg-brand-dark/5 dark:hover:bg-brand/10 hover:border-brand-dark dark:hover:border-brand hover:shadow-xl hover:shadow-brand-dark/25 dark:hover:shadow-brand/20 transition-all flex items-center justify-center gap-2 touch-manipulation"
             >
               <LogIn size={20} aria-hidden />
               כבר יש לך חשבון? התחבר
@@ -93,7 +94,7 @@ export function LandingView({ onSignUp, onSignIn }) {
             {features.map(({ icon: Icon, title, desc }) => (
               <div
                 key={title}
-                className="flex gap-5 p-6 rounded-card-lg bg-brand-white dark:bg-brand-surface-card border border-brand-black/8 dark:border-brand/15 hover:shadow-card-hover dark:hover:shadow-card-dark hover:border-brand/25 dark:hover:border-brand/30 transition-all"
+                className="flex gap-5 p-6 rounded-card-lg bg-brand-white dark:bg-brand-surface-card border border-brand-black/8 dark:border-brand/15 hover:shadow-card-hover dark:hover:shadow-card-dark hover:border-brand/25 dark:hover:border-brand/30 hover:-translate-y-0.5 transition-all"
               >
                 <div className="w-14 h-14 rounded-card bg-brand-dark/10 dark:bg-brand/15 flex items-center justify-center shrink-0">
                   <Icon className="text-brand-dark dark:text-brand" size={26} />
@@ -112,7 +113,7 @@ export function LandingView({ onSignUp, onSignIn }) {
           <button
             type="button"
             onClick={onSignUp}
-            className="px-8 py-4 min-h-[48px] rounded-button bg-brand-dark text-brand-white font-bold text-lg shadow-card hover:opacity-95 active:scale-[0.98] transition-all touch-manipulation"
+            className="px-8 py-4 min-h-[48px] rounded-button bg-brand-dark text-brand-white font-bold text-lg shadow-card hover:opacity-95 hover:shadow-xl hover:shadow-brand-dark/25 active:scale-[0.98] transition-all touch-manipulation"
           >
             הרשמה בחינם
           </button>

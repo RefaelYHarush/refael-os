@@ -73,7 +73,7 @@ export const INITIAL_XP = 2450;
 export const INITIAL_LEVEL = 4;
 export const XP_PER_LEVEL = 500;
 
-// מפתחות אחסון (localStorage). נשארו rafael_os מטעמי תאימות עם נתונים קיימים.
+/** מפתחות אחסון (localStorage). נשארו rafael_os (עם א') מטעמי תאימות – שם הפרויקט הוא refael-os. אין לשנות בלי migration. */
 export const STORAGE_KEYS = {
   TRADES: 'rafael_os_trades',
   SAAS_PROJECTS: 'rafael_os_saas',
